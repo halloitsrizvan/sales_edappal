@@ -70,7 +70,8 @@ export default function InquiriesPage() {
             </div>
 
             <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table */}
+                <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50/50 text-slate-500 font-bold uppercase tracking-wider">
                             <tr>
@@ -140,8 +141,8 @@ export default function InquiriesPage() {
                                             <button
                                                 onClick={() => handleToggleContacted(lead._id, lead.contacted)}
                                                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${lead.contacted
-                                                        ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
-                                                        : 'bg-amber-50 text-amber-600 hover:bg-amber-100 animate-pulse'
+                                                    ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
+                                                    : 'bg-amber-50 text-amber-600 hover:bg-amber-100 animate-pulse'
                                                     }`}
                                             >
                                                 {lead.contacted ? <><CheckCircle2 size={14} /> Contacted</> : 'New Inquiry'}
@@ -160,6 +161,74 @@ export default function InquiriesPage() {
                             ))}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile View */}
+                <div className="lg:hidden divide-y divide-slate-50">
+                    {loading ? (
+                        <div className="py-20 text-center">
+                            <div className="w-8 h-8 border-4 border-sky-500/20 border-t-sky-500 rounded-full animate-spin mx-auto mb-3"></div>
+                            <p className="text-sm text-slate-400">Loading...</p>
+                        </div>
+                    ) : leads.length === 0 ? (
+                        <div className="py-20 text-center p-8">
+                            <MessageSquare className="mx-auto text-slate-200 mb-4" size={48} />
+                            <p className="text-slate-400">No general inquiries found.</p>
+                        </div>
+                    ) : (
+                        leads.map((lead) => (
+                            <div key={lead._id} className="p-6 space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold text-sm uppercase">
+                                            {lead.name?.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <div className="font-bold text-slate-800">{lead.name}</div>
+                                            <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{new Date(lead.createdAt).toLocaleDateString()}</div>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => handleToggleContacted(lead._id, lead.contacted)}
+                                        className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all ${lead.contacted ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600 animate-pulse'}`}
+                                    >
+                                        {lead.contacted ? 'Contacted' : 'New'}
+                                    </button>
+                                </div>
+
+                                <div className="bg-slate-50 rounded-2xl p-4 space-y-3">
+                                    <div className="flex flex-col gap-2">
+                                        <a href={`tel:${lead.phone}`} className="flex items-center gap-3 text-slate-600 font-bold text-sm">
+                                            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm text-sky-500"><Phone size={14} /></div>
+                                            {lead.phone}
+                                        </a>
+                                        {lead.email && (
+                                            <a href={`mailto:${lead.email}`} className="flex items-center gap-3 text-slate-500 font-medium text-xs">
+                                                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm text-sky-500"><Mail size={14} /></div>
+                                                {lead.email}
+                                            </a>
+                                        )}
+                                    </div>
+
+                                    <div className="pt-3 border-t border-slate-200/50">
+                                        <div className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1.5">Message</div>
+                                        <p className="text-sm text-slate-600 leading-relaxed italic">
+                                            {lead.message || "No message provided"}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end pt-2">
+                                    <button
+                                        onClick={() => handleDelete(lead._id)}
+                                        className="flex items-center gap-2 px-5 py-2.5 text-rose-600 bg-rose-50 rounded-xl text-xs font-bold transition-all active:scale-95 shadow-sm"
+                                    >
+                                        <Trash2 size={16} /> Delete Inquiry
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Mail, Phone, Calendar, User, Search, ExternalLink, Trash2, CheckCircle, Clock, XCircle, RotateCcw } from 'lucide-react';
+import { Mail, Phone, Calendar, User, Search, ExternalLink, Trash2, CheckCircle, Clock, XCircle, RotateCcw, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 
 export default function LeadsPage() {
@@ -105,7 +105,8 @@ export default function LeadsPage() {
             <h1 className="text-2xl font-bold text-slate-800">Property Leads</h1>
 
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table */}
+                <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50 text-slate-500 font-medium">
                             <tr>
@@ -218,6 +219,109 @@ export default function LeadsPage() {
                             ))}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile View */}
+                <div className="lg:hidden divide-y divide-slate-100">
+                    {loading ? (
+                        <div className="p-8 text-center text-slate-400">Loading...</div>
+                    ) : leads.length === 0 ? (
+                        <div className="p-8 text-center text-slate-400">No leads found.</div>
+                    ) : leads.map((lead) => (
+                        <div key={lead._id} className="p-4 space-y-4">
+                            <div className="flex justify-between items-start">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold text-sm uppercase">
+                                        {lead.name?.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-slate-800">{lead.name}</div>
+                                        <div className="text-[10px] text-slate-400 flex items-center gap-1 uppercase font-black">
+                                            <Calendar size={10} /> {new Date(lead.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="relative">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setOpenStatusId(openStatusId === lead._id ? null : lead._id);
+                                        }}
+                                        className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all border ${lead.status === 'Checked' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                                            lead.status === 'Contacted' ? 'bg-sky-50 text-sky-600 border-sky-100' :
+                                                lead.status === 'Rejected' ? 'bg-rose-50 text-rose-600 border-rose-100' :
+                                                    'bg-amber-50 text-amber-600 border-amber-100'
+                                            }`}
+                                    >
+                                        {lead.status || 'New'}
+                                    </button>
+                                    {openStatusId === lead._id && (
+                                        <div className="fixed inset-x-4 bottom-20 z-50 lg:hidden bg-white rounded-2xl shadow-2xl border border-slate-100 p-2">
+                                            <div className="p-3 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50 mb-1 text-center">Update Lead Status</div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                {['New', 'Contacted', 'Checked', 'Rejected'].map(s => (
+                                                    <button
+                                                        key={s}
+                                                        onClick={() => {
+                                                            if (s !== lead.status) handleStatusChange(lead._id, s);
+                                                            setOpenStatusId(null);
+                                                        }}
+                                                        className={`px-4 py-3 rounded-xl text-xs font-bold transition-all ${lead.status === s ? 'bg-sky-500 text-white' : 'bg-slate-50 text-slate-600'}`}
+                                                    >
+                                                        {s}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="bg-slate-50 rounded-xl p-3 space-y-2">
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-slate-400 font-bold uppercase tracking-wider">Contact</span>
+                                    <div className="flex gap-3">
+                                        <a href={`tel:${lead.phone}`} className="text-sky-600 font-bold flex items-center gap-1">
+                                            <Phone size={12} /> Call
+                                        </a>
+                                        {lead.email && (
+                                            <a href={`mailto:${lead.email}`} className="text-sky-600 font-bold flex items-center gap-1">
+                                                <Mail size={12} /> Email
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                                    <span className="text-slate-400 font-bold uppercase tracking-wider">Property</span>
+                                    {lead.propertyId ? (
+                                        <Link href={`/properties/${lead.propertyId}`} target="_blank" className="text-sky-600 font-bold flex items-center gap-1">
+                                            View Property <ExternalLink size={10} />
+                                        </Link>
+                                    ) : (
+                                        <span className="text-slate-500">General Inquiry</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            {lead.message && (
+                                <div className="bg-sky-50/50 rounded-xl p-3">
+                                    <div className="text-[10px] text-sky-600/50 font-black uppercase tracking-widest mb-1 flex items-center gap-1">
+                                        <MessageSquare size={10} /> Message
+                                    </div>
+                                    <p className="text-sm text-slate-600 italic leading-relaxed">"{lead.message}"</p>
+                                </div>
+                            )}
+
+                            <div className="flex justify-end pt-2">
+                                <button
+                                    onClick={() => handleDelete(lead._id)}
+                                    className="flex items-center gap-2 px-4 py-2 text-rose-600 bg-rose-50 rounded-xl text-xs font-bold transition-all active:scale-95"
+                                >
+                                    <Trash2 size={14} /> Delete Lead
+                                </button>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
 

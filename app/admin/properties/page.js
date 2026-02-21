@@ -208,9 +208,10 @@ export default function PropertiesList() {
                 </div>
             </div>
 
-            {/* Properties Table */}
+            {/* Properties View */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table View */}
+                <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50 text-slate-500 font-medium">
                             <tr>
@@ -228,13 +229,13 @@ export default function PropertiesList() {
                         <tbody className="divide-y divide-slate-100">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="7" className="px-6 py-12 text-center text-slate-400">
+                                    <td colSpan="9" className="px-6 py-12 text-center text-slate-400">
                                         Loading properties...
                                     </td>
                                 </tr>
                             ) : properties.length === 0 ? (
                                 <tr>
-                                    <td colSpan="7" className="px-6 py-12 text-center text-slate-400">
+                                    <td colSpan="9" className="px-6 py-12 text-center text-slate-400">
                                         No properties found.
                                     </td>
                                 </tr>
@@ -358,7 +359,7 @@ export default function PropertiesList() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="flex items-center justify-center gap-2 lg:opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <Link href={`/properties/${prop._id}`} target="_blank" className="p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors">
                                                     <Eye size={18} />
                                                 </Link>
@@ -379,6 +380,120 @@ export default function PropertiesList() {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="lg:hidden divide-y divide-slate-100">
+                    {loading ? (
+                        <div className="py-20 text-center text-slate-400">Loading properties...</div>
+                    ) : properties.length === 0 ? (
+                        <div className="py-20 text-center text-slate-400">No properties found.</div>
+                    ) : (
+                        properties.map((prop, index) => (
+                            <div key={prop._id} className="p-4 space-y-4">
+                                <div className="flex gap-4">
+                                    <div className="w-16 h-16 rounded-xl bg-slate-100 overflow-hidden relative shrink-0">
+                                        {prop.images && prop.images[0] ? (
+                                            <img src={prop.images[0]} alt={prop.title} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <Building2 className="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-slate-300" />
+                                        )}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-bold text-slate-800 truncate">{prop.title}</div>
+                                        <div className="text-xs text-slate-500 truncate">{prop.location}</div>
+                                        <div className="flex items-center gap-2 mt-1">
+                                            <span className="text-sm font-bold text-sky-600">{prop.price}</span>
+                                            <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-bold">{prop.type}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <button
+                                            onClick={() => handleFeatureToggle(prop._id, prop.featured)}
+                                            className={`p-1.5 rounded-lg transition-colors ${prop.featured ? 'text-amber-500 bg-amber-50' : 'text-slate-300 bg-slate-50'}`}
+                                            suppressHydrationWarning
+                                        >
+                                            <CheckCircle size={18} className={prop.featured ? 'fill-current' : ''} />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 no-scrollbar">
+                                    <button
+                                        onClick={() => handleApproveToggle(prop._id, prop.isApproved)}
+                                        className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all shrink-0 ${prop.isApproved
+                                            ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                                            : 'bg-rose-50 text-rose-600 border border-rose-100'}`}
+                                        suppressHydrationWarning
+                                    >
+                                        {prop.isApproved ? <CheckCircle size={12} /> : <XCircle size={12} />}
+                                        {prop.isApproved ? 'Approved' : 'Pending'}
+                                    </button>
+
+                                    <div className="relative shrink-0">
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setOpenStatusId(openStatusId === prop._id ? null : prop._id);
+                                            }}
+                                            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all border shadow-sm ${prop.status === 'Sold'
+                                                ? 'bg-rose-50 text-rose-600 border-rose-100'
+                                                : prop.status === 'Rent' ? 'bg-amber-50 text-amber-600 border-amber-100'
+                                                    : prop.status === 'Lease' ? 'bg-indigo-50 text-indigo-600 border-indigo-100'
+                                                        : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}
+                                            suppressHydrationWarning
+                                        >
+                                            {prop.status === 'Sold' ? 'Sold Out' : prop.status === 'Rent' ? 'Rent' : prop.status === 'Lease' ? 'Lease' : 'Sale'}
+                                            <MoreHorizontal size={10} className="ml-1 opacity-50" />
+                                        </button>
+
+                                        {openStatusId === prop._id && (
+                                            <div className="fixed inset-x-4 bottom-20 z-50 lg:hidden animate-in slide-in-from-bottom-5">
+                                                <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 overflow-hidden">
+                                                    <div className="p-3 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50 mb-1">Set Listing Status</div>
+                                                    <div className="grid grid-cols-2 gap-2">
+                                                        {[
+                                                            { label: 'For Sale', value: 'For Sale' },
+                                                            { label: 'For Rent', value: 'Rent' },
+                                                            { label: 'For Lease', value: 'Lease' },
+                                                            { label: 'Sold Out', value: 'Sold' }
+                                                        ].map(s => (
+                                                            <button
+                                                                key={s.value}
+                                                                onClick={() => {
+                                                                    if (s.value !== prop.status) handleStatusToggle(prop._id, prop.status, s.value);
+                                                                    setOpenStatusId(null);
+                                                                }}
+                                                                className={`px-4 py-3 rounded-xl text-xs font-bold transition-all ${prop.status === s.value ? 'bg-sky-500 text-white' : 'bg-slate-50 text-slate-600'}`}
+                                                            >
+                                                                {s.label}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="flex gap-1 shrink-0 ml-auto">
+                                        <Link href={`/properties/${prop._id}`} target="_blank" className="p-2 text-slate-400 bg-slate-50 rounded-lg">
+                                            <Eye size={18} />
+                                        </Link>
+                                        <Link href={`/admin/properties/edit/${prop._id}`} className="p-2 text-indigo-600 bg-indigo-50 rounded-lg">
+                                            <Edit2 size={18} />
+                                        </Link>
+                                        <button
+                                            onClick={() => handleDelete(prop._id)}
+                                            className="p-2 text-rose-600 bg-rose-50 rounded-lg"
+                                            suppressHydrationWarning
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
 
                 {/* Pagination */}

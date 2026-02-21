@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sales Edappal - Premium Real Estate Platform 🏡📍
 
-## Getting Started
+**Sales Edappal** is a comprehensive, modern real estate platform designed for **Sameer Edappal**, a trusted real estate consultant based in Kerala. The platform enables users to browse, list, and inquire about properties while providing admins with powerful tools to manage inventory and analyze market trends.
 
-First, run the development server:
+---
+
+## ✨ Key Features
+
+### 🌍 **Public Facing**
+- **Dynamic Property search**: Advanced filtering by type (House, Plot, Commercial), status (Buy, Rent, Lease), location, and budget.
+- **Interactive Google Maps**: Integrated precise locations for properties using Google Maps Embed API.
+- **Property Inquiry**: Direct WhatsApp and phone integration with "Call Agent" and tailored inquiry forms.
+- **List Your Property**: A dedicated portal for owners to submit their properties with image uploads and payment tracking.
+- **Reviews & Feedback**: A built-in system for clients to share their experiences and view verified testimonials.
+
+### 🛡️ **Admin Dashboard**
+- **Inventory Management**: Full CRUD operations for properties, including featured listings toggle and approval workflows.
+- **Visual Analytics**: Dynamic charts (Bar Charts, Pie Charts) showing inventory distribution across Sale, Rent, and Lease statuses.
+- **Review Moderation**: Manage and approve client feedback before it goes live.
+- **Automated Data Processing**: Smart extraction of amenities like "Water Source" and "Road Access" from textual descriptions.
+
+---
+
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Forms**: React Hooks with custom validation logic
+
+---
+
+## 🛠️ Getting Started
+
+### Prerequisites
+- Node.js (v18.0.0 or higher)
+- MongoDB Connection URI
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd sales_edappal
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**
+   Create a `.env.local` file in the root directory and add the following:
+   ```env
+   MONGODB_URI=your_mongodb_connection_string
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+---
+
+## 📁 Project Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+├── app/                  # Next.js App Router (Pages & API)
+│   ├── admin/            # Admin Dashboard & Management
+│   ├── api/              # Backend API Routes (Properties, Reviews)
+│   ├── properties/       # Public Property Listing & Details
+│   └── ...               # Home, About, Contact
+├── components/           # Reusable UI Components
+├── lib/                  # Database connection & Utility functions
+├── models/               # Mongoose Schema Definitions
+├── public/               # Static Assets (Logo, sameer.png)
+└── ...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 📞 Contact Information
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Sameer Edappal**  
+*Property Consultant*  
+📍 OMG Shoes Footwear, Amsakachery, Edappal, Kerala 679576  
+📞 **Phone**: [+91 9895294949](tel:+919895294949)  
+📧 **Email**: contact@salesedappal.com  
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+© 2026 Sales Edappal. All rights reserved.
