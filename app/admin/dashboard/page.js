@@ -96,45 +96,45 @@ const Dashboard = () => {
     return (
         <div className="space-y-8">
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="bg-sky-100 p-3 rounded-xl text-sky-600">
-                            <Building2 size={24} />
+                        <div className="bg-sky-100 p-2.5 md:p-3 rounded-xl text-sky-600">
+                            <Building2 size={20} className="md:w-6 md:h-6" />
                         </div>
                     </div>
-                    <p className="text-slate-500 text-sm font-medium">Total Properties</p>
-                    <h3 className="text-2xl font-bold text-slate-800">{stats.total}</h3>
+                    <p className="text-slate-500 text-[10px] md:text-sm font-medium uppercase tracking-wider">Total Properties</p>
+                    <h3 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight">{stats.total}</h3>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-rose-50 border-l-4 border-l-rose-500 shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white p-4 md:p-6 rounded-2xl border border-rose-50 border-l-4 border-l-rose-500 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="bg-rose-100 p-3 rounded-xl text-rose-600">
-                            <Clock size={24} />
+                        <div className="bg-rose-100 p-2.5 md:p-3 rounded-xl text-rose-600">
+                            <Clock size={20} className="md:w-6 md:h-6" />
                         </div>
                     </div>
-                    <p className="text-slate-500 text-sm font-medium">Pending Approval</p>
-                    <h3 className="text-2xl font-bold text-rose-600">{stats.pending}</h3>
+                    <p className="text-slate-500 text-[10px] md:text-sm font-medium uppercase tracking-wider">Pending Approval</p>
+                    <h3 className="text-xl md:text-2xl font-bold text-rose-600 tracking-tight">{stats.pending}</h3>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="bg-emerald-100 p-3 rounded-xl text-emerald-600">
-                            <ShoppingBag size={24} />
+                        <div className="bg-emerald-100 p-2.5 md:p-3 rounded-xl text-emerald-600">
+                            <ShoppingBag size={20} className="md:w-6 md:h-6" />
                         </div>
                     </div>
-                    <p className="text-slate-500 text-sm font-medium">Active Listings</p>
-                    <h3 className="text-2xl font-bold text-slate-800">{stats.active}</h3>
+                    <p className="text-slate-500 text-[10px] md:text-sm font-medium uppercase tracking-wider">Active Listings</p>
+                    <h3 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight">{stats.active}</h3>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="bg-indigo-100 p-3 rounded-xl text-indigo-600">
-                            <TrendingUp size={24} />
+                        <div className="bg-indigo-100 p-2.5 md:p-3 rounded-xl text-indigo-600">
+                            <TrendingUp size={20} className="md:w-6 md:h-6" />
                         </div>
                     </div>
-                    <p className="text-slate-500 text-sm font-medium">Sold Properties</p>
-                    <h3 className="text-2xl font-bold text-slate-800">{stats.sold}</h3>
+                    <p className="text-slate-500 text-[10px] md:text-sm font-medium uppercase tracking-wider">Sold Properties</p>
+                    <h3 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight">{stats.sold}</h3>
                 </div>
             </div>
 
@@ -143,45 +143,45 @@ const Dashboard = () => {
                 {/* Pending Approval Section */}
                 <div className="lg:col-span-2 space-y-8">
                     {pendingProperties.length > 0 && (
-                        <div className="bg-white rounded-2xl border-2 border-rose-100  overflow-hidden animate-pulse-subtle">
-                            <div className="p-6 bg-rose-50/50 border-b border-rose-100 flex justify-between items-center">
-                                <h3 className="font-bold text-lg text-rose-800 flex items-center gap-2">
-                                    <Clock size={20} /> Action Required: New Listings
+                        <div className="bg-white rounded-2xl border-2 border-rose-100 overflow-hidden animate-pulse-subtle">
+                            <div className="p-4 md:p-6 bg-rose-50/50 border-b border-rose-100 flex justify-between items-center">
+                                <h3 className="font-bold text-sm md:text-lg text-rose-800 flex items-center gap-2">
+                                    <Clock size={18} /> <span className="hidden xs:inline">Action Required:</span> New Listings
                                 </h3>
-                                <span className="bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                <span className="bg-rose-500 text-white px-3 py-1 rounded-full text-[10px] font-bold">
                                     {pendingProperties.length} Pending
                                 </span>
                             </div>
                             <div className="divide-y divide-rose-50">
                                 {pendingProperties.map((prop) => (
-                                    <div key={prop._id} className="p-4 hover:bg-rose-50/30 transition-colors flex items-center justify-between gap-4">
-                                        <div className="flex items-center gap-4 min-w-0">
+                                    <div key={prop._id} className="p-4 hover:bg-rose-50/30 transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                        <div className="flex items-center gap-4 min-w-0 w-full sm:w-auto">
                                             <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
                                                 {prop.images?.[0] ? (
                                                     <img src={prop.images[0]} className="w-full h-full object-cover" />
                                                 ) : <Building2 className="w-full h-full p-3 text-slate-300" />}
                                             </div>
                                             <div className="min-w-0">
-                                                <h4 className="font-bold text-slate-800 truncate">{prop.title}</h4>
-                                                <p className="text-xs text-slate-500 truncate">{prop.location} • {prop.price}</p>
+                                                <h4 className="font-bold text-slate-800 truncate text-sm md:text-base">{prop.title}</h4>
+                                                <p className="text-[10px] md:text-xs text-slate-500 truncate">{prop.location} • {prop.price}</p>
                                             </div>
                                         </div>
-                                        <div className="flex gap-2">
+                                        <div className="flex gap-2 w-full sm:w-auto">
                                             <button
                                                 onClick={(e) => handleApprove(e, prop._id)}
                                                 disabled={processingId === prop._id}
-                                                className="bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-emerald-100 transition-all flex items-center gap-1.5"
+                                                className="flex-1 sm:flex-none justify-center bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white px-3 md:px-4 py-2 rounded-xl text-[10px] md:text-xs font-bold shadow-lg shadow-emerald-100 transition-all flex items-center gap-1.5"
                                             >
                                                 {processingId === prop._id ? (
-                                                    <Loader2 size={14} className="animate-spin" />
+                                                    <Loader2 size={12} className="animate-spin" />
                                                 ) : (
-                                                    <CheckCircle size={14} />
+                                                    <CheckCircle size={12} />
                                                 )}
                                                 Approve
                                             </button>
                                             <Link
                                                 href={`/admin/properties/edit/${prop._id}`}
-                                                className="bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all"
+                                                className="flex-1 sm:flex-none justify-center bg-white border border-slate-200 text-slate-600 px-3 md:px-4 py-2 rounded-xl text-[10px] md:text-xs font-bold hover:bg-slate-50 transition-all text-center"
                                             >
                                                 Review
                                             </Link>
@@ -192,13 +192,15 @@ const Dashboard = () => {
                         </div>
                     )}
 
-                    {/* Recent Properties Table */}
+                    {/* Recent Properties Section */}
                     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                            <h3 className="font-bold text-lg text-slate-800">Recent Listings</h3>
-                            <Link href="/admin/properties" className="text-sm text-sky-600 font-semibold hover:underline">View All</Link>
+                        <div className="p-4 md:p-6 border-b border-slate-100 flex justify-between items-center">
+                            <h3 className="font-bold text-sm md:text-lg text-slate-800">Recent Listings</h3>
+                            <Link href="/admin/properties" className="text-xs md:text-sm text-sky-600 font-semibold hover:underline">View All</Link>
                         </div>
-                        <div className="overflow-x-auto">
+
+                        {/* Desktop Table */}
+                        <div className="hidden md:block overflow-x-auto">
                             <table className="w-full text-left text-sm">
                                 <thead className="bg-slate-50 text-slate-500 font-medium">
                                     <tr>
@@ -237,6 +239,33 @@ const Dashboard = () => {
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+
+                        {/* Mobile List View */}
+                        <div className="md:hidden divide-y divide-slate-50">
+                            {recentProperties.map((prop) => (
+                                <div key={prop._id} className="p-4 flex justify-between items-center gap-3">
+                                    <div className="min-w-0">
+                                        <div className="font-bold text-slate-800 text-sm truncate">{prop.title}</div>
+                                        <div className="text-[10px] text-slate-400 truncate">{prop.location}</div>
+                                        <div className="mt-1 font-black text-xs text-sky-600">{prop.price}</div>
+                                    </div>
+                                    <div className="flex flex-col items-end gap-1.5 shrink-0">
+                                        <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest ${prop.status === 'For Sale' ? 'bg-sky-50 text-sky-600' : 'bg-amber-50 text-amber-600'}`}>
+                                            {prop.status}
+                                        </span>
+                                        {prop.isApproved ? (
+                                            <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                                                <CheckCircle size={8} /> PUBLIC
+                                            </span>
+                                        ) : (
+                                            <span className="text-rose-400 font-bold text-[8px] flex items-center gap-0.5">
+                                                <XCircle size={8} /> HIDDEN
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

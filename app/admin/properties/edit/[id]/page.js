@@ -217,20 +217,20 @@ const EditProperty = () => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-slate-800">Edit Property</h1>
-                <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${formData.isApproved ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>
+        <div className="max-w-4xl mx-auto px-4 md:px-0 pb-10">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800">Edit Property</h1>
+                <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm ${formData.isApproved ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}>
                     {formData.isApproved ? 'Approved' : 'Pending Approval'}
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+            <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8 bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-slate-100">
 
                 {/* Basic Info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div className="md:col-span-2">
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Property Title</label>
+                        <label className="block text-xs md:text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider">Property Title</label>
                         <input
                             type="text"
                             name="title"
@@ -238,12 +238,12 @@ const EditProperty = () => {
                             onChange={handleInputChange}
                             required
                             placeholder="e.g. Luxury Villa in Edappal"
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm"
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Display Price</label>
+                    <div className="space-y-2">
+                        <label className="block text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">Display Price</label>
                         <input
                             type="text"
                             name="price"
@@ -251,12 +251,12 @@ const EditProperty = () => {
                             onChange={handleInputChange}
                             required
                             placeholder="e.g. ₹45 Lakhs"
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm"
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Numeric Price (for sorting)</label>
+                    <div className="space-y-2">
+                        <label className="block text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">Numeric Price (for sorting)</label>
                         <input
                             type="number"
                             name="priceAmount"
@@ -264,12 +264,12 @@ const EditProperty = () => {
                             onChange={handleInputChange}
                             required
                             placeholder="e.g. 4500000"
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm"
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Location</label>
+                    <div className="space-y-2">
+                        <label className="block text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">Location</label>
                         <input
                             type="text"
                             name="location"
@@ -277,30 +277,29 @@ const EditProperty = () => {
                             onChange={handleInputChange}
                             required
                             placeholder="e.g. Amsakachery"
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm"
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Google Map Link (Embed/Share URL)</label>
+                    <div className="space-y-2">
+                        <label className="block text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">Google Map Link</label>
                         <input
                             type="text"
                             name="mapUrl"
                             value={formData.mapUrl}
                             onChange={handleInputChange}
-                            placeholder="Paste Google Maps link here"
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
+                            placeholder="Paste share link"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm"
                         />
-                        <p className="text-[10px] text-slate-400 mt-1">Example: https://www.google.com/maps/embed?pb=...</p>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Property Type</label>
+                    <div className="space-y-2">
+                        <label className="block text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">Property Type</label>
                         <select
                             name="type"
                             value={formData.type}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none bg-white"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none bg-white text-sm"
                         >
                             <option>House</option>
                             <option>Plot</option>
@@ -311,13 +310,13 @@ const EditProperty = () => {
                         </select>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Status</label>
+                    <div className="space-y-2">
+                        <label className="block text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">Status</label>
                         <select
                             name="status"
                             value={formData.status}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none bg-white font-medium text-slate-700"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none bg-white text-sm font-semibold text-slate-700"
                         >
                             <option value="For Sale">For Sale</option>
                             <option value="Rent">For Rent</option>
@@ -326,91 +325,91 @@ const EditProperty = () => {
                         </select>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Area / Size</label>
+                    <div className="space-y-2 md:col-span-2">
+                        <label className="block text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">Area / Size</label>
                         <input
                             type="text"
                             name="area"
                             value={formData.area}
                             onChange={handleInputChange}
                             placeholder="e.g. 1500 Sqft / 10 Cents"
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm"
                         />
                     </div>
                 </div>
 
                 {/* Key Features: Water & Path */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 bg-sky-50/50 rounded-2xl border border-sky-100">
-                    <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-3">Water Source</label>
-                        <div className="flex flex-wrap gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div className="space-y-3">
+                        <label className="block text-xs font-black text-slate-400 uppercase tracking-widest">Water Source</label>
+                        <div className="flex flex-wrap gap-2">
                             {waterOptions.map(opt => (
-                                <label key={opt} className="flex items-center gap-2 cursor-pointer bg-white px-4 py-2 rounded-xl border border-slate-200 hover:border-sky-500 transition-all">
+                                <label key={opt} className={`flex items-center gap-2 cursor-pointer px-3 py-2 rounded-xl border transition-all ${formData.water.includes(opt) ? 'bg-sky-500 border-sky-500 text-white shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-sky-500'}`}>
                                     <input
                                         type="checkbox"
                                         checked={formData.water.includes(opt)}
                                         onChange={() => handleWaterToggle(opt)}
-                                        className="w-4 h-4 text-sky-600 rounded focus:ring-sky-500"
+                                        className="hidden"
                                     />
-                                    <span className="text-sm font-medium text-slate-600">{opt}</span>
+                                    <span className="text-[10px] md:text-xs font-bold uppercase">{opt}</span>
                                 </label>
                             ))}
                         </div>
                     </div>
-                    <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-3">Path / Road Access</label>
+                    <div className="space-y-3">
+                        <label className="block text-xs font-black text-slate-400 uppercase tracking-widest">Road Access</label>
                         <input
                             type="text"
                             name="path"
                             value={formData.path}
                             onChange={handleInputChange}
-                            placeholder="e.g. 15ft Tar Road / Wide Path"
-                            className="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none bg-white font-medium"
+                            placeholder="e.g. 15ft Tar Road"
+                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none bg-white text-sm font-medium"
                         />
                     </div>
                 </div>
 
                 {/* Description */}
-                <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">Description</label>
+                <div className="space-y-2">
+                    <label className="block text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">Description</label>
                     <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleInputChange}
                         rows={6}
                         required
-                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
-                        placeholder="Detailed description of the property..."
+                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm leading-relaxed"
+                        placeholder="Detailed description..."
                     ></textarea>
                 </div>
 
                 {/* Amenities */}
                 <div className="space-y-4">
-                    <div className="flex justify-between items-center bg-slate-50 p-4 rounded-xl">
-                        <label className="text-sm font-bold text-slate-700">Amenities & Features</label>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Amenities & Features</label>
                         <div className="flex gap-2">
                             <input
                                 type="text"
                                 value={newAmenity}
                                 onChange={(e) => setNewAmenity(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && addCustomAmenity(e)}
-                                placeholder="Add new amenity..."
-                                className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
+                                placeholder="Other feature..."
+                                className="flex-1 sm:w-auto px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-500/10"
                             />
                             <button
                                 onClick={addCustomAmenity}
                                 type="button"
-                                className="bg-sky-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-sky-700 transition-colors"
+                                className="bg-sky-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-sky-700 transition-all active:scale-95"
                             >
                                 + Add
                             </button>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
                         {/* Core Amenities */}
                         {coreAmenities.map(item => (
-                            <label key={item} className={`flex items-center gap-2 cursor-pointer p-3 border rounded-xl transition-all ${formData.amenities.includes(item) ? 'bg-sky-50 border-sky-200 text-sky-700 shadow-sm' : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50'
+                            <label key={item} className={`flex items-center gap-2 cursor-pointer p-3 border rounded-xl transition-all ${formData.amenities.includes(item) ? 'bg-sky-50 border-sky-200 text-sky-700' : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50'
                                 }`}>
                                 <input
                                     type="checkbox"
@@ -418,14 +417,14 @@ const EditProperty = () => {
                                     onChange={() => handleAmenityToggle(item)}
                                     className="w-4 h-4 text-sky-600 rounded focus:ring-sky-50"
                                 />
-                                <span className="text-xs font-semibold">{item}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-tight truncate">{item}</span>
                             </label>
                         ))}
 
-                        {/* Custom Added Amenities */}
+                        {/* Custom Added */}
                         {formData.amenities.filter(a => !coreAmenities.includes(a)).map(item => (
-                            <div key={item} className="flex items-center justify-between p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-xl shadow-sm">
-                                <span className="text-xs font-bold truncate max-w-[80%]">{item}</span>
+                            <div key={item} className="flex items-center justify-between p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-xl">
+                                <span className="text-[10px] font-bold uppercase tracking-tight truncate max-w-[80%]">{item}</span>
                                 <button
                                     onClick={() => handleAmenityToggle(item)}
                                     className="text-indigo-400 hover:text-rose-500 transition-colors"
@@ -438,11 +437,11 @@ const EditProperty = () => {
                 </div>
 
                 {/* Images */}
-                <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-4">Property Images</label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                <div className="space-y-4">
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest">Property Gallery (Max 4)</label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                         {formData.images.map((url, index) => (
-                            <div key={index} className="relative aspect-square rounded-xl overflow-hidden group shadow-sm bg-slate-100">
+                            <div key={index} className="relative aspect-square rounded-2xl overflow-hidden group shadow-sm bg-slate-100 border border-slate-100">
                                 <img
                                     src={url}
                                     alt={`Property ${index}`}
@@ -451,21 +450,23 @@ const EditProperty = () => {
                                 <button
                                     type="button"
                                     onClick={() => removeImage(index)}
-                                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all shadow-lg"
                                 >
-                                    <X size={14} />
+                                    <X size={12} />
                                 </button>
                             </div>
                         ))}
                         {formData.images.length < 4 && (
-                            <label className="aspect-square border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-sky-500 hover:bg-sky-50 transition-all group">
+                            <label className="aspect-square border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-sky-400 hover:bg-sky-50 transition-all group overflow-hidden">
                                 {uploading ? (
-                                    <Loader2 className="animate-spin text-sky-500" size={24} />
+                                    <Loader2 className="animate-spin text-sky-500" size={20} />
                                 ) : (
-                                    <>
-                                        <Upload className="text-slate-400 group-hover:text-sky-500 mb-2" size={24} />
-                                        <span className="text-xs text-slate-500 font-medium group-hover:text-sky-600">Upload Images</span>
-                                    </>
+                                    <div className="text-center p-4">
+                                        <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-2 text-slate-400 group-hover:text-sky-500 transition-colors shadow-sm">
+                                            <Upload size={18} />
+                                        </div>
+                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider group-hover:text-sky-600">Select Image</span>
+                                    </div>
                                 )}
                                 <input
                                     type="file"
@@ -480,46 +481,46 @@ const EditProperty = () => {
                     </div>
                 </div>
 
-                {/* Controls */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                    <label className="flex items-center gap-3 cursor-pointer p-2 hover:bg-white rounded-lg transition-all">
+                {/* Settings */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <label className={`flex items-center gap-3 cursor-pointer p-4 rounded-xl transition-all border ${formData.featured ? 'bg-white border-sky-100 shadow-sm' : 'border-transparent opacity-70'}`}>
                         <input
                             type="checkbox"
                             name="featured"
                             checked={formData.featured}
                             onChange={handleInputChange}
-                            className="w-5 h-5 text-sky-600 rounded focus:ring-sky-500 cursor-pointer"
+                            className="w-5 h-5 text-sky-600 rounded-lg focus:ring-sky-500 cursor-pointer"
                         />
                         <div className="flex flex-col">
-                            <span className="font-bold text-slate-700">Featured Property</span>
-                            <span className="text-xs text-slate-400">Show on the home page gallery</span>
+                            <span className="text-xs font-black text-slate-700 uppercase tracking-wider">Featured</span>
+                            <span className="text-[10px] text-slate-400 font-medium">Show on homepage gallery</span>
                         </div>
                     </label>
 
-                    <label className="flex items-center gap-3 cursor-pointer p-2 hover:bg-white rounded-lg transition-all">
+                    <label className={`flex items-center gap-3 cursor-pointer p-4 rounded-xl transition-all border ${formData.isApproved ? 'bg-white border-emerald-100 shadow-sm' : 'border-transparent opacity-70'}`}>
                         <input
                             type="checkbox"
                             name="isApproved"
                             checked={formData.isApproved}
                             onChange={handleInputChange}
-                            className="w-5 h-5 text-sky-600 rounded focus:ring-sky-500 cursor-pointer"
+                            className="w-5 h-5 text-emerald-600 rounded-lg focus:ring-emerald-500 cursor-pointer"
                         />
                         <div className="flex flex-col">
-                            <span className="font-bold text-slate-700">Approved Listing</span>
-                            <span className="text-xs text-slate-400">Show to public users on properties page</span>
+                            <span className="text-xs font-black text-slate-700 uppercase tracking-wider">Approved</span>
+                            <span className="text-[10px] text-slate-400 font-medium">Publicly visible</span>
                         </div>
                     </label>
                 </div>
 
                 {/* Submit */}
-                <div className="flex justify-end pt-6 border-t border-slate-100">
+                <div className="flex justify-end pt-4 border-t border-slate-50">
                     <button
                         type="submit"
                         disabled={saving || uploading}
-                        className="bg-sky-600 hover:bg-sky-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-sky-200 transition-all hover:-translate-y-0.5 disabled:opacity-70 flex items-center gap-2"
+                        className="w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white px-8 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-xl shadow-sky-200/50 transition-all hover:-translate-y-0.5 active:scale-95 disabled:opacity-70 flex items-center justify-center gap-3"
                     >
-                        {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
-                        Update Property
+                        {saving ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
+                        Update Property Details
                     </button>
                 </div>
             </form>
