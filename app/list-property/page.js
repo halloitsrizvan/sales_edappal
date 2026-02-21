@@ -33,6 +33,7 @@ export default function ListProperty() {
         amenities: [],
         images: [],
         paymentScreenshot: '',
+        mapUrl: '',
     });
 
     const [newAmenity, setNewAmenity] = useState('');
@@ -328,6 +329,18 @@ export default function ListProperty() {
                                                 placeholder="Town / Neighborhood"
                                                 suppressHydrationWarning
                                             />
+                                        </div>
+                                        <div className="md:col-span-3 space-y-2 border-t border-slate-50 pt-4">
+                                            <label className="text-sm font-bold text-slate-700">Google Map Link (Optional)</label>
+                                            <input
+                                                type="text"
+                                                value={formData.mapUrl}
+                                                onChange={(e) => setFormData({ ...formData, mapUrl: e.target.value })}
+                                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-200 focus:border-sky-500 transition-all outline-none"
+                                                placeholder="Paste Google Maps Embed or Share Link"
+                                                suppressHydrationWarning
+                                            />
+                                            <p className="text-[10px] text-slate-400 font-medium tracking-tight">Help buyers find your property accurately by adding a map link.</p>
                                         </div>
                                     </div>
                                     <div className="grid md:grid-cols-2 gap-6">

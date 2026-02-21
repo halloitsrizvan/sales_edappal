@@ -41,12 +41,12 @@ export default function PropertyInquiryForm({ propertyId, propertyTitle }) {
             <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl text-center flex flex-col items-center gap-2">
                 <CheckCircle2 className="text-emerald-500" size={24} />
                 <p className="text-sm font-bold text-emerald-800">Inquiry Sent!</p>
-                <button
+                {/* <button
                     onClick={() => setStatus('idle')}
                     className="text-xs text-emerald-600 hover:underline font-medium"
                 >
                     Send another
-                </button>
+                </button> */}
             </div>
         );
     }

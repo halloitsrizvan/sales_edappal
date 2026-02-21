@@ -1,9 +1,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Bed, Bath, Square, ArrowRight, Phone } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, ArrowRight, Phone, Droplets, Route } from 'lucide-react';
 
 const PropertyCard = ({ property }) => {
+    // Extract specialized amenities
+    const waterSource = property.amenities?.find(a => a.startsWith('Water: '))?.replace('Water: ', '');
+    const routePath = property.amenities?.find(a => a.startsWith('Path: '))?.replace('Path: ', '');
+
     return (
         <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col h-full hover:-translate-y-1">
             <div className="relative h-64 overflow-hidden">
@@ -55,23 +59,22 @@ const PropertyCard = ({ property }) => {
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 py-4 border-t border-slate-100 mt-4 mb-4">
-                    {/* ... (keep stats as is) */}
-                    {property.beds > 0 && (
-                        <div className="flex flex-col items-center justify-center p-2 bg-slate-50 rounded-lg">
-                            <Bed size={16} className="text-slate-400 mb-1" />
-                            <span className="text-xs font-medium text-slate-600">{property.beds} Beds</span>
-                        </div>
-                    )}
-                    {property.baths > 0 && (
-                        <div className="flex flex-col items-center justify-center p-2 bg-slate-50 rounded-lg">
-                            <Bath size={16} className="text-slate-400 mb-1" />
-                            <span className="text-xs font-medium text-slate-600">{property.baths} Baths</span>
-                        </div>
-                    )}
                     {property.area && (
                         <div className="flex flex-col items-center justify-center p-2 bg-slate-50 rounded-lg">
                             <Square size={16} className="text-slate-400 mb-1" />
-                            <span className="text-xs font-medium text-slate-600">{property.area}</span>
+                            <span className="text-[10px] font-bold text-slate-600 truncate w-full text-center" title={property.area}>{property.area}</span>
+                        </div>
+                    )}
+                    {waterSource && (
+                        <div className="flex flex-col items-center justify-center p-2 bg-slate-50 rounded-lg">
+                            <Droplets size={16} className="text-sky-400 mb-1" />
+                            <span className="text-[10px] font-bold text-slate-600 truncate w-full text-center" title={waterSource}>{waterSource}</span>
+                        </div>
+                    )}
+                    {routePath && (
+                        <div className="flex flex-col items-center justify-center p-2 bg-slate-50 rounded-lg">
+                            <Route size={16} className="text-emerald-400 mb-1" />
+                            <span className="text-[10px] font-bold text-slate-600 truncate w-full text-center" title={routePath}>{routePath}</span>
                         </div>
                     )}
                 </div>

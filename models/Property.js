@@ -52,6 +52,7 @@ const PropertySchema = new mongoose.Schema({
     ownerName: String,
     ownerPhone: String,
     paymentScreenshot: String,
+    mapUrl: String,
 }, {
     timestamps: true,
 });

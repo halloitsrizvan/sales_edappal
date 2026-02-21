@@ -32,67 +32,93 @@ function PropertiesContent() {
         const budget = searchParams.get('budget');
 
         if (type || status || location || budget) {
-            setFilters(prev => ({
-                ...prev,
-                type: type ? type : prev.type,
-                status: status ? status : prev.status,
-                location: location ? location : prev.location,
-                priceRange: budget ? (
-                    budget === '0-10' ? 'Under 10 Lakhs' :
+            setFilters(prev => {
+                const newFilters = { ...prev };
+
+                if (type) {
+                    // Normalize case to match sidebar values (e.g. "commercial" -> "Commercial")
+                    const validTypes = ['House', 'Plot', 'Commercial', 'Apartment', 'Vehicle'];
+                    const matchedType = validTypes.find(t => t.toLowerCase() === type.toLowerCase());
+                    newFilters.type = matchedType || type;
+                }
+
+                if (status) {
+                    // Map "For Sale" to "Buy" and normalize case
+                    let normalizedStatus = status;
+                    if (status.toLowerCase() === 'for sale' || status.toLowerCase() === 'buy') normalizedStatus = 'Buy';
+                    else if (status.toLowerCase() === 'rent') normalizedStatus = 'Rent';
+                    else if (status.toLowerCase() === 'lease') normalizedStatus = 'Lease';
+
+                    newFilters.status = normalizedStatus;
+                }
+
+                if (location) newFilters.location = location;
+
+                if (budget) {
+                    newFilters.priceRange = budget === '0-10' ? 'Under 10 Lakhs' :
                         budget === '10-25' ? '10 - 25 Lakhs' :
-                            budget === '25-50' ? '10 - 50 Lakhs' : // UI match (listing 25-50 as 10-50 for now based on existing filter)
+                            budget === '25-50' ? '10 - 50 Lakhs' :
                                 budget === '50-100' ? '50 Lakhs - 1 Crore' :
-                                    budget === '100+' ? 'Above 1 Crore' : 'All'
-                ) : prev.priceRange
-            }));
+                                    budget === '100+' ? 'Above 1 Crore' : 'All';
+                }
+
+                return newFilters;
+            });
         }
     }, [searchParams]);
 
-    const fetchProperties = async () => {
-        setLoading(true);
-        try {
-            const params = new URLSearchParams({
-                page,
-                limit: 12,
-                type: filters.type === 'All' ? '' : filters.type,
-                status: filters.status === 'All' ? '' : filters.status,
-                location: filters.location === 'All' ? '' : filters.location,
-            });
-
-            if (filters.priceRange !== 'All') {
-                switch (filters.priceRange) {
-                    case 'Under 10 Lakhs':
-                        params.append('maxPrice', '1000000');
-                        break;
-                    case '10 - 50 Lakhs':
-                        params.append('minPrice', '1000000');
-                        params.append('maxPrice', '5000000');
-                        break;
-                    case '50 Lakhs - 1 Crore':
-                        params.append('minPrice', '5000000');
-                        params.append('maxPrice', '10000000');
-                        break;
-                    case 'Above 1 Crore':
-                        params.append('minPrice', '10000000');
-                        break;
-                }
-            }
-
-            const res = await fetch(`/api/properties?${params.toString()}`);
-            const data = await res.json();
-            if (data.success) {
-                setProperties(data.data);
-                setTotalPages(data.pagination.pages);
-            }
-        } catch (error) {
-            console.error('Fetch error:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        fetchProperties();
+        let isMounted = true;
+
+        const performFetch = async () => {
+            setLoading(true);
+            try {
+                const params = new URLSearchParams({
+                    page,
+                    limit: 12,
+                    type: filters.type === 'All' ? '' : filters.type,
+                    status: filters.status === 'All' ? '' : filters.status,
+                    location: filters.location === 'All' ? '' : filters.location,
+                });
+
+                if (filters.priceRange !== 'All') {
+                    switch (filters.priceRange) {
+                        case 'Under 10 Lakhs':
+                            params.append('maxPrice', '1000000');
+                            break;
+                        case '10 - 50 Lakhs':
+                            params.append('minPrice', '1000000');
+                            params.append('maxPrice', '5000000');
+                            break;
+                        case '50 Lakhs - 1 Crore':
+                            params.append('minPrice', '5000000');
+                            params.append('maxPrice', '10000000');
+                            break;
+                        case 'Above 1 Crore':
+                            params.append('minPrice', '10000000');
+                            break;
+                    }
+                }
+
+                const res = await fetch(`/api/properties?${params.toString()}`);
+                const data = await res.json();
+
+                if (isMounted && data.success) {
+                    setProperties(data.data);
+                    setTotalPages(data.pagination.pages);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+
+        performFetch();
+
+        return () => {
+            isMounted = false;
+        };
     }, [page, filters, sortOption]);
 
     const sortedProperties = [...properties].sort((a, b) => {
@@ -124,6 +150,7 @@ function PropertiesContent() {
                             className="pl-4 pr-10 py-2 rounded-lg border border-slate-200 bg-white focus:ring-2 focus:ring-sky-500/20 text-slate-700 outline-none cursor-pointer"
                             value={sortOption}
                             onChange={(e) => setSortOption(e.target.value)}
+                            suppressHydrationWarning
                         >
                             <option>Newest First</option>
                             <option>Price: Low to High</option>
@@ -141,6 +168,7 @@ function PropertiesContent() {
                                 <button
                                     onClick={() => setFilters({ type: 'All', status: 'All', location: 'All', priceRange: 'All', bedrooms: 'All' })}
                                     className="text-xs text-sky-500 font-semibold hover:underline"
+                                    suppressHydrationWarning
                                 >
                                     Reset
                                 </button>
@@ -157,6 +185,7 @@ function PropertiesContent() {
                                                     setFilters({ ...filters, status });
                                                     setPage(1);
                                                 }}
+                                                suppressHydrationWarning
                                                 className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all ${filters.status === status
                                                     ? 'bg-sky-500 text-white border-sky-500 shadow-md shadow-sky-200'
                                                     : 'bg-white text-slate-600 border-slate-200 hover:border-sky-300 hover:text-sky-600'
@@ -201,6 +230,7 @@ function PropertiesContent() {
                                             setPage(1);
                                         }}
                                         className="w-full rounded-lg border-slate-200 text-sm py-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-700"
+                                        suppressHydrationWarning
                                     >
                                         <option>All</option>
                                         <option>Edappal</option>
@@ -219,6 +249,7 @@ function PropertiesContent() {
                                             setPage(1);
                                         }}
                                         className="w-full rounded-lg border-slate-200 text-sm py-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-700"
+                                        suppressHydrationWarning
                                     >
                                         <option>All</option>
                                         <option>Under 10 Lakhs</option>
@@ -228,7 +259,7 @@ function PropertiesContent() {
                                     </select>
                                 </div>
 
-                                <div>
+                                {/* <div>
                                     <label className="block text-sm font-semibold text-slate-700 mb-2">Bedrooms</label>
                                     <div className="flex gap-2">
                                         {['All', '2', '3', '4+'].map((opt) => (
@@ -247,7 +278,7 @@ function PropertiesContent() {
                                             </button>
                                         ))}
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </aside>
@@ -260,6 +291,7 @@ function PropertiesContent() {
                                 className="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-sky-500/20 text-slate-700 outline-none"
                                 value={sortOption}
                                 onChange={(e) => setSortOption(e.target.value)}
+                                suppressHydrationWarning
                             >
                                 <option>Newest First</option>
                                 <option>Price: Low to High</option>
@@ -286,6 +318,7 @@ function PropertiesContent() {
                                             <button
                                                 key={i}
                                                 onClick={() => setPage(i + 1)}
+                                                suppressHydrationWarning
                                                 className={`w-10 h-10 rounded-lg font-semibold transition-all ${page === i + 1
                                                     ? 'bg-sky-500 text-white shadow-lg shadow-sky-200'
                                                     : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -309,6 +342,7 @@ function PropertiesContent() {
                                         setFilters({ type: 'All', status: 'All', location: 'All', priceRange: 'All', bedrooms: 'All' });
                                         setPage(1);
                                     }}
+                                    suppressHydrationWarning
                                     className="bg-sky-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-sky-600 transition-all shadow-lg shadow-sky-100"
                                 >
                                     Clear All Filters

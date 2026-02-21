@@ -157,74 +157,107 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
+      {/* Services Section - Redesigned */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-sky-50 rounded-full blur-3xl opacity-60"></div>
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-50 rounded-full blur-3xl opacity-60"></div>
+
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <span className="text-sky-500 font-semibold tracking-wider uppercase text-sm mb-2 block">Our Expertise</span>
-            <h2 className="text-4xl font-bold text-slate-800 mb-4">Comprehensive Real Estate Services</h2>
-            <div className="w-16 h-1 bg-sky-500 mx-auto rounded-full"></div>
+          <div className="max-w-3xl mb-16 mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-100 mb-4">
+              <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
+              <span className="text-[10px] font-bold text-sky-600 uppercase tracking-widest">Our Expertise</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+              Comprehensive Real Estate <br />
+              <span className="text-sky-500">Solutions for Edappal</span>
+            </h2>
+            <p className="text-slate-500 text-lg max-w-2xl leading-relaxed mx-auto">
+              From finding your first home to managing large commercial portfolios, we provide specialized services tailored to the unique Malappuram market.
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Buy Or Sell */}
-            <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-2xl transition-all hover:-translate-y-2 group">
-              <div className="h-48 bg-sky-100 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Buy Sell" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <HomeIcon className="mb-2 text-sky-400" size={32} />
-                  <h3 className="text-2xl font-bold">Buy or Sell</h3>
-                </div>
+            {/* Service 1: Buy & Sell */}
+            <div className="group relative bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm hover:shadow-2xl hover:shadow-sky-100 hover:-translate-y-2 transition-all duration-500">
+              <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                <HomeIcon size={120} />
               </div>
-              <div className="p-8">
-                <p className="text-slate-600 mb-6 leading-relaxed">
-                  Whether you're looking for your dream home or selling your property for the best price, we provide end-to-end assistance with transparent deals.
-                </p>
-                <Link href="/properties?type=House" className="text-sky-600 font-bold hover:gap-2 inline-flex items-center transition-all">
-                  Browse Properties <ArrowRight size={18} className="ml-1" />
-                </Link>
+              <div className="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mb-8 group-hover:bg-sky-500 group-hover:text-white transition-all transform group-hover:rotate-6">
+                <HomeIcon size={28} />
               </div>
+              <h3 className="text-2xl font-black text-slate-800 mb-4">Buy or Sell <br />Residential</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                End-to-end assistance for home buyers and sellers. We handle everything from site visits to legal documentation.
+              </p>
+              <ul className="space-y-3 mb-8">
+                {['Verified Independent Houses', 'Residential Land Plots', 'Legal Title Verification', 'Fair Market Valuation'].map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-xs font-bold text-slate-600">
+                    <div className="w-4 h-4 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center flex-shrink-0">
+                      <Check size={10} strokeWidth={4} />
+                    </div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/properties?status=Buy" className="flex items-center justify-center w-full py-4 bg-slate-50 text-slate-800 rounded-2xl font-bold text-sm group-hover:bg-sky-600 group-hover:text-white transition-all shadow-inner">
+                View For Sale <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
 
-            {/* Rent Or Lease */}
-            <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-2xl transition-all hover:-translate-y-2 group">
-              <div className="h-48 bg-emerald-100 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1484154218962-a1c002085d2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Rent Lease" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <Key className="mb-2 text-emerald-400" size={32} />
-                  <h3 className="text-2xl font-bold">Rent or Lease</h3>
-                </div>
+            {/* Service 2: Rent & Lease */}
+            <div className="group relative bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm hover:shadow-2xl hover:shadow-emerald-100 hover:-translate-y-2 transition-all duration-500">
+              <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                <Key size={120} />
               </div>
-              <div className="p-8">
-                <p className="text-slate-600 mb-6 leading-relaxed">
-                  Find the perfect rental home or lease commercial spaces with ease. We manage the paperwork and negotiation for a hassle-free experience.
-                </p>
-                <Link href="/properties?status=Rent" className="text-emerald-600 font-bold hover:gap-2 inline-flex items-center transition-all">
-                  Find Rentals <ArrowRight size={18} className="ml-1" />
-                </Link>
+              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-8 group-hover:bg-emerald-500 group-hover:text-white transition-all transform group-hover:rotate-6">
+                <Key size={28} />
               </div>
+              <h3 className="text-2xl font-black text-slate-800 mb-4">Rent or Lease <br />Management</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                Finding the right tenants and the perfect spaces. We bridge the gap between owners and renters seamlessly.
+              </p>
+              <ul className="space-y-3 mb-8">
+                {['Apartment Rentals', 'Short-term Leases', 'Tenant Verification', 'Agreement Drafting'].map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-xs font-bold text-slate-600">
+                    <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                      <Check size={10} strokeWidth={4} />
+                    </div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/properties?status=Rent" className="flex items-center justify-center w-full py-4 bg-slate-50 text-slate-800 rounded-2xl font-bold text-sm group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-inner">
+                Browse Rentals <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
 
-            {/* Commercial */}
-            <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-2xl transition-all hover:-translate-y-2 group">
-              <div className="h-48 bg-amber-100 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Commercial" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <Building className="mb-2 text-amber-400" size={32} />
-                  <h3 className="text-2xl font-bold">Commercial</h3>
-                </div>
+            {/* Service 3: Commercial */}
+            <div className="group relative bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm hover:shadow-2xl hover:shadow-amber-100 hover:-translate-y-2 transition-all duration-500">
+              <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                <Building size={120} />
               </div>
-              <div className="p-8">
-                <p className="text-slate-600 mb-6 leading-relaxed">
-                  Prime commercial spaces for shops, offices, and businesses in Edappal. Invest in high-growth areas with our expert market insights.
-                </p>
-                <Link href="/properties?type=Commercial" className="text-amber-600 font-bold hover:gap-2 inline-flex items-center transition-all">
-                  Commercial Listings <ArrowRight size={18} className="ml-1" />
-                </Link>
+              <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-8 group-hover:bg-amber-500 group-hover:text-white transition-all transform group-hover:rotate-6">
+                <Building size={28} />
               </div>
+              <h3 className="text-2xl font-black text-slate-800 mb-4">Commercial <br />Investments</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                Strategic commercial placements for businesses. We help you find high-visibility plots and shop spaces in Edappal.
+              </p>
+              <ul className="space-y-3 mb-8">
+                {['Main Road Shop Spaces', 'Office Room Clusters', 'Commercial Land Plots', 'Investment Consulting'].map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-xs font-bold text-slate-600">
+                    <div className="w-4 h-4 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0">
+                      <Check size={10} strokeWidth={4} />
+                    </div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/properties?type=Commercial" className="flex items-center justify-center w-full py-4 bg-slate-50 text-slate-800 rounded-2xl font-bold text-sm group-hover:bg-amber-500 group-hover:text-white transition-all shadow-inner">
+                View Commercial <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
         </div>
@@ -263,7 +296,7 @@ export default function Home() {
       </section>
 
       {/* Feedback Form Section */}
-      <section className="py-24 bg-white relative">
+      {/* <section className="py-24 bg-white relative">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
@@ -288,7 +321,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Banner */}
       <section className="py-24 bg-gradient-to-br from-sky-500 to-sky-600 text-white text-center relative overflow-hidden">

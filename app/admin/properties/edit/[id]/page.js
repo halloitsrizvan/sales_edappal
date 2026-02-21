@@ -30,6 +30,7 @@ const EditProperty = () => {
         images: [],
         featured: false,
         isApproved: false,
+        mapUrl: '',
     });
 
     const coreAmenities = [
@@ -278,6 +279,19 @@ const EditProperty = () => {
                             placeholder="e.g. Amsakachery"
                             className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
                         />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Google Map Link (Embed/Share URL)</label>
+                        <input
+                            type="text"
+                            name="mapUrl"
+                            value={formData.mapUrl}
+                            onChange={handleInputChange}
+                            placeholder="Paste Google Maps link here"
+                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
+                        />
+                        <p className="text-[10px] text-slate-400 mt-1">Example: https://www.google.com/maps/embed?pb=...</p>
                     </div>
 
                     <div>

@@ -14,6 +14,9 @@ const Dashboard = () => {
         active: 0,
         pending: 0,
         sold: 0,
+        forSale: 0,
+        rent: 0,
+        lease: 0
     });
 
     const fetchDashboardData = async () => {
@@ -31,6 +34,9 @@ const Dashboard = () => {
                     active: props.filter(p => p.isApproved && p.status !== 'Sold').length,
                     pending: props.filter(p => !p.isApproved).length,
                     sold: props.filter(p => p.status === 'Sold').length,
+                    forSale: props.filter(p => p.status === 'For Sale').length,
+                    rent: props.filter(p => p.status === 'Rent').length,
+                    lease: props.filter(p => p.status === 'Lease').length,
                 });
             }
         } catch (error) {
@@ -256,19 +262,59 @@ const Dashboard = () => {
                     </div> */}
 
                     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-                        <h3 className="font-bold text-lg text-slate-800 mb-4">Market Overview</h3>
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-slate-500">Houses</span>
-                                <span className="font-bold text-slate-700">{properties.filter(p => p.type === 'House').length}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-slate-500">Plots</span>
-                                <span className="font-bold text-slate-700">{properties.filter(p => p.type === 'Plot').length}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-slate-500">Commercial</span>
-                                <span className="font-bold text-slate-700">{properties.filter(p => p.type === 'Commercial').length}</span>
+                        <h3 className="font-bold text-lg text-slate-800 mb-6 flex items-center justify-between">
+                            Inventory Status
+                            <span className="text-[10px] bg-slate-100 text-slate-400 px-2 py-1 rounded-full uppercase tracking-tighter">Live Data</span>
+                        </h3>
+
+                        <div className="space-y-6">
+                            {[
+                                { label: 'For Sale', count: stats.forSale, color: 'bg-sky-500', bgColor: 'bg-sky-50', textColor: 'text-sky-600' },
+                                { label: 'For Rent', count: stats.rent, color: 'bg-amber-500', bgColor: 'bg-amber-50', textColor: 'text-amber-600' },
+                                { label: 'For Lease', count: stats.lease, color: 'bg-indigo-500', bgColor: 'bg-indigo-50', textColor: 'text-indigo-600' },
+                            ].map((item) => {
+                                const percentage = stats.total > 0 ? (item.count / stats.total) * 100 : 0;
+                                return (
+                                    <div key={item.label} className="space-y-2">
+                                        <div className="flex justify-between items-end">
+                                            <div className="flex items-center gap-2">
+                                                <div className={`w-2 h-2 rounded-full ${item.color}`}></div>
+                                                <span className="text-sm font-bold text-slate-700">{item.label}</span>
+                                            </div>
+                                            <span className="text-sm font-black text-slate-900">{item.count}</span>
+                                        </div>
+                                        <div className={`w-full h-3 ${item.bgColor} rounded-full overflow-hidden border border-slate-100/50`}>
+                                            <div
+                                                className={`h-full ${item.color} rounded-full transition-all duration-1000 ease-out shadow-sm`}
+                                                style={{ width: `${Math.max(percentage, 2)}%` }}
+                                            ></div>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Listings</span>
+                                            <span className={`text-[9px] font-black uppercase tracking-tighter ${item.textColor}`}>
+                                                {percentage.toFixed(0)}% SHARE
+                                            </span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <div className="mt-8 pt-6 border-t border-slate-50">
+                            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Property Distribution</h4>
+                            <div className="space-y-3">
+                                {[
+                                    { label: 'Houses', type: 'House' },
+                                    { label: 'Plots', type: 'Plot' },
+                                    { label: 'Commercial', type: 'Commercial' }
+                                ].map(item => (
+                                    <div key={item.label} className="flex justify-between items-center text-sm">
+                                        <span className="text-slate-500 font-medium">{item.label}</span>
+                                        <span className="font-bold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100">
+                                            {properties.filter(p => p.type === item.type).length}
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>

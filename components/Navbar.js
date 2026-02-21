@@ -74,6 +74,7 @@ const Navbar = () => {
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="md:hidden p-2 text-gray-600 hover:text-sky-600 transition-colors"
+                        suppressHydrationWarning
                     >
                         {isOpen ? <X size={28} /> : <Menu size={28} />}
                     </button>

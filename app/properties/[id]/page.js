@@ -44,6 +44,28 @@ export default async function PropertyDetails({ params }) {
         return true;
     }) || [];
 
+    const getMapSrc = () => {
+        if (!property.mapUrl) {
+            return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15671.37890632348!2d76.0242!3d10.7788!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ba1f8c14828d%3A0xf6a2a07d4b4f0b2a!2s${encodeURIComponent(property.location)}%2C%20Kerala!5e0!3m2!1sen!2sin!4v1625123456789!5m2!1sen!2sin`;
+        }
+
+        // Handle case where user pastes full iframe tag
+        if (property.mapUrl.includes('<iframe')) {
+            const match = property.mapUrl.match(/src="([^"]+)"/);
+            return match ? match[1] : property.mapUrl;
+        }
+
+        // If it's a share link (not an embed link), we can't easily turn it into an embed link without API
+        // But if it's already an embed link, use it.
+        if (property.mapUrl.includes('google.com/maps/embed')) {
+            return property.mapUrl;
+        }
+
+        // Fallback for direct share links - try to wrap it (though Google often blocks this in iframes)
+        // Best practice is to tell users to use the 'Embed' link
+        return property.mapUrl;
+    };
+
     return (
         <div className="bg-slate-50 min-h-screen py-12">
             <div className="container mx-auto px-4">
@@ -119,10 +141,10 @@ export default async function PropertyDetails({ params }) {
                             )}
                         </div>
 
-                        {/* Map (Static placeholder for Edappal) */}
+                        {/* Map */}
                         <div className="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 h-80 overflow-hidden">
                             <iframe
-                                src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15671.37890632348!2d76.0242!3d10.7788!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ba1f8c14828d%3A0xf6a2a07d4b4f0b2a!2s${encodeURIComponent(property.location)}%2C%20Kerala!5e0!3m2!1sen!2sin!4v1625123456789!5m2!1sen!2sin`}
+                                src={getMapSrc()}
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0 }}
@@ -147,10 +169,11 @@ export default async function PropertyDetails({ params }) {
 
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="w-16 h-16 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-md flex items-center justify-center">
-                                    <Building2 className="text-slate-400" size={32} />
+                                    {/* <Building2 className="text-slate-400" size={32} /> */}
+                                    <img src="/sameer.png" alt="Logo" className="w-full h-full object-cover" />
                                 </div>
                                 <div>
-                                    <div className="font-bold text-slate-800 text-lg">Sales Edappal</div>
+                                    <div className="font-bold text-slate-800 text-lg">Sameer Edappal</div>
                                     <div className="text-xs text-sky-500 font-semibold uppercase tracking-wider">Property Consultant</div>
                                     <div className="text-xs text-slate-400 mt-1 flex items-center gap-1"><Shield size={10} /> Verified Listing</div>
                                 </div>
@@ -176,10 +199,10 @@ export default async function PropertyDetails({ params }) {
                                     propertyId={property._id}
                                     propertyTitle={property.title}
                                 />
-
+                                {/* 
                                 <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 text-center">
                                     <p className="text-xs text-slate-500 font-medium">Listing ID: {property._id.toString().slice(-6).toUpperCase()}</p>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
