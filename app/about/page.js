@@ -1,6 +1,11 @@
 
 import { Check, Target, Compass, Award, Calendar } from 'lucide-react';
 
+export const metadata = {
+    title: 'About Us | Trusted Real Estate Expert in Edappal',
+    description: 'Learn more about Sales Edappal, led by Sameer. We are the most trusted real estate consultancy in Edappal and Malappuram with 10+ years of experience.',
+};
+
 export default function About() {
     return (
         <div className="bg-slate-50 min-h-screen">
