@@ -4,10 +4,33 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Search, MapPin, DollarSign, Home, Key, MessageCircle, ArrowRight } from 'lucide-react';
+import { Search, MapPin, DollarSign, Home, Key, MessageCircle, ArrowRight, Phone } from 'lucide-react';
 
 const Hero = () => {
     const [activeTab, setActiveTab] = useState('Buy');
+    const [searchParams, setSearchParams] = useState({
+        location: '',
+        type: '',
+        area: '',
+        budget: ''
+    });
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const params = new URLSearchParams();
+        if (activeTab) params.append('status', activeTab);
+        if (searchParams.location) params.append('location', searchParams.location);
+        if (searchParams.type) params.append('type', searchParams.type);
+        if (searchParams.area) params.append('area', searchParams.area);
+        if (searchParams.budget) params.append('budget', searchParams.budget);
+
+        window.location.href = `/properties?${params.toString()}`;
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setSearchParams(prev => ({ ...prev, [name]: value }));
+    };
 
     return (
         <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden">
@@ -44,13 +67,32 @@ const Hero = () => {
                         We connect buyers and sellers with premium listings across Malappuram.
                     </p>
 
-                    <div className="flex flex-wrap gap-4 pt-4">
-                        <Link href="/properties" className="bg-sky-500 hover:bg-sky-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-sky-500/30 transition-all hover:-translate-y-1 flex items-center gap-2">
-                            View Properties <ArrowRight size={20} />
-                        </Link>
-                        <Link href="/list-property" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-4 rounded-full font-semibold transition-all hover:-translate-y-1">
-                            List Your Property
-                        </Link>
+                    <div className="space-y-4 pt-4">
+                        <div className="flex flex-wrap gap-4">
+                            <a
+                                href="https://wa.me/919895294949?text=Hi, I am looking for a property in Edappal..."
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-[#25D366] hover:brightness-110 text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-green-500/20 transition-all hover:-translate-y-1 flex items-center gap-2"
+                            >
+                                <MessageCircle size={20} /> Contact on WhatsApp
+                            </a>
+                            <a
+                                href="tel:9895294949"
+                                className="bg-white hover:bg-slate-50 text-sky-600 px-8 py-4 rounded-full font-semibold shadow-lg shadow-white/10 transition-all hover:-translate-y-1 flex items-center gap-2"
+                            >
+                                <Phone size={20} /> Call Now
+                            </a>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4">
+                            <Link href="/properties" className="bg-sky-500 hover:bg-sky-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-sky-500/30 transition-all hover:-translate-y-1 flex items-center gap-2">
+                                View Properties <ArrowRight size={20} />
+                            </Link>
+                            <Link href="/list-property" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-4 rounded-full font-semibold transition-all hover:-translate-y-1">
+                                List Your Property
+                            </Link>
+                        </div>
                     </div>
 
                     <div className="pt-8 flex items-center gap-8 text-sm text-slate-400 font-medium">
@@ -88,53 +130,93 @@ const Hero = () => {
                         ))}
                     </div>
 
-                    <form className="space-y-5">
+                    <form onSubmit={handleSearch} className="space-y-6">
+                        {/* Location Field */}
                         <div className="space-y-2">
-                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Location</label>
-                            <div className="relative">
-                                <MapPin className="absolute left-4 top-3.5 text-gray-400" size={20} />
-                                <select suppressHydrationWarning className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all appearance-none text-gray-700 font-medium">
-                                    <option>Edappal</option>
-                                    <option>Amsakachery</option>
-                                    <option>Malappuram</option>
-                                    <option>Ponnani</option>
-                                    <option>Kuttipuram</option>
-                                </select>
+                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Location</label>
+                            <div className="relative group">
+                                <MapPin className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-sky-500 transition-colors" size={20} />
+                                <input
+                                    type="text"
+                                    name="location"
+                                    value={searchParams.location}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter location (e.g. Edappal)"
+                                    className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all font-medium text-slate-700 placeholder:text-slate-400"
+                                    suppressHydrationWarning
+                                />
                             </div>
                         </div>
 
+                        {/* Property Type Field */}
                         <div className="space-y-2">
-                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Property Type</label>
-                            <div className="relative">
-                                <Home className="absolute left-4 top-3.5 text-gray-400" size={20} />
-                                <select suppressHydrationWarning className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all appearance-none text-gray-700 font-medium">
-                                    <option>House</option>
-                                    <option>Plot / Land</option>
-                                    <option>Commercial</option>
-                                    <option>Apartment</option>
-                                    <option>Vehicle</option>
+                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Property Type</label>
+                            <div className="relative group">
+                                <Home className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-sky-500 transition-colors" size={20} />
+                                <select
+                                    name="type"
+                                    value={searchParams.type}
+                                    onChange={handleInputChange}
+                                    className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all font-medium text-slate-700 appearance-none cursor-pointer"
+                                    suppressHydrationWarning
+                                >
+                                    <option value="">All Types</option>
+                                    <option value="House">House</option>
+                                    <option value="Plot">Plot / Land</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Apartment">Apartment</option>
+                                    <option value="Vehicle">Vehicle</option>
                                 </select>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
+                            {/* Cent Field */}
                             <div className="space-y-2">
-                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Min Price (L)</label>
-                                <div className="relative">
-                                    <DollarSign className="absolute left-4 top-3.5 text-gray-400" size={16} />
-                                    <input suppressHydrationWarning type="number" placeholder="5" className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all text-gray-700 font-medium" />
+                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Area (Cent)</label>
+                                <div className="relative group">
+                                    <Key className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-sky-500 transition-colors" size={20} />
+                                    <input
+                                        type="number"
+                                        name="area"
+                                        value={searchParams.area}
+                                        onChange={handleInputChange}
+                                        placeholder="e.g. 5"
+                                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all font-medium text-slate-700 placeholder:text-slate-400"
+                                        suppressHydrationWarning
+                                    />
                                 </div>
                             </div>
+
+                            {/* Budget Range Field */}
                             <div className="space-y-2">
-                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Max Price (L)</label>
-                                <div className="relative">
-                                    <DollarSign className="absolute left-4 top-3.5 text-gray-400" size={16} />
-                                    <input suppressHydrationWarning type="number" placeholder="100+" className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all text-gray-700 font-medium" />
+                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Budget</label>
+                                <div className="relative group">
+                                    <DollarSign className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-sky-500 transition-colors" size={20} />
+                                    <select
+                                        name="budget"
+                                        value={searchParams.budget}
+                                        onChange={handleInputChange}
+                                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all font-medium text-slate-700 appearance-none cursor-pointer"
+                                        suppressHydrationWarning
+                                    >
+                                        <option value="">Any Budget</option>
+                                        <option value="0-10">Below 10 Lakhs</option>
+                                        <option value="10-25">10 - 25 Lakhs</option>
+                                        <option value="25-50">25 - 50 Lakhs</option>
+                                        <option value="50-100">50 Lakhs - 1 Cr</option>
+                                        <option value="100+">Above 1 Cr</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
 
-                        <button type="button" suppressHydrationWarning className="w-full bg-gradient-to-r from-sky-500 to-sky-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-sky-500/30 hover:shadow-sky-500/50 hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2 text-lg">
+                        {/* Search Button */}
+                        <button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-sky-500/30 hover:shadow-sky-500/50 hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2 text-lg"
+                            suppressHydrationWarning
+                        >
                             <Search size={22} />
                             Search Properties
                         </button>

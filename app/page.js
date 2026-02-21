@@ -1,11 +1,43 @@
 
+'use client';
+
+import { useState, useEffect } from 'react';
 import Hero from '@/components/Hero';
 import PropertyCard from '@/components/PropertyCard';
-import { properties, reviews } from '@/lib/data';
-import { Check, Star, ArrowRight, MapPin, Shield, Clock, Users, Phone, MessageCircle, Quote } from 'lucide-react';
+import { Check, Star, ArrowRight, MapPin, Shield, Clock, Users, Phone, MessageCircle, Quote, Home as HomeIcon, Key, Building, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
+import FeedbackForm from '@/components/FeedbackForm';
+
+import PropertyCardSkeleton from '@/components/PropertyCardSkeleton';
+
 export default function Home() {
+  const [featuredProperties, setFeaturedProperties] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [propsRes, reviewsRes] = await Promise.all([
+          fetch('/api/properties?limit=3&featured=true'),
+          fetch('/api/reviews')
+        ]);
+
+        const propsData = await propsRes.json();
+        const reviewsData = await reviewsRes.json();
+
+        if (propsData.success) setFeaturedProperties(propsData.data);
+        if (reviewsData.success) setReviews(reviewsData.data);
+      } catch (error) {
+        console.error('Error fetching home data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="bg-slate-50 min-h-screen">
       <div className='relative'>
@@ -71,9 +103,17 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {properties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
+            {loading ? (
+              [1, 2, 3].map((i) => <PropertyCardSkeleton key={i} />)
+            ) : featuredProperties.length > 0 ? (
+              featuredProperties.map((property) => (
+                <PropertyCard key={property._id} property={property} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12 text-slate-400 font-medium">
+                New featured properties are arriving soon!
+              </div>
+            )}
           </div>
 
           <div className="text-center mt-16">
@@ -117,6 +157,79 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Services Section */}
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-sky-500 font-semibold tracking-wider uppercase text-sm mb-2 block">Our Expertise</span>
+            <h2 className="text-4xl font-bold text-slate-800 mb-4">Comprehensive Real Estate Services</h2>
+            <div className="w-16 h-1 bg-sky-500 mx-auto rounded-full"></div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Buy Or Sell */}
+            <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-2xl transition-all hover:-translate-y-2 group">
+              <div className="h-48 bg-sky-100 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Buy Sell" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <HomeIcon className="mb-2 text-sky-400" size={32} />
+                  <h3 className="text-2xl font-bold">Buy or Sell</h3>
+                </div>
+              </div>
+              <div className="p-8">
+                <p className="text-slate-600 mb-6 leading-relaxed">
+                  Whether you're looking for your dream home or selling your property for the best price, we provide end-to-end assistance with transparent deals.
+                </p>
+                <Link href="/properties?type=House" className="text-sky-600 font-bold hover:gap-2 inline-flex items-center transition-all">
+                  Browse Properties <ArrowRight size={18} className="ml-1" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Rent Or Lease */}
+            <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-2xl transition-all hover:-translate-y-2 group">
+              <div className="h-48 bg-emerald-100 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1484154218962-a1c002085d2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Rent Lease" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <Key className="mb-2 text-emerald-400" size={32} />
+                  <h3 className="text-2xl font-bold">Rent or Lease</h3>
+                </div>
+              </div>
+              <div className="p-8">
+                <p className="text-slate-600 mb-6 leading-relaxed">
+                  Find the perfect rental home or lease commercial spaces with ease. We manage the paperwork and negotiation for a hassle-free experience.
+                </p>
+                <Link href="/properties?status=Rent" className="text-emerald-600 font-bold hover:gap-2 inline-flex items-center transition-all">
+                  Find Rentals <ArrowRight size={18} className="ml-1" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Commercial */}
+            <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-2xl transition-all hover:-translate-y-2 group">
+              <div className="h-48 bg-amber-100 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Commercial" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <Building className="mb-2 text-amber-400" size={32} />
+                  <h3 className="text-2xl font-bold">Commercial</h3>
+                </div>
+              </div>
+              <div className="p-8">
+                <p className="text-slate-600 mb-6 leading-relaxed">
+                  Prime commercial spaces for shops, offices, and businesses in Edappal. Invest in high-growth areas with our expert market insights.
+                </p>
+                <Link href="/properties?type=Commercial" className="text-amber-600 font-bold hover:gap-2 inline-flex items-center transition-all">
+                  Commercial Listings <ArrowRight size={18} className="ml-1" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900 via-slate-900 to-slate-900"></div>
@@ -128,10 +241,10 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {reviews.slice(0, 3).map((review) => (
-              <div key={review.id} className="bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors relative">
+              <div key={review._id} className="bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors relative">
                 <Quote className="absolute top-8 right-8 text-sky-500/20" size={48} />
                 <div className="flex gap-1 text-yellow-400 mb-6">
-                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" strokeWidth={0} />)}
+                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill={review.rating > i ? 'currentColor' : 'none'} strokeWidth={0} />)}
                 </div>
                 <p className="text-slate-300 italic mb-8 leading-relaxed relative z-10">"{review.text}"</p>
                 <div className="flex items-center gap-4 mt-auto">
@@ -145,6 +258,34 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Feedback Form Section */}
+      <section className="py-24 bg-white relative">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <span className="text-sky-600 font-bold tracking-widest uppercase text-sm">Feedback</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900">Share Your Experience</h2>
+              <p className="text-xl text-slate-600 leading-relaxed">
+                We value your opinion. Share your experience with us and help us improve our services for the Edappal community.
+              </p>
+              <div className="flex items-center gap-6 pt-4">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className={`w-12 h-12 rounded-full border-4 border-white flex items-center justify-center font-bold text-slate-400 text-xs ${['bg-sky-100', 'bg-emerald-100', 'bg-amber-100', 'bg-rose-100'][i - 1]}`}>
+                      U{i}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-sm font-medium text-slate-500">Join 100+ happy clients</p>
+              </div>
+            </div>
+            <div>
+              <FeedbackForm />
+            </div>
           </div>
         </div>
       </section>

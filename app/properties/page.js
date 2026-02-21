@@ -1,14 +1,21 @@
-
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import PropertyCard from '@/components/PropertyCard';
-import { properties } from '@/lib/data';
-import { Filter, Search, X } from 'lucide-react';
+import { Filter, Search, X, Loader2 } from 'lucide-react';
+import PropertyCardSkeleton from '@/components/PropertyCardSkeleton';
+import { useSearchParams } from 'next/navigation';
 
-export default function PropertiesPage() {
+function PropertiesContent() {
+    const searchParams = useSearchParams();
+    const [properties, setProperties] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     const [filters, setFilters] = useState({
         type: 'All',
+        status: 'All',
         location: 'All',
         priceRange: 'All',
         bedrooms: 'All',
@@ -17,64 +24,93 @@ export default function PropertiesPage() {
     const [sortOption, setSortOption] = useState('Newest First');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-    // Filter Logic
-    const filteredAndSortedProperties = properties
-        .filter((property) => {
-            // Type Filter
-            if (filters.type !== 'All' && property.type !== filters.type) return false;
+    // Initial load from URL params
+    useEffect(() => {
+        const type = searchParams.get('type');
+        const status = searchParams.get('status');
+        const location = searchParams.get('location');
+        const budget = searchParams.get('budget');
 
-            // Location Filter
-            if (filters.location !== 'All' && !property.location.includes(filters.location)) return false;
+        if (type || status || location || budget) {
+            setFilters(prev => ({
+                ...prev,
+                type: type ? type : prev.type,
+                status: status ? status : prev.status,
+                location: location ? location : prev.location,
+                priceRange: budget ? (
+                    budget === '0-10' ? 'Under 10 Lakhs' :
+                        budget === '10-25' ? '10 - 25 Lakhs' :
+                            budget === '25-50' ? '10 - 50 Lakhs' : // UI match (listing 25-50 as 10-50 for now based on existing filter)
+                                budget === '50-100' ? '50 Lakhs - 1 Crore' :
+                                    budget === '100+' ? 'Above 1 Crore' : 'All'
+                ) : prev.priceRange
+            }));
+        }
+    }, [searchParams]);
 
-            // Bedrooms Filter
-            if (filters.bedrooms !== 'All') {
-                if (filters.bedrooms === '4+') {
-                    if (!property.beds || property.beds < 4) return false;
-                } else {
-                    if (!property.beds || property.beds !== parseInt(filters.bedrooms)) return false;
-                }
-            }
+    const fetchProperties = async () => {
+        setLoading(true);
+        try {
+            const params = new URLSearchParams({
+                page,
+                limit: 12,
+                type: filters.type === 'All' ? '' : filters.type,
+                status: filters.status === 'All' ? '' : filters.status,
+                location: filters.location === 'All' ? '' : filters.location,
+            });
 
-            // Price Range Filter
             if (filters.priceRange !== 'All') {
-                const price = property.priceAmount || 0;
                 switch (filters.priceRange) {
                     case 'Under 10 Lakhs':
-                        if (price >= 1000000) return false;
+                        params.append('maxPrice', '1000000');
                         break;
                     case '10 - 50 Lakhs':
-                        if (price < 1000000 || price > 5000000) return false;
+                        params.append('minPrice', '1000000');
+                        params.append('maxPrice', '5000000');
                         break;
                     case '50 Lakhs - 1 Crore':
-                        if (price < 5000000 || price > 10000000) return false;
+                        params.append('minPrice', '5000000');
+                        params.append('maxPrice', '10000000');
                         break;
                     case 'Above 1 Crore':
-                        if (price <= 10000000) return false;
-                        break;
-                    default:
+                        params.append('minPrice', '10000000');
                         break;
                 }
             }
 
-            return true;
-        })
-        .sort((a, b) => {
-            switch (sortOption) {
-                case 'Price: Low to High':
-                    return (a.priceAmount || 0) - (b.priceAmount || 0);
-                case 'Price: High to Low':
-                    return (b.priceAmount || 0) - (a.priceAmount || 0);
-                case 'Newest First':
-                default:
-                    return b.id - a.id; // Assuming higher ID is newer
+            const res = await fetch(`/api/properties?${params.toString()}`);
+            const data = await res.json();
+            if (data.success) {
+                setProperties(data.data);
+                setTotalPages(data.pagination.pages);
             }
-        });
+        } catch (error) {
+            console.error('Fetch error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchProperties();
+    }, [page, filters, sortOption]);
+
+    const sortedProperties = [...properties].sort((a, b) => {
+        switch (sortOption) {
+            case 'Price: Low to High':
+                return (a.priceAmount || 0) - (b.priceAmount || 0);
+            case 'Price: High to Low':
+                return (b.priceAmount || 0) - (a.priceAmount || 0);
+            default:
+                return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+    });
 
     return (
         <div className="bg-slate-50 min-h-screen py-12">
             <div className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                    <h1 className="text-3xl font-bold text-slate-800">Properties in Edappal</h1>
+                    <h1 className="text-3xl font-bold text-slate-800">Properties </h1>
 
                     <button
                         onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -103,7 +139,7 @@ export default function PropertiesPage() {
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="font-bold text-lg text-slate-800">Filters</h3>
                                 <button
-                                    onClick={() => setFilters({ type: 'All', location: 'All', priceRange: 'All', bedrooms: 'All' })}
+                                    onClick={() => setFilters({ type: 'All', status: 'All', location: 'All', priceRange: 'All', bedrooms: 'All' })}
                                     className="text-xs text-sky-500 font-semibold hover:underline"
                                 >
                                     Reset
@@ -111,6 +147,27 @@ export default function PropertiesPage() {
                             </div>
 
                             <div className="space-y-6">
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Property Status</label>
+                                    <div className="flex flex-wrap gap-2">
+                                        {['All', 'Buy', 'Rent', 'Lease'].map((status) => (
+                                            <button
+                                                key={status}
+                                                onClick={() => {
+                                                    setFilters({ ...filters, status });
+                                                    setPage(1);
+                                                }}
+                                                className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all ${filters.status === status
+                                                    ? 'bg-sky-500 text-white border-sky-500 shadow-md shadow-sky-200'
+                                                    : 'bg-white text-slate-600 border-slate-200 hover:border-sky-300 hover:text-sky-600'
+                                                    }`}
+                                            >
+                                                {status}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
                                 <div>
                                     <label className="block text-sm font-semibold text-slate-700 mb-2">Property Type</label>
                                     <div className="space-y-2">
@@ -123,7 +180,10 @@ export default function PropertiesPage() {
                                                     type="radio"
                                                     name="type"
                                                     checked={filters.type === type}
-                                                    onChange={() => setFilters({ ...filters, type })}
+                                                    onChange={() => {
+                                                        setFilters({ ...filters, type });
+                                                        setPage(1);
+                                                    }}
                                                     className="hidden"
                                                 />
                                                 <span className="text-sm text-slate-600 group-hover:text-sky-600 transition-colors">{type}</span>
@@ -136,7 +196,10 @@ export default function PropertiesPage() {
                                     <label className="block text-sm font-semibold text-slate-700 mb-2">Location</label>
                                     <select
                                         value={filters.location}
-                                        onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+                                        onChange={(e) => {
+                                            setFilters({ ...filters, location: e.target.value });
+                                            setPage(1);
+                                        }}
                                         className="w-full rounded-lg border-slate-200 text-sm py-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-700"
                                     >
                                         <option>All</option>
@@ -151,7 +214,10 @@ export default function PropertiesPage() {
                                     <label className="block text-sm font-semibold text-slate-700 mb-2">Price Range</label>
                                     <select
                                         value={filters.priceRange}
-                                        onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
+                                        onChange={(e) => {
+                                            setFilters({ ...filters, priceRange: e.target.value });
+                                            setPage(1);
+                                        }}
                                         className="w-full rounded-lg border-slate-200 text-sm py-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-700"
                                     >
                                         <option>All</option>
@@ -168,10 +234,13 @@ export default function PropertiesPage() {
                                         {['All', '2', '3', '4+'].map((opt) => (
                                             <button
                                                 key={opt}
-                                                onClick={() => setFilters({ ...filters, bedrooms: opt === filters.bedrooms ? 'All' : opt })}
+                                                onClick={() => {
+                                                    setFilters({ ...filters, bedrooms: opt === filters.bedrooms ? 'All' : opt });
+                                                    setPage(1);
+                                                }}
                                                 className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all ${filters.bedrooms === opt
-                                                        ? 'bg-sky-500 text-white border-sky-500 shadow-md shadow-sky-200'
-                                                        : 'bg-white text-slate-600 border-slate-200 hover:border-sky-300 hover:text-sky-600'
+                                                    ? 'bg-sky-500 text-white border-sky-500 shadow-md shadow-sky-200'
+                                                    : 'bg-white text-slate-600 border-slate-200 hover:border-sky-300 hover:text-sky-600'
                                                     }`}
                                             >
                                                 {opt}
@@ -198,38 +267,69 @@ export default function PropertiesPage() {
                             </select>
                         </div>
 
-                        {filteredAndSortedProperties.length > 0 ? (
+                        {loading ? (
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {filteredAndSortedProperties.map((property) => (
-                                    <PropertyCard key={property.id} property={property} />
-                                ))}
+                                {[1, 2, 3, 4, 5, 6].map((i) => <PropertyCardSkeleton key={i} />)}
                             </div>
+                        ) : sortedProperties.length > 0 ? (
+                            <>
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {sortedProperties.map((property) => (
+                                        <PropertyCard key={property._id} property={property} />
+                                    ))}
+                                </div>
+
+                                {/* Pagination */}
+                                {totalPages > 1 && (
+                                    <div className="flex justify-center gap-2 mt-12">
+                                        {[...Array(totalPages)].map((_, i) => (
+                                            <button
+                                                key={i}
+                                                onClick={() => setPage(i + 1)}
+                                                className={`w-10 h-10 rounded-lg font-semibold transition-all ${page === i + 1
+                                                    ? 'bg-sky-500 text-white shadow-lg shadow-sky-200'
+                                                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                                                    }`}
+                                            >
+                                                {i + 1}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-dashed border-slate-200">
                                 <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 mb-4">
                                     <Search size={32} />
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-800 mb-2">No properties found</h3>
-                                <p className="text-slate-500 mb-6">Try adjusting your search criteria.</p>
+                                <p className="text-slate-500 mb-6 font-medium">Try adjusting your search criteria.</p>
                                 <button
-                                    onClick={() => setFilters({ type: 'All', location: 'All', priceRange: 'All', bedrooms: 'All' })}
-                                    className="bg-sky-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-sky-600 transition-colors"
+                                    onClick={() => {
+                                        setFilters({ type: 'All', status: 'All', location: 'All', priceRange: 'All', bedrooms: 'All' });
+                                        setPage(1);
+                                    }}
+                                    className="bg-sky-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-sky-600 transition-all shadow-lg shadow-sky-100"
                                 >
                                     Clear All Filters
                                 </button>
-                            </div>
-                        )}
-
-                        {/* Pagination (Visual only for now) */}
-                        {filteredAndSortedProperties.length > 9 && (
-                            <div className="flex justify-center gap-2 mt-12">
-                                <button className="w-10 h-10 rounded-lg bg-sky-500 text-white font-semibold">1</button>
-                                <button className="w-10 h-10 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold">2</button>
                             </div>
                         )}
                     </div>
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function PropertiesPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen">
+                <Loader2 className="animate-spin text-sky-500" size={40} />
+            </div>
+        }>
+            <PropertiesContent />
+        </Suspense>
     );
 }

@@ -1,22 +1,48 @@
 
-import { properties } from '@/lib/data';
+import dbConnect from '@/lib/mongodb';
+import Property from '@/models/Property';
 import Link from 'next/link';
-import { MapPin, Bed, Bath, Square, Check, ArrowLeft, Phone, Calendar, Shield } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Check, ArrowLeft, Phone, Calendar, Shield, Building2, Droplets, Map } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
-export async function generateStaticParams() {
-    return properties.map((property) => ({
-        id: property.id.toString(),
-    }));
-}
+import PropertyGallery from '@/components/PropertyGallery';
+import PropertyInquiryForm from '@/components/PropertyInquiryForm';
+
+export const dynamic = 'force-dynamic';
 
 export default async function PropertyDetails({ params }) {
     const { id } = await params;
-    const property = properties.find((p) => p.id === parseInt(id));
+
+    await dbConnect();
+    let property;
+    try {
+        property = await Property.findById(id).lean();
+        if (property) {
+            property._id = property._id.toString();
+        }
+    } catch (error) {
+        console.error('Invalid ID or DB error');
+        notFound();
+    }
 
     if (!property) {
         notFound();
     }
+
+    // Extract specialized strings from amenities
+    let waterInfo = 'N/A';
+    let pathInfo = 'N/A';
+    const displayAmenities = property.amenities?.filter(a => {
+        if (a.startsWith('Water: ')) {
+            waterInfo = a.replace('Water: ', '');
+            return false;
+        }
+        if (a.startsWith('Path: ')) {
+            pathInfo = a.replace('Path: ', '');
+            return false;
+        }
+        return true;
+    }) || [];
 
     return (
         <div className="bg-slate-50 min-h-screen py-12">
@@ -41,85 +67,62 @@ export default async function PropertyDetails({ params }) {
                             <div className="text-3xl font-bold text-sky-600 bg-sky-50 inline-block px-4 py-1 rounded-lg border border-sky-100">{property.price}</div>
                         </div>
 
-                        {/* Image Gallery */}
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100">
-                            <div className="h-[400px] md:h-[500px] relative group">
-                                <img
-                                    src={property.image}
-                                    alt={property.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                                <div className="absolute top-4 right-4 bg-sky-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-                                    {property.status}
-                                </div>
-                            </div>
-                            {/* Thumbnails (Static for now as mostly 1 image in data) */}
-                            <div className="grid grid-cols-4 gap-2 p-2 bg-white">
-                                {[property.image, property.image, property.image, property.image].map((img, idx) => (
-                                    <div key={idx} className="h-20 rounded-lg overflow-hidden cursor-pointer opacity-70 hover:opacity-100 transition-opacity border-2 border-transparent hover:border-sky-500">
-                                        <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        {/* Image Gallery (Interactive Client Component) */}
+                        <PropertyGallery
+                            images={property.images}
+                            title={property.title}
+                            status={property.status}
+                        />
 
                         {/* Details Table */}
                         <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
                             <h2 className="text-2xl font-bold text-slate-800 mb-6">Property Overview</h2>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                <div className="text-center p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-sky-100 transition-colors">
-                                    <div className="text-sky-500 mb-2 flex justify-center"><Square size={24} /></div>
-                                    <div className="text-sm text-slate-500 uppercase tracking-wide font-semibold">Area</div>
-                                    <div className="font-bold text-slate-800 text-lg">{property.area || 'N/A'}</div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="text-left p-4 bg-slate-50/50 rounded-xl border border-slate-100">
+                                    <div className="text-sky-500 mb-2"><Square size={20} /></div>
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Area</div>
+                                    <div className="font-extrabold text-slate-900 text-lg">{property.area || 'N/A'}</div>
                                 </div>
-                                <div className="text-center p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-sky-100 transition-colors">
-                                    <div className="text-sky-500 mb-2 flex justify-center"><Bed size={24} /></div>
-                                    <div className="text-sm text-slate-500 uppercase tracking-wide font-semibold">Bedrooms</div>
-                                    <div className="font-bold text-slate-800 text-lg">{property.beds || '-'}</div>
+                                <div className="text-left p-4 bg-slate-50/50 rounded-xl border border-slate-100">
+                                    <div className="text-sky-500 mb-2"><Droplets size={20} /></div>
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Water Source</div>
+                                    <div className="font-extrabold text-slate-900 text-lg">{waterInfo}</div>
                                 </div>
-                                <div className="text-center p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-sky-100 transition-colors">
-                                    <div className="text-sky-500 mb-2 flex justify-center"><Bath size={24} /></div>
-                                    <div className="text-sm text-slate-500 uppercase tracking-wide font-semibold">Bathrooms</div>
-                                    <div className="font-bold text-slate-800 text-lg">{property.baths || '-'}</div>
-                                </div>
-                                <div className="text-center p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-sky-100 transition-colors">
-                                    <div className="text-sky-500 mb-2 flex justify-center"><Calendar size={24} /></div>
-                                    <div className="text-sm text-slate-500 uppercase tracking-wide font-semibold">Age</div>
-                                    <div className="font-bold text-slate-800 text-lg">5 Years</div>
+                                <div className="text-left p-4 bg-slate-50/50 rounded-xl border border-slate-100">
+                                    <div className="text-sky-500 mb-2"><Map size={20} /></div>
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Route / Path</div>
+                                    <div className="font-extrabold text-slate-900 text-lg">{pathInfo}</div>
                                 </div>
                             </div>
 
                             <div className="mt-8 border-t border-slate-100 pt-8">
                                 <h3 className="text-xl font-bold text-slate-800 mb-4">Description</h3>
-                                <p className="text-slate-600 leading-relaxed space-y-4">
-                                    Welcome to this exquisite property in {property.location}.
-                                    {property.type === 'House' ? 'This modern home features spacious living areas, premium fittings, and a peaceful neighborhood.' : ''}
-                                    {property.type === 'Plot' ? 'A prime plot perfect for building your dream home or for investment purposes.' : ''}
-                                    {property.type === 'Commercial' ? 'High-visibility commercial space ideal for showrooms or offices.' : ''}
-                                    It offers excellent connectivity to major roads and nearby amenities.
-                                    Verified documents and clear title ensuring a hassle-free transaction.
-                                </p>
-                            </div>
-
-                            <div className="mt-8 border-t border-slate-100 pt-8">
-                                <h3 className="text-xl font-bold text-slate-800 mb-4">Amenities</h3>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    {['Car Parking', 'Well Water', 'Compound Wall', 'Main Road Access', '3 Phase Connection', 'Garden Area'].map((amenity) => (
-                                        <div key={amenity} className="flex items-center gap-2 text-slate-600 font-medium">
-                                            <div className="w-5 h-5 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center flex-shrink-0">
-                                                <Check size={12} strokeWidth={3} />
-                                            </div>
-                                            {amenity}
-                                        </div>
-                                    ))}
+                                <div className="text-slate-600 leading-relaxed whitespace-pre-wrap">
+                                    {property.description}
                                 </div>
                             </div>
+
+                            {displayAmenities.length > 0 && (
+                                <div className="mt-8 border-t border-slate-100 pt-8">
+                                    <h3 className="text-xl font-bold text-slate-800 mb-4">Amenities</h3>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        {displayAmenities.map((amenity) => (
+                                            <div key={amenity} className="flex items-center gap-2 text-slate-600 font-medium text-sm">
+                                                <div className="w-5 h-5 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center flex-shrink-0">
+                                                    <Check size={12} strokeWidth={3} />
+                                                </div>
+                                                {amenity}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
-                        {/* Map */}
+                        {/* Map (Static placeholder for Edappal) */}
                         <div className="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 h-80 overflow-hidden">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15671.37890632348!2d76.0242!3d10.7788!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ba1f8c14828d%3A0xf6a2a07d4b4f0b2a!2sEdappal%2C%20Kerala!5e0!3m2!1sen!2sin!4v1625123456789!5m2!1sen!2sin"
+                                src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15671.37890632348!2d76.0242!3d10.7788!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ba1f8c14828d%3A0xf6a2a07d4b4f0b2a!2s${encodeURIComponent(property.location)}%2C%20Kerala!5e0!3m2!1sen!2sin!4v1625123456789!5m2!1sen!2sin`}
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0 }}
@@ -143,31 +146,40 @@ export default async function PropertyDetails({ params }) {
                             </div>
 
                             <div className="flex items-center gap-4 mb-6">
-                                <div className="w-16 h-16 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-md">
-                                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Agent" className="w-full h-full object-cover" />
+                                <div className="w-16 h-16 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-md flex items-center justify-center">
+                                    <Building2 className="text-slate-400" size={32} />
                                 </div>
                                 <div>
-                                    <div className="font-bold text-slate-800 text-lg">Sameer</div>
-                                    <div className="text-xs text-sky-500 font-semibold uppercase tracking-wider">Real Estate Consultant</div>
-                                    <div className="text-xs text-slate-400 mt-1 flex items-center gap-1"><Shield size={10} /> Verified Agent</div>
+                                    <div className="font-bold text-slate-800 text-lg">Sales Edappal</div>
+                                    <div className="text-xs text-sky-500 font-semibold uppercase tracking-wider">Property Consultant</div>
+                                    <div className="text-xs text-slate-400 mt-1 flex items-center gap-1"><Shield size={10} /> Verified Listing</div>
                                 </div>
                             </div>
 
                             <div className="space-y-3">
-                                <button className="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-sky-200 transition-all flex items-center justify-center gap-2">
-                                    <Phone size={20} /> Call Agent
-                                </button>
                                 <a
-                                    href={`https://wa.me/919895294949?text=Hi, I am interested in ${property.title}`}
+                                    href="tel:+919895294949"
+                                    className="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-sky-200 transition-all flex items-center justify-center gap-2"
+                                >
+                                    <Phone size={20} /> Call Agent
+                                </a>
+                                <a
+                                    href={`https://wa.me/919895294949?text=Hi, I am interested in ${property.title} at ${property.location}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-200 transition-all flex items-center justify-center gap-2"
                                 >
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" className="w-5 h-5" /> WhatsApp
                                 </a>
-                                <button className="w-full bg-white border border-slate-200 text-slate-700 font-bold py-4 rounded-xl hover:bg-slate-50 transition-all">
-                                    Schedule Visit
-                                </button>
+
+                                <PropertyInquiryForm
+                                    propertyId={property._id}
+                                    propertyTitle={property.title}
+                                />
+
+                                <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 text-center">
+                                    <p className="text-xs text-slate-500 font-medium">Listing ID: {property._id.toString().slice(-6).toUpperCase()}</p>
+                                </div>
                             </div>
                         </div>
                     </div>

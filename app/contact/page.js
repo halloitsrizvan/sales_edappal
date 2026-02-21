@@ -12,11 +12,31 @@ export default function Contact() {
         message: '',
     });
 
-    const handleSubmit = (e) => {
+    const [loading, setLoading] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // In a real app, send to API. For now, open WhatsApp with message.
-        const text = `Hi, I am ${formData.name}. My query is: ${formData.message}. Phone: ${formData.phone}`;
-        window.open(`https://wa.me/919895294949?text=${encodeURIComponent(text)}`, '_blank');
+        setLoading(true);
+        try {
+            const res = await fetch('/api/leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            if (res.ok) {
+                setSubmitted(true);
+                setFormData({ name: '', email: '', phone: '', message: '' });
+                alert('Thank you! Your message has been sent. We will contact you soon.');
+            } else {
+                alert('Failed to send message. Please try again.');
+            }
+        } catch (error) {
+            alert('An error occurred. Please try again later.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -87,6 +107,7 @@ export default function Contact() {
                                         type="text"
                                         required
                                         value={formData.name}
+                                        suppressHydrationWarning
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all"
                                         placeholder="John Doe"
@@ -98,6 +119,7 @@ export default function Contact() {
                                         type="tel"
                                         required
                                         value={formData.phone}
+                                        suppressHydrationWarning
                                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                         className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all"
                                         placeholder="+91 9876543210"
@@ -111,6 +133,7 @@ export default function Contact() {
                                     type="email"
                                     required
                                     value={formData.email}
+                                    suppressHydrationWarning
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all"
                                     placeholder="john@example.com"
@@ -123,14 +146,20 @@ export default function Contact() {
                                     rows="4"
                                     required
                                     value={formData.message}
+                                    suppressHydrationWarning
                                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all"
                                     placeholder="I'm interested in..."
                                 ></textarea>
                             </div>
 
-                            <button type="submit" className="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-sky-200 transition-all flex items-center justify-center gap-2">
-                                <Send size={20} /> Send Message
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                suppressHydrationWarning
+                                className="w-full bg-sky-500 hover:bg-sky-600 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg shadow-sky-200 transition-all flex items-center justify-center gap-2"
+                            >
+                                {loading ? 'Sending...' : <><Send size={20} /> Send Message</>}
                             </button>
                         </form>
                     </div>

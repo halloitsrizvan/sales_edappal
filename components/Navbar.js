@@ -23,7 +23,7 @@ const Navbar = () => {
 
     return (
         <nav className="fixed w-full top-0 z-50 bg-white border-b border-white/20 transition-all duration-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20 md:h-24">
                     <Link href="/" className="flex items-center gap-3 group relative">
                         <div className="relative h-12 w-12 md:h-16 md:w-16 transition-transform duration-300 group-hover:scale-105">
