@@ -10,6 +10,7 @@ import Link from 'next/link';
 import FeedbackForm from '@/components/FeedbackForm';
 
 import PropertyCardSkeleton from '@/components/PropertyCardSkeleton';
+import SellerPromotions from '@/components/SellerPromotions';
 
 export default function Home() {
   const [featuredProperties, setFeaturedProperties] = useState([]);
@@ -123,6 +124,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <SellerPromotions />
 
       {/* Services / Why Choose Us */}
       <section className="py-24 bg-white relative overflow-hidden">
