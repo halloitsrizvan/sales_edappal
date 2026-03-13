@@ -135,7 +135,7 @@ export default function Home() {
       {/* Featured Properties */}
       <section className="py-14 bg-white relative">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+          <div className="text-center max-w-2xl mx-auto mb-10 space-y-4">
              <div className="inline-block px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold text-[#005BC8] uppercase tracking-widest mb-2">
              Exclusive Listings
             </div>
@@ -143,9 +143,9 @@ export default function Home() {
             {/* <p className="text-slate-500 text-lg">Explore our handpicked selection of premium properties in Edappal and Malappuram.</p> */}
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 ">
             {loading ? (
-              [1, 2, 3].map((i) => <PropertyCardSkeleton key={i} />)
+              [1, 2, 3, 4].map((i) => <PropertyCardSkeleton key={i} />)
             ) : featuredProperties.length > 0 ? (
               featuredProperties.map((property) => (
                 <PropertyCard key={property._id} property={property} />
@@ -158,7 +158,7 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-16">
-            <Link href="/properties" className="inline-flex items-center gap-2 px-8 py-4 bg-white border border-gray-200 text-slate-800 font-bold rounded-full hover:bg-sky-50 hover:border-sky-200 hover:text-sky-600 transition-all shadow-lg shadow-gray-200/50 hover:shadow-sky-200/50 transform hover:-translate-y-1">
+            <Link href="/properties" className="inline-flex items-center gap-2 px-8 py-4 bg-white border border-gray-200 text-slate-800 font-bold rounded-full hover:bg-sky-50 hover:border-sky-200 hover:text-sky-600 transition-all shadow-lg shadow-gray-200/50 hover:shadow-sky-200/50 transform ">
               View All Properties <ArrowRight size={20} />
             </Link>
           </div>
