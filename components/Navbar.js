@@ -1,83 +1,130 @@
 
+
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone, User, Home, Building2, MessageSquare, Info } from 'lucide-react';
-
+import { Menu, X, Phone, User, Home, Building2, MessageSquare, Info, ChevronDown, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const pathname = usePathname();
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const links = [
-        { name: 'Home', href: '/', icon: Home },
-        { name: 'Properties', href: '/properties', icon: Building2 },
-        { name: 'Reviews', href: '/reviews', icon: MessageSquare },
-        { name: 'About', href: '/about', icon: Info },
-        { name: 'Contact', href: '/contact', icon: Phone },
+        { name: 'Home', href: '/' },
+        { name: 'Properties for Sale', href: '/properties?status=Buy' },
+        { name: 'Properties for Rent', href: '/properties?status=Rent' },
+        { name: 'Properties for Lease', href: '/properties?status=Lease' },
+        { name: 'Our Services', href: '/#services' },
+        { name: 'Contact Us', href: '/contact' },
     ];
 
     return (
-        <nav className="fixed w-full top-0 z-50 bg-white border-b border-white/20 transition-all duration-300">
-            <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-20 md:h-24">
-                    <Link href="/" className="flex items-center gap-3 group relative">
-                        <div className="relative h-12 w-12 md:h-16 md:w-16 transition-transform duration-300 group-hover:scale-105">
+        <header className="fixed w-full top-0 z-50 transition-all duration-300">
+            {/* Top Bar - Blue */}
+            <div className="bg-[#0056b3] text-white py-2 md:py-3 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto flex justify-between items-center">
+                    {/* Logo Section */}
+                    <Link href="/" className="flex items-center gap-2 group">
+                        <div className="relative h-10 w-32 md:h-12 md:w-40 transition-transform duration-300 group-hover:scale-105">
                             <Image
                                 src="/logo.png"
-                                alt="Sales Edappal Logo"
+                                alt="Sales Edappal"
                                 fill
-                                className="object-contain"
+                                className="object-contain brightness-0 invert" // Make logo white for blue background
                                 priority
                             />
                         </div>
-                        <span className="text-xl font-bold text-slate-800 tracking-tight md:hidden">
-                            Sales Edappal
-                        </span>
                     </Link>
 
-                    {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center gap-8">
+                    {/* Desktop Contact & Buttons */}
+                    <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+                        <div className="flex items-center gap-2 text-sm xl:text-base font-semibold">
+                            <div className="bg-white/20 p-2 rounded-full">
+                                <Phone size={18} className="fill-white" />
+                            </div>
+                            <span>+91 98952 94949</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                            <a
+                                href="https://wa.me/919895294949"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-[#25D366] hover:bg-[#20ba5a] text-white px-4 py-2 rounded-sm text-sm font-bold flex items-center gap-2 transition-colors shadow-lg"
+                            >
+                                WhatsApp
+                            </a>
+                            <a
+                                href="tel:9895294949"
+                                className="bg-[#00aeef] hover:bg-[#0096ce] text-white px-4 py-2 rounded-sm text-sm font-bold flex items-center gap-2 transition-colors shadow-lg"
+                            >
+                                Call Now
+                            </a>
+                        </div>
+
+                        <div className="flex items-center gap-2 border-l border-white/20 pl-4">
+                            <Link
+                                href="/list-property?action=post"
+                                className="bg-white text-[#0056b3] hover:bg-slate-50 px-4 py-2 rounded-sm text-sm font-bold transition-all"
+                            >
+                                Post Property
+                            </Link>
+                            <Link
+                                href="/list-property?action=requirement"
+                                className="bg-white text-[#0056b3] hover:bg-slate-50 px-4 py-2 rounded-sm text-sm font-bold transition-all"
+                            >
+                                Post Requirement
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Mobile Menu Toggle */}
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="lg:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
+                    >
+                        {isOpen ? <X size={28} /> : <Menu size={28} />}
+                    </button>
+                </div>
+            </div>
+
+            {/* Navigation Bar - White */}
+            <div className={`bg-white border-b border-gray-100 transition-all duration-300 ${scrolled ? 'py-1.5 shadow-md' : 'py-3'}`}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <nav className="hidden lg:flex justify-center items-center gap-6 xl:gap-10">
                         {links.map((link) => {
                             const isActive = pathname === link.href;
                             return (
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    className={`text-sm font-medium transition-colors relative hover:text-sky-600 ${isActive ? 'text-sky-600 font-semibold' : 'text-slate-600'
-                                        }`}
+                                    className={`text-xs xl:text-sm font-medium transition-all relative hover:text-[#0056b3] ${
+                                        isActive ? 'text-[#0056b3]' : 'text-gray-700'
+                                    }`}
                                 >
                                     {link.name}
-                                    {isActive && (
-                                        <motion.div
-                                            layoutId="navbar-indicator"
-                                            className="absolute -bottom-1.5 left-0 right-0 h-0.5 bg-sky-500 rounded-full"
-                                        />
-                                    )}
                                 </Link>
                             );
                         })}
-
-                        <Link
-                            href="/list-property"
-                            className="ml-4 bg-sky-500 hover:bg-sky-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-sky-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
-                        >
-                            List Your Property
-                        </Link>
-                    </div>
-
-                    {/* Mobile Menu Button */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden p-2 text-gray-600 hover:text-sky-600 transition-colors"
-                        suppressHydrationWarning
-                    >
-                        {isOpen ? <X size={28} /> : <Menu size={28} />}
-                    </button>
+                    </nav>
+                    
+                    {/* Mobile Label for Nav Bar area */}
+                    {/* <div className="lg:hidden flex justify-between items-center h-4">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Real Estate Consultant</span>
+                    </div> */}
                 </div>
             </div>
 
@@ -85,44 +132,80 @@ const Navbar = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden glass border-t border-gray-100 overflow-hidden"
+                        initial={{ opacity: 0, x: '100%' }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: '100%' }}
+                        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                        className="fixed inset-0 z-[60] bg-white lg:hidden h-screen overflow-y-auto"
                     >
-                        <div className="px-4 py-6 space-y-4">
-                            {links.map((link) => {
-                                const Icon = link.icon;
-                                return (
+                        <div className="p-4 bg-[#0056b3] text-white flex justify-between items-center">
+                            <span className="font-bold">Menu</span>
+                            <button onClick={() => setIsOpen(false)} className="p-2">
+                                <X size={32} />
+                            </button>
+                        </div>
+                        
+                        <div className="p-6 space-y-6">
+                            <div className="space-y-4">
+                                {links.map((link) => (
                                     <Link
                                         key={link.name}
                                         href={link.href}
                                         onClick={() => setIsOpen(false)}
-                                        className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${pathname === link.href
-                                            ? 'bg-sky-50 text-sky-700 font-semibold'
-                                            : 'text-gray-600 hover:bg-gray-50'
-                                            }`}
+                                        className="block text-xl font-bold text-gray-900 border-b border-gray-50 pb-3"
                                     >
-                                        <Icon size={20} />
                                         {link.name}
                                     </Link>
-                                );
-                            })}
-                            <div className="pt-4 border-t border-gray-100">
+                                ))}
+                            </div>
+
+                            <div className="pt-6 space-y-4">
+                                <div className="text-gray-500 font-bold text-sm uppercase">Connect with us</div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <a
+                                        href="https://wa.me/919895294949"
+                                        className="bg-[#25D366] text-white p-4 rounded-2xl flex flex-col items-center gap-2 font-bold shadow-md"
+                                    >
+                                        <MessageCircle size={24} />
+                                        <span>WhatsApp</span>
+                                    </a>
+                                    <a
+                                        href="tel:9895294949"
+                                        className="bg-[#00aeef] text-white p-4 rounded-2xl flex flex-col items-center gap-2 font-bold shadow-md"
+                                    >
+                                        <Phone size={24} />
+                                        <span>Call Now</span>
+                                    </a>
+                                </div>
+                                <div className="flex items-center gap-2 bg-blue-50 p-4 rounded-2xl text-[#0056b3] font-bold">
+                                    <Phone size={20} />
+                                    <span>+91 98952 94949</span>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-3 pt-4">
                                 <Link
-                                    href="/list-property"
+                                    href="/list-property?action=post"
                                     onClick={() => setIsOpen(false)}
-                                    className="block w-full text-center bg-sky-500 text-white py-3 rounded-xl font-semibold shadow-md active:scale-95 transition-transform"
+                                    className="bg-[#0056b3] text-white py-4 rounded-xl text-center font-bold text-lg shadow-lg"
                                 >
-                                    List Your Property
+                                    Post Property
+                                </Link>
+                                <Link
+                                    href="/list-property?action=requirement"
+                                    onClick={() => setIsOpen(false)}
+                                    className="border-2 border-[#0056b3] text-[#0056b3] py-4 rounded-xl text-center font-bold text-lg"
+                                >
+                                    Post Requirement
                                 </Link>
                             </div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-        </nav>
+        </header>
     );
 };
 
 export default Navbar;
+
