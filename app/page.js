@@ -44,7 +44,130 @@ export default function Home() {
       <div className='relative'>
         <Hero />
       </div>
+     {/* Why Choose Us Section */}
+      <section className="py-8 px-4 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Header */}
+          <div className="mb-16">
+            <div className="inline-block px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">
+              Why Choose Us
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
+              Why <span className="text-[#005BC8]">Sales Edappal</span> is The Right Choice for You
+            </h2>
+          </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left/Middle Column (subgrid) */}
+            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Card 1 */}
+              <div className="bg-slate-50 p-10 rounded-[2.5rem] flex flex-col items-start gap-6 group hover:bg-slate-100 transition-colors">
+                <div className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center bg-white shadow-sm">
+                  <MapPin size={24} className="text-slate-700" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold text-slate-900">Local Expertise</h3>
+                  <p className="text-slate-500 leading-relaxed font-medium">
+                    Learn from the most experienced local consultant who brings years of real-world knowledge about Edappal's property market.
+                  </p>
+                </div>
+              </div>
+
+              {/* Card 2 */}
+              <div className="bg-slate-50 p-10 rounded-[2.5rem] flex flex-col items-start gap-6 group hover:bg-slate-100 transition-colors">
+                <div className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center bg-white shadow-sm">
+                  <Shield size={24} className="text-slate-700" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold text-slate-900">Verified Listings</h3>
+                  <p className="text-slate-500 leading-relaxed font-medium">
+                    Every property listing is highly regarded and verified, helping you to gain confidence and open doors to your new home.
+                  </p>
+                </div>
+              </div>
+
+              {/* Card 3 (Spans bottom row of the subgrid) */}
+              <div className="md:col-span-2 bg-slate-50 p-10 rounded-[2.5rem] flex flex-col items-start gap-6 group hover:bg-slate-100 transition-colors">
+                <div className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center bg-white shadow-sm">
+                  <Users size={24} className="text-slate-700" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold text-slate-900">100+ High Impact Deals</h3>
+                  <p className="text-slate-500 leading-relaxed font-medium max-w-2xl">
+                    Sales Edappal offers a proven track record of over 100 successful deals that cover essential residential and commercial needs in today's market. Whether you're a first-time buyer or an investor, our local insights provide practical, hands-on support.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column (spanning height) */}
+            <div className="bg-[#002B5B] p-10 rounded-[2.5rem] text-white flex flex-col h-full justify-between">
+              <div className="space-y-10">
+                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-transparent">
+                  <Phone size={24} className="text-white" />
+                </div>
+                <div className="space-y-6">
+                  <h3 className="text-3xl font-bold leading-tight">Personalized Property Guidance</h3>
+                  <p className="text-blue-100/80 leading-relaxed font-medium">
+                    At Sales Edappal, we understand the importance of balancing your preferences with your lifestyle. That's why our consultations are available on-demand, allowing you to find property at your own pace.
+                  </p>
+                  <p className="text-blue-100/60 text-sm leading-relaxed">
+                    Whether you're a working professional or a local resident, you can customize your property requirements to fit your needs.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-12">
+                <a 
+                  href="tel:9895294949" 
+                  className="inline-flex items-center gap-2 bg-[#005BC8] hover:bg-[#004bb0] text-white font-bold px-8 py-4 rounded-full transition-all group shadow-lg"
+                >
+                  Get Started Now <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+     
+
+      {/* Featured Properties */}
+      <section className="py-14 bg-white relative">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+             <div className="inline-block px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold text-[#005BC8] uppercase tracking-widest mb-2">
+             Exclusive Listings
+            </div>
+            <h2 className="text-4xl font-bold text-slate-800">Featured Properties</h2>
+            {/* <p className="text-slate-500 text-lg">Explore our handpicked selection of premium properties in Edappal and Malappuram.</p> */}
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {loading ? (
+              [1, 2, 3].map((i) => <PropertyCardSkeleton key={i} />)
+            ) : featuredProperties.length > 0 ? (
+              featuredProperties.map((property) => (
+                <PropertyCard key={property._id} property={property} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12 text-slate-400 font-medium">
+                New featured properties are arriving soon!
+              </div>
+            )}
+          </div>
+
+          <div className="text-center mt-16">
+            <Link href="/properties" className="inline-flex items-center gap-2 px-8 py-4 bg-white border border-gray-200 text-slate-800 font-bold rounded-full hover:bg-sky-50 hover:border-sky-200 hover:text-sky-600 transition-all shadow-lg shadow-gray-200/50 hover:shadow-sky-200/50 transform hover:-translate-y-1">
+              View All Properties <ArrowRight size={20} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <SellerPromotions />
+
+      
       {/* About Section */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
@@ -90,72 +213,6 @@ export default function Home() {
             <Link href="/about" className="inline-flex items-center gap-2 text-sky-600 font-bold hover:gap-4 transition-all group mt-4">
               Learn More About Us <ArrowRight className="group-hover:translate-x-1 transition-transform" />
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Properties */}
-      <section className="py-24 bg-slate-50 relative">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <span className="text-sky-500 font-semibold tracking-wider uppercase text-sm">Exclusive Listings</span>
-            <h2 className="text-4xl font-bold text-slate-800">Featured Properties</h2>
-            <p className="text-slate-500 text-lg">Explore our handpicked selection of premium properties in Edappal and Malappuram.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {loading ? (
-              [1, 2, 3].map((i) => <PropertyCardSkeleton key={i} />)
-            ) : featuredProperties.length > 0 ? (
-              featuredProperties.map((property) => (
-                <PropertyCard key={property._id} property={property} />
-              ))
-            ) : (
-              <div className="col-span-full text-center py-12 text-slate-400 font-medium">
-                New featured properties are arriving soon!
-              </div>
-            )}
-          </div>
-
-          <div className="text-center mt-16">
-            <Link href="/properties" className="inline-flex items-center gap-2 px-8 py-4 bg-white border border-gray-200 text-slate-800 font-bold rounded-full hover:bg-sky-50 hover:border-sky-200 hover:text-sky-600 transition-all shadow-lg shadow-gray-200/50 hover:shadow-sky-200/50 transform hover:-translate-y-1">
-              View All Properties <ArrowRight size={20} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <SellerPromotions />
-
-      {/* Services / Why Choose Us */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        {/* Background blobs */}
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-sky-50/50 skew-x-12 transform translate-x-32 z-0"></div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-800 mb-4">Why Choose Us</h2>
-            <div className="w-16 h-1 bg-sky-500 mx-auto rounded-full"></div>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { title: 'Local Expertise', icon: MapPin, desc: 'Deep knowledge of Edappal real estate market trends and values.' },
-              { title: 'Verified Listings', icon: Shield, desc: '100% verified properties ensuring safe and secure transactions.' },
-              { title: 'Fast Response', icon: Clock, desc: 'Quick responses and dedicated support for all your queries.' },
-              { title: 'Trusted Service', icon: Users, desc: 'Trusted by 100+ happy clients across Malappuram district.' },
-            ].map((service, idx) => {
-              const Icon = service.icon;
-              return (
-                <div key={idx} className="p-8 rounded-2xl bg-white border border-slate-100 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 group text-center hover:border-sky-100">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-sky-50 text-sky-500 mb-6 group-hover:bg-sky-500 group-hover:text-white transition-all duration-300 transform group-hover:rotate-6 shadow-sm">
-                    <Icon size={32} />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-3">{service.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{service.desc}</p>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>

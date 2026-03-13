@@ -27,7 +27,7 @@ const Navbar = () => {
         { name: 'Properties for Sale', href: '/properties?status=Buy' },
         { name: 'Properties for Rent', href: '/properties?status=Rent' },
         { name: 'Properties for Lease', href: '/properties?status=Lease' },
-        { name: 'Our Services', href: '/#services' },
+        { name: 'About Us', href: '/about' },
         { name: 'Contact Us', href: '/contact' },
     ];
 

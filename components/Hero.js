@@ -33,7 +33,7 @@ const Hero = () => {
             {/* Background Image with Bokeh Overlay */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                    src="https://as1.ftcdn.net/jpg/10/17/29/42/480_F_1017294245_4DxSgtKTMuFP6i9j75eruIJ5A19gcusO.jpg?token=1774077990_sJ7YAqvXQJ9MnKhVs7-oXiYlWSKNICrp4CU4BfATi6Q"
                     alt="Luxury Real Estate"
                     className="w-full h-full object-cover"
                 />
