@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { Facebook, Instagram, Twitter, Linkedin, PhoneCall, Mail, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Youtube, PhoneCall, Mail, MapPin } from 'lucide-react';
 
 import Image from 'next/image';
 
@@ -29,14 +29,29 @@ const Footer = () => {
                             Trusted Local Real Estate Consultant in Edappal. We make buying, selling, and renting properties simple and transparent.
                         </p>
                         <div className="flex gap-4 pt-2">
-                            <a href="#" className="p-2 bg-sky-100 text-sky-600 rounded-full hover:bg-sky-500 hover:text-white transition-all shadow-sm">
+                            <a 
+                                href="https://www.facebook.com/profile.php?id=61552641255941&mibextid=ViGcVu" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="p-2 bg-sky-100 text-sky-600 rounded-full hover:bg-sky-500 hover:text-white transition-all shadow-sm"
+                            >
                                 <Facebook size={18} />
                             </a>
-                            <a href="#" className="p-2 bg-sky-100 text-sky-600 rounded-full hover:bg-sky-500 hover:text-white transition-all shadow-sm">
+                            <a 
+                                href="https://instagram.com/sales_edappal?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="p-2 bg-sky-100 text-sky-600 rounded-full hover:bg-sky-500 hover:text-white transition-all shadow-sm"
+                            >
                                 <Instagram size={18} />
                             </a>
-                            <a href="#" className="p-2 bg-sky-100 text-sky-600 rounded-full hover:bg-sky-500 hover:text-white transition-all shadow-sm">
-                                <Twitter size={18} />
+                            <a 
+                                href="https://www.youtube.com/@salesedappal" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="p-2 bg-sky-100 text-sky-600 rounded-full hover:bg-sky-500 hover:text-white transition-all shadow-sm"
+                            >
+                                <Youtube size={18} />
                             </a>
                         </div>
                     </div>

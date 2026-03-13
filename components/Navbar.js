@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone, User, Home, Building2, MessageSquare, Info, ChevronDown, MessageCircle } from 'lucide-react';
+import { Menu, X, Phone, User, Home, Building2, MessageSquare, Info, ChevronDown, MessageCircle, Facebook, Instagram, Youtube } from 'lucide-react';
 import Image from 'next/image';
 
 const Navbar = () => {
@@ -51,6 +51,19 @@ const Navbar = () => {
 
                     {/* Desktop Contact & Buttons */}
                     <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+                        {/* Social Icons Desktop */}
+                        <div className="flex items-center gap-3 border-r border-white/20 pr-4 mr-2">
+                            <a href="https://www.facebook.com/profile.php?id=61552641255941&mibextid=ViGcVu" target="_blank" rel="noopener noreferrer" className="hover:text-sky-200 transition-colors">
+                                <Facebook size={18} />
+                            </a>
+                            <a href="https://instagram.com/sales_edappal?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-sky-200 transition-colors">
+                                <Instagram size={18} />
+                            </a>
+                            <a href="https://www.youtube.com/@salesedappal" target="_blank" rel="noopener noreferrer" className="hover:text-sky-200 transition-colors">
+                                <Youtube size={18} />
+                            </a>
+                        </div>
+
                         <div className="flex items-center gap-2 text-sm xl:text-base font-semibold">
                             <div className="bg-white/20 p-2 rounded-full">
                                 <Phone size={18} className="fill-white" />
@@ -175,9 +188,22 @@ const Navbar = () => {
                                         <span>Call Now</span>
                                     </a>
                                 </div>
-                                <div className="flex items-center gap-2 bg-blue-50 p-4 rounded-2xl text-[#0056b3] font-bold">
-                                    <Phone size={20} />
-                                    <span>+91 98952 94949</span>
+                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                                    <div className="flex items-center gap-2 text-[#0056b3] font-bold">
+                                        <Phone size={20} />
+                                        <span>+91 98952 94949</span>
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <a href="https://www.facebook.com/profile.php?id=61552641255941&mibextid=ViGcVu" target="_blank" rel="noopener noreferrer" className="p-2 bg-white text-blue-600 rounded-lg shadow-sm">
+                                            <Facebook size={20} />
+                                        </a>
+                                        <a href="https://instagram.com/sales_edappal?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="p-2 bg-white text-pink-600 rounded-lg shadow-sm">
+                                            <Instagram size={20} />
+                                        </a>
+                                        <a href="https://www.youtube.com/@salesedappal" target="_blank" rel="noopener noreferrer" className="p-2 bg-white text-red-600 rounded-lg shadow-sm">
+                                            <Youtube size={20} />
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 

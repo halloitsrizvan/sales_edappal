@@ -1,233 +1,173 @@
 'use client';
 
-import { Check, Star, Video, Users, Share2, Youtube, MessageCircle, Phone, Instagram, Facebook, ShieldCheck, ArrowRight, Zap } from 'lucide-react';
+import { Check, Star, Users, MessageCircle, Phone, ShieldCheck, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const SellerPromotions = () => {
   const premiumBenefits = [
-    { icon: <Zap className="w-4 h-4" />, text: '90% Success Rate' },
-    { icon: <Users className="w-4 h-4" />, text: 'Network of 325+ Trusted Brokers' },
-    { icon: <Share2 className="w-4 h-4" />, text: 'Broadcast to 2800+ Buyers & Investor Groups' },
-    { icon: <Instagram className="w-4 h-4" />, text: 'Reach 11,700+ Instagram Followers' },
-    { icon: <Facebook className="w-4 h-4" />, text: 'Reach 5,300+ Facebook Followers' },
-    { icon: <Youtube className="w-4 h-4" />, text: 'Reach 1,230+ YouTube Subscribers' },
-    { icon: <MessageCircle className="w-4 h-4" />, text: 'Reach 650+ WhatsApp Status Viewers' },
-    { icon: <Facebook className="w-4 h-4" />, text: 'Reach 365+ Facebook Page Followers' },
+    '90% Success Rate',
+    'Network of 325+ Trusted Brokers',
+    'Broadcast to 2800+ Buyers & Investor Groups',
+    'Reach 11,700+ Instagram Followers',
+    'Reach 5,300+ Facebook Followers',
+    'Reach 1,230+ YouTube Subscribers',
+    'Reach 650+ WhatsApp Status Viewers',
   ];
 
   const standardBenefits = [
-    { icon: <Check className="w-4 h-4" />, text: 'Zero upfront charges' },
-    { icon: <MessageCircle className="w-4 h-4" />, text: 'Share property photos/videos via WhatsApp' },
-    { icon: <Users className="w-4 h-4" />, text: 'Broadcast to 500+ Active WhatsApp Viewers' },
-    { icon: <Check className="w-4 h-4" />, text: 'Direct connection with genuine buyers' },
+    'Zero upfront charges',
+    'Share photos/videos via WhatsApp',
+    'Broadcast to 500+ Active WhatsApp Viewers',
+    'Direct connection with genuine buyers',
   ];
 
   return (
-    <section className="py-24 bg-[#E0F2FE]/50 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-[#38BDF8]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] bg-[#38BDF8]/5 rounded-full blur-3xl"></div>
-      </div>
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-4 max-w-6xl">
+        {/* Simple Header */}
+        <div className="text-center mb-16 space-y-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-block px-4 py-1.5 rounded-full border border-gray-100 text-[10px] font-bold text-[#005BC8] uppercase tracking-[0.2em] mb-2"
+          >
+            Seller Packages
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold text-slate-900"
+          >
+            Sell Your Property <span className="text-[#005BC8]">Faster</span>
+          </motion.h2>
+          <p className="text-slate-500 max-w-2xl mx-auto font-medium">
+            Choose a promotion package that fits your goals and let our local expertise do the hard work for you.
+          </p>
+        </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        {/* Minimalist Cards */}
+        <div className="grid md:grid-cols-2 gap-8 mb-20 px-2 lg:px-12">
+          {/* Card 1 - Standard (Free) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#38BDF8]/20 shadow-sm mb-6"
+            className="bg-slate-50 border border-slate-100 p-8 rounded-[2rem] flex flex-col hover:bg-white hover:shadow-xl hover:shadow-slate-100 transition-all duration-500"
           >
-            <Star className="w-4 h-4 text-[#38BDF8] fill-[#38BDF8]" />
-            <span className="text-sm font-bold text-[#0C4A6E] uppercase tracking-wider">Seller Rewards</span>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-slate-800 mb-2">Standard</h3>
+              <p className="text-slate-500 text-sm font-medium">Simple & Effective listing</p>
+            </div>
+
+            <div className="space-y-4 mb-10 flex-grow">
+              {standardBenefits.map((benefit, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-slate-200 flex items-center justify-center shrink-0">
+                    <Check size={12} className="text-slate-600" />
+                  </div>
+                  <span className="text-slate-600 text-sm font-medium">{benefit}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-8 border-t border-slate-200/60 mt-auto">
+              <div className="flex items-baseline gap-2 mb-8">
+                <span className="text-3xl font-bold text-slate-900">₹0</span>
+                <span className="text-slate-400 text-sm font-medium uppercase tracking-wider">Upfront</span>
+                <span className="mx-2 text-slate-200">|</span>
+                <span className="text-2xl font-bold text-slate-800">2%</span>
+                <span className="text-slate-400 text-sm font-medium uppercase tracking-wider">Commission</span>
+              </div>
+
+              <a
+                href="https://wa.me/919895294949?text=I'm%20interested%20in%20Standard%20Promotion"
+                className="group flex items-center justify-center gap-2 w-full py-4 bg-white border border-slate-200 text-slate-800 rounded-full font-bold transition-all hover:bg-slate-900 hover:text-white"
+              >
+                List My Property <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
           </motion.div>
-          <motion.h2
+
+          {/* Card 2 - Premium */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black text-[#0C4A6E] mb-6 leading-tight"
+            className="bg-[#002B5B] p-8 rounded-[2rem] flex flex-col text-white shadow-xl shadow-blue-900/10 transition-all duration-500"
           >
-            Your Trusted Local Property Partner
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-[#0C4A6E]/70 text-lg md:text-xl font-medium"
-          >
-            Looking to <span className="text-[#38BDF8] font-bold">SELL</span> your property quickly and profitably? <br className="hidden md:block" />
-            Choose the promotion package that fits your needs.
-          </motion.p>
-        </div>
-
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-20">
-          {/* Card 1 - Premium */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            whileHover={{ y: -10 }}
-            className="relative bg-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-sky-200/50 border-2 border-[#38BDF8] flex flex-col h-full"
-          >
-            <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#0C4A6E] text-white px-6 py-2 rounded-full text-sm font-bold shadow-xl flex items-center gap-2 whitespace-nowrap">
-              ⭐ Most Powerful Promotion
-            </div>
-
-            <div className="mb-8">
-              <h3 className="text-2xl font-black text-[#0C4A6E] mb-3">
-                Premium Promotion – With Video Advertising
-              </h3>
-              <p className="text-slate-500 font-medium">
-                Maximize reach and attract serious buyers with our premium marketing network.
-              </p>
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h3 className="text-2xl font-bold mb-2">Premium</h3>
+                <p className="text-blue-100/60 text-sm font-medium">Maximum reach with Video</p>
+              </div>
+              <div className="bg-[#005BC8] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                Recommended
+              </div>
             </div>
 
             <div className="space-y-4 mb-10 flex-grow">
               {premiumBenefits.map((benefit, idx) => (
-                <div key={idx} className="flex items-start gap-3 group">
-                  <div className="mt-1 w-6 h-6 rounded-full bg-[#E0F2FE] text-[#38BDF8] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                    {benefit.icon}
+                <div key={idx} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-400/20 flex items-center justify-center shrink-0">
+                    <Check size={12} className="text-[#005BC8]" />
                   </div>
-                  <span className="text-slate-600 font-semibold text-sm">{benefit.text}</span>
+                  <span className="text-blue-50/80 text-sm font-medium">{benefit}</span>
                 </div>
               ))}
             </div>
 
-            <div className="pt-8 border-t border-slate-100 mt-auto">
-              <div className="flex flex-wrap items-end gap-x-6 gap-y-4 mb-8">
-                <div>
-                  <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Service Fee</div>
-                  <div className="text-3xl font-black text-[#0C4A6E]">₹5000 <span className="text-sm font-bold text-slate-400">Only</span></div>
-                  <div className="text-xs font-bold text-[#38BDF8] mt-1 bg-[#E0F2FE] inline-block px-2 py-0.5 rounded">Fully Refundable after successful sale</div>
-                </div>
-                <div className="h-10 w-px bg-slate-100 hidden sm:block"></div>
-                <div>
-                  <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Commission</div>
-                  <div className="text-3xl font-black text-[#0C4A6E]">2%</div>
-                </div>
+            <div className="pt-8 border-t border-blue-800/50 mt-auto">
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-3xl font-bold text-white">₹5000</span>
+                <span className="text-blue-200/60 text-sm font-medium uppercase tracking-wider">Service Fee</span>
               </div>
-
-              <div className="grid gap-4">
-                <a
-                  href="https://wa.me/919895294949?text=I'm%20interested%20in%20Premium%20Promotion%20for%20my%20property"
-                  className="flex items-center justify-center gap-2 w-full py-4 bg-[#38BDF8] text-white rounded-2xl font-bold text-lg hover:bg-[#0C4A6E] transition-all shadow-lg shadow-sky-200"
-                >
-                  Promote My Property <ArrowRight className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://wa.me/919895294949"
-                  className="flex items-center justify-center gap-2 w-full py-4 bg-white border-2 border-slate-100 text-slate-700 rounded-2xl font-bold text-lg hover:border-[#38BDF8] hover:text-[#38BDF8] transition-all"
-                >
-                  <MessageCircle className="w-5 h-5" /> Contact on WhatsApp
-                </a>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card 2 - Standard */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            whileHover={{ y: -10 }}
-            className="bg-white/80 backdrop-blur-sm rounded-[2.5rem] p-8 md:p-10 shadow-xl border border-slate-100 flex flex-col h-full"
-          >
-            <div className="mb-8">
-              <h3 className="text-2xl font-black text-[#0C4A6E] mb-3">
-                Standard Promotion – Simple & Effective
-              </h3>
-              <p className="text-slate-500 font-medium">
-                Promote your property with our active buyer network.
-              </p>
-            </div>
-
-            <div className="space-y-5 mb-10 flex-grow">
-              {standardBenefits.map((benefit, idx) => (
-                <div key={idx} className="flex items-start gap-3 group">
-                  <div className="mt-1 w-6 h-6 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center shrink-0 group-hover:bg-[#E0F2FE] group-hover:text-[#38BDF8] transition-all">
-                    {benefit.icon}
-                  </div>
-                  <span className="text-slate-600 font-semibold text-sm">{benefit.text}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="pt-8 border-t border-slate-100 mt-auto">
-              <div className="flex flex-wrap items-end gap-x-8 gap-y-4 mb-8">
-                <div>
-                  <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Upfront Fee</div>
-                  <div className="text-3xl font-black text-[#0C4A6E]">₹0</div>
-                </div>
-                <div className="h-10 w-px bg-slate-100 hidden sm:block"></div>
-                <div>
-                  <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Commission</div>
-                  <div className="text-3xl font-black text-[#0C4A6E]">2%</div>
-                </div>
-              </div>
+              <p className="text-[10px] font-bold text-[#005BC8] uppercase tracking-wider mb-6">Fully Refundable after Sale</p>
 
               <a
-                href="https://wa.me/919895294949?text=I'm%20interested%20in%20Standard%20Promotion%20for%20my%20property"
-                className="flex items-center justify-center gap-2 w-full py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-[#0C4A6E] transition-all shadow-lg"
+                href="https://wa.me/919895294949?text=I'm%20interested%20in%20Premium%20Promotion"
+                className="group flex items-center justify-center gap-2 w-full py-4 bg-[#005BC8] text-white rounded-full font-bold transition-all hover:bg-white hover:text-[#002B5B]"
               >
-                List My Property <ArrowRight className="w-5 h-5" />
+                Promote My Property <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </a>
             </div>
           </motion.div>
         </div>
 
-        {/* CTA Banner */}
+        {/* Clean CTA Section */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="relative rounded-[3rem] overflow-hidden bg-gradient-to-r from-[#38BDF8] to-[#0C4A6E] p-8 md:p-12 text-white shadow-2xl"
+          className="bg-slate-900 rounded-[2.5rem] p-10 md:p-16 text-center text-white relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl transform translate-x-32 -translate-y-32"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl transform -translate-x-32 translate-y-32"></div>
-
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
-            <div className="text-center lg:text-left">
-              <h3 className="text-3xl md:text-4xl font-black mb-4">
-                Ready to Sell Your Property? <br />
-                <span className="text-white/90">Let's Make It Happen!</span>
-              </h3>
-              <p className="text-white/80 font-medium text-lg max-w-xl">
-                Join our trusted network and get the best value for your property in Edappal.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <a
-                href="tel:919895294949"
-                className="flex items-center justify-center gap-3 px-8 py-5 bg-white text-[#0C4A6E] rounded-2xl font-black text-lg hover:bg-sky-50 transition-all shadow-xl whitespace-nowrap"
-              >
-                <Phone className="w-6 h-6" /> Call Now
-              </a>
-              <a
-                href="https://wa.me/919895294949"
-                className="flex items-center justify-center gap-3 px-8 py-5 bg-[#25D366] text-white rounded-2xl font-black text-lg hover:brightness-105 transition-all shadow-xl whitespace-nowrap"
-              >
-                <MessageCircle className="w-6 h-6" /> WhatsApp Now
-              </a>
-            </div>
+          {/* Subtle decoration */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#005BC8]/10 rounded-full blur-[80px]"></div>
+          
+          <h3 className="text-2xl md:text-4xl font-bold mb-6 relative z-10">
+            Ready to sell your property in Edappal?
+          </h3>
+          <p className="text-slate-400 mb-10 max-w-xl mx-auto font-medium relative z-10">
+            Let's connect and find the perfect buyer for your property. Our experts are here to guide you every step of the way.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+            <a href="tel:919895294949" className="flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-slate-100 transition-all">
+              <Phone size={20} /> Call Now
+            </a>
+            <a href="https://wa.me/919895294949" className="flex items-center justify-center gap-2 px-8 py-4 bg-[#25D366] text-white rounded-full font-bold hover:brightness-105 transition-all">
+              <MessageCircle size={20} /> WhatsApp
+            </a>
           </div>
         </motion.div>
 
-        {/* Trust Badges */}
-        <div className="mt-16 flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
-          <div className="flex items-center gap-3 text-[#0C4A6E]/50 font-bold uppercase tracking-widest text-xs">
-            <ShieldCheck className="w-5 h-5" /> Trusted Local Network
-          </div>
-          <div className="flex items-center gap-3 text-[#0C4A6E]/50 font-bold uppercase tracking-widest text-xs">
-            <Users className="w-5 h-5" /> Verified Buyers
-          </div>
-          <div className="flex items-center gap-3 text-[#0C4A6E]/50 font-bold uppercase tracking-widest text-xs">
-            <Star className="w-5 h-5" /> 10+ Years Experience
-          </div>
+        {/* Trust Line */}
+        <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-slate-300 font-bold text-[10px] uppercase tracking-[0.2em]">
+          <div className="flex items-center gap-2"><ShieldCheck size={16} /> Trusted Network</div>
+          <div className="flex items-center gap-2"><Users size={16} /> Verified Buyers</div>
+          <div className="flex items-center gap-2"><Star size={16} /> Local Expertise</div>
         </div>
       </div>
     </section>

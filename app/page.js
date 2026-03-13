@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import Hero from '@/components/Hero';
 import PropertyCard from '@/components/PropertyCard';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Star, ArrowRight, MapPin, Shield, Clock, Users, Phone, MessageCircle, Quote, Home as HomeIcon, Key, Building, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -44,7 +45,7 @@ export default function Home() {
       <div className='relative'>
         <Hero />
       </div>
-     {/* Why Choose Us Section */}
+      {/* Why Choose Us Section */}
       <section className="py-8 px-4 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           {/* Header */}
@@ -116,10 +117,10 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              
+
               <div className="mt-12">
-                <a 
-                  href="tel:9895294949" 
+                <a
+                  href="tel:9895294949"
                   className="inline-flex items-center gap-2 bg-[#005BC8] hover:bg-[#004bb0] text-white font-bold px-8 py-4 rounded-full transition-all group shadow-lg"
                 >
                   Get Started Now <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -130,14 +131,14 @@ export default function Home() {
         </div>
       </section>
 
-     
+
 
       {/* Featured Properties */}
-      <section className="py-14 bg-white relative">
+      <section className="py-10 bg-white relative">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-4">
-             <div className="inline-block px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold text-[#005BC8] uppercase tracking-widest mb-2">
-             Exclusive Listings
+            <div className="inline-block px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold text-[#005BC8] uppercase tracking-widest mb-2">
+              Exclusive Listings
             </div>
             <h2 className="text-4xl font-bold text-slate-800">Featured Properties</h2>
             {/* <p className="text-slate-500 text-lg">Explore our handpicked selection of premium properties in Edappal and Malappuram.</p> */}
@@ -157,17 +158,47 @@ export default function Home() {
             )}
           </div>
 
-          <div className="text-center mt-16">
-            <Link href="/properties" className="inline-flex items-center gap-2 px-8 py-4 bg-white border border-gray-200 text-slate-800 font-bold rounded-full hover:bg-sky-50 hover:border-sky-200 hover:text-sky-600 transition-all shadow-lg shadow-gray-200/50 hover:shadow-sky-200/50 transform ">
-              View All Properties <ArrowRight size={20} />
-            </Link>
+          <div className="text-center mt-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-block"
+            >
+              <Link
+                href="/properties"
+                className="group relative flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-full font-medium text-lg overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,91,200,0.3)]"
+              >
+                {/* Theme Color Fill on Hover */}
+                <div className="absolute inset-0 bg-[#005BC8] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ease-out" />
+                
+                <span className="relative z-10">View All Properties</span>
+                
+                <motion.div
+                  className="relative z-10"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                >
+                  <ArrowRight size={22} strokeWidth={2.5} />
+                </motion.div>
+
+                {/* Animated Liquid Shimmer */}
+                <motion.div
+                  className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  initial={{ x: '-100%' }}
+                  animate={{ x: '100%' }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "linear", repeatDelay: 1 }}
+                  style={{ skewX: -20 }}
+                />
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>
 
       <SellerPromotions />
 
-      
+
       {/* About Section */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
