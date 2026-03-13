@@ -49,25 +49,26 @@ const Hero = () => {
                     transition={{ duration: 0.8 }}
                     className="max-w-4xl mx-auto space-y-6"
                 >
-                    <h1 className="text-3xl md:text-5xl font-black leading-tight drop-shadow-2xl">
+                    <h1 className="text-3xl md:text-4xl font-bold leading-tight drop-shadow-2xl">
                         Find Your Dream Property in Edappal
                     </h1>
 
-                    <p className="text-xs md:text-sm text-slate-200 font-bold max-w-2xl mx-auto drop-shadow uppercase tracking-widest">
+                    <p className="text-xs md:text-sm text-slate-200 font-medium max-w-2xl mx-auto drop-shadow uppercase tracking-widest">
                         Verified Properties | Transparent Deals | Local Expertise. <br className="hidden md:block" /> 
                         We connect buyers and sellers with premium listings across Malappuram.
                     </p>
 
                     {/* Highly Professional Search Component */}
                     <div className="mt-8 max-w-3xl mx-auto">
-                        <div className="bg-white rounded-xl md:rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.25)] overflow-hidden border border-gray-100">
+                        <div className="bg-white rounded-lg md:rounded-lg shadow-[0_15px_40px_rgba(0,0,0,0.25)] overflow-hidden border border-gray-100">
                             {/* Tabs Row */}
                             <div className="flex justify-center items-center border-b border-sky-50">
                                 {['Buy', 'Rent', 'Lease'].map((tab) => (
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
-                                        className={`px-8 py-3.5 text-sm md:text-base font-bold transition-all relative ${
+                                        suppressHydrationWarning
+                                        className={`px-8 py-3.5 text-sm md:text-base font-medium transition-all relative ${
                                             activeTab === tab ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'
                                         }`}
                                     >
@@ -91,13 +92,14 @@ const Hero = () => {
                                             name="type"
                                             value={searchParams.type}
                                             onChange={handleInputChange}
-                                            className="w-full bg-transparent text-gray-800 font-medium text-base md:text-lg focus:outline-none appearance-none cursor-pointer"
+                                            suppressHydrationWarning
+                                            className="w-full bg-transparent text-gray-800 font-base text-base md:text-base focus:outline-none appearance-none cursor-pointer"
                                         >
                                             <option value="">Property Type</option>
                                             <option value="House">House</option>
                                             <option value="Plot">Plot / Land</option>
                                             <option value="Commercial">Commercial</option>
-                                            <option value="Apartment">Apartment</option>
+                                            {activeTab !== 'Buy' && <option value="Apartment">Apartment</option>} 
                                             <option value="Villa">Villa</option>
                                         </select>
                                     </div>
@@ -115,10 +117,12 @@ const Hero = () => {
                                         value={searchParams.location}
                                         onChange={handleInputChange}
                                         placeholder="Please enter any location..."
-                                        className="flex-1 bg-transparent text-gray-800 font-medium text-base md:text-lg focus:outline-none placeholder:text-gray-400"
+                                        suppressHydrationWarning
+                                        className="flex-1 bg-transparent text-gray-800 font-base text-base md:text-base focus:outline-none placeholder:text-gray-400"
                                     />
                                     <button
                                         type="submit"
+                                        suppressHydrationWarning
                                         className="hidden md:block bg-[#0056b3] hover:bg-[#004494] text-white px-8 py-3 rounded-lg font-medium text-base transition-all shadow-lg active:scale-95 whitespace-nowrap"
                                     >
                                         Search
@@ -129,6 +133,7 @@ const Hero = () => {
                                 <div className="md:hidden px-6 pb-6 pt-2">
                                     <button
                                         type="submit"
+                                        suppressHydrationWarning
                                         className="w-full bg-[#0056b3] text-white py-4 rounded-xl font-medium text-lg shadow-lg active:scale-95"
                                     >
                                         Search

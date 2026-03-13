@@ -94,6 +94,7 @@ const Navbar = () => {
                     {/* Mobile Menu Toggle */}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
+                        suppressHydrationWarning
                         className="lg:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
                     >
                         {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -102,7 +103,7 @@ const Navbar = () => {
             </div>
 
             {/* Navigation Bar - White */}
-            <div className={`bg-white border-b border-gray-100 transition-all duration-300 ${scrolled ? 'py-1.5 shadow-md' : 'py-3'}`}>
+            <div className={`hidden lg:block bg-white border-b border-gray-100 transition-all duration-300 ${scrolled ? 'py-1.5 shadow-md' : 'py-3'}`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <nav className="hidden lg:flex justify-center items-center gap-6 xl:gap-10">
                         {links.map((link) => {
@@ -121,10 +122,7 @@ const Navbar = () => {
                         })}
                     </nav>
                     
-                    {/* Mobile Label for Nav Bar area */}
-                    {/* <div className="lg:hidden flex justify-between items-center h-4">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Real Estate Consultant</span>
-                    </div> */}
+
                 </div>
             </div>
 
@@ -140,7 +138,7 @@ const Navbar = () => {
                     >
                         <div className="p-4 bg-[#0056b3] text-white flex justify-between items-center">
                             <span className="font-bold">Menu</span>
-                            <button onClick={() => setIsOpen(false)} className="p-2">
+                            <button onClick={() => setIsOpen(false)} suppressHydrationWarning className="p-2">
                                 <X size={32} />
                             </button>
                         </div>
@@ -152,7 +150,7 @@ const Navbar = () => {
                                         key={link.name}
                                         href={link.href}
                                         onClick={() => setIsOpen(false)}
-                                        className="block text-xl font-bold text-gray-900 border-b border-gray-50 pb-3"
+                                        className="block text-xl font-medium text-gray-900 border-b border-gray-50 pb-3"
                                     >
                                         {link.name}
                                     </Link>
@@ -164,14 +162,14 @@ const Navbar = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <a
                                         href="https://wa.me/919895294949"
-                                        className="bg-[#25D366] text-white p-4 rounded-2xl flex flex-col items-center gap-2 font-bold shadow-md"
+                                        className="bg-[#25D366] text-white p-4 rounded-md flex flex-col items-center gap-2 font-bold shadow-md"
                                     >
                                         <MessageCircle size={24} />
                                         <span>WhatsApp</span>
                                     </a>
                                     <a
                                         href="tel:9895294949"
-                                        className="bg-[#00aeef] text-white p-4 rounded-2xl flex flex-col items-center gap-2 font-bold shadow-md"
+                                        className="bg-[#00aeef] text-white p-4 rounded-md flex flex-col items-center gap-2 font-bold shadow-md"
                                     >
                                         <Phone size={24} />
                                         <span>Call Now</span>

@@ -18,7 +18,7 @@ export default function ClientLayoutWrapper({ children }) {
     return (
         <>
             <Navbar />
-            <main className="flex-grow relative z-0 mt-20 lg:mt-28">
+            <main className="flex-grow relative z-0 mt-14 lg:mt-28">
                 {children}
             </main>
             <Footer />
