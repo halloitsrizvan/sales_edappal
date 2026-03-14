@@ -164,7 +164,7 @@ const SellerPromotions = () => {
         </motion.div>
 
         {/* Trust Line */}
-        <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-slate-300 font-bold text-[10px] uppercase tracking-[0.2em]">
+        <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-slate-900 font-bold text-[10px] uppercase tracking-[0.2em]">
           <div className="flex items-center gap-2"><ShieldCheck size={16} /> Trusted Network</div>
           <div className="flex items-center gap-2"><Users size={16} /> Verified Buyers</div>
           <div className="flex items-center gap-2"><Star size={16} /> Local Expertise</div>

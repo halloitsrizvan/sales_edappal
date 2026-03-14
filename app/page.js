@@ -200,7 +200,7 @@ export default function Home() {
 
 
       {/* About Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      {/* <section className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
           <div className="relative group">
             <div className="absolute -inset-4 bg-sky-100 rounded-3xl transform -rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
@@ -246,10 +246,10 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Services Section - Redesigned */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-14 px-4 bg-white relative overflow-hidden"> 
         {/* Background Decorative Elements */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-sky-50 rounded-full blur-3xl opacity-60"></div>
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-50 rounded-full blur-3xl opacity-60"></div>
@@ -260,7 +260,7 @@ export default function Home() {
               <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
               <span className="text-[10px] font-bold text-sky-600 uppercase tracking-widest">Our Expertise</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight">
               Comprehensive Real Estate <br />
               <span className="text-sky-500">Solutions for Edappal</span>
             </h2>
