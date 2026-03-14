@@ -359,7 +359,7 @@ export default function PropertiesList() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="flex items-center justify-center gap-2 lg:opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="flex items-center justify-center gap-2 group-hover:opacity-100 transition-opacity">
                                                 <Link href={`/properties/${prop._id}`} target="_blank" className="p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors">
                                                     <Eye size={18} />
                                                 </Link>

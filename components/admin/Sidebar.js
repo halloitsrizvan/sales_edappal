@@ -35,7 +35,7 @@ const AdminSidebar = ({ isMobileOpen, toggleMobile }) => {
         { name: 'Add Property', href: '/admin/properties/add', icon: PlusSquare },
         { name: 'Property Leads', href: '/admin/leads', icon: Users },
         { name: 'General Inquiries', href: '/admin/inquiries', icon: MessageSquare },
-        { name: 'Reviews', href: '/admin/reviews', icon: Star }, // I see Star was used for reviews in some places, but Sidebar had MessageSquare. Let's keep it consistent.
+        // { name: 'Reviews', href: '/admin/reviews', icon: Star },  I see Star was used for reviews in some places, but Sidebar had MessageSquare. Let's keep it consistent.
         { name: 'Settings', href: '/admin/settings', icon: Settings },
     ];
 

@@ -135,14 +135,14 @@ function PropertiesContent() {
     return (
         <div className="bg-slate-50 min-h-screen py-12">
             <div className="container mx-auto px-4">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                    <h1 className="text-3xl font-bold text-slate-800">Properties </h1>
+                <div className="flex flex-row justify-between items-center mb-6 md:mb-8 gap-4">
+                    <h1 className="text-2xl md:text-3xl font-bold text-slate-800">Properties </h1>
 
                     <button
                         onClick={() => setIsFilterOpen(!isFilterOpen)}
-                        className="md:hidden flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm text-slate-600"
+                        className="md:hidden flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm text-slate-600 text-sm font-medium"
                     >
-                        <Filter size={18} /> Filters
+                        <Filter size={16} /> Filters
                     </button>
 
                     <div className="hidden md:flex gap-4">
@@ -300,12 +300,12 @@ function PropertiesContent() {
                         </div>
 
                         {loading ? (
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {[1, 2, 3, 4, 5, 6].map((i) => <PropertyCardSkeleton key={i} />)}
                             </div>
                         ) : sortedProperties.length > 0 ? (
                             <>
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {sortedProperties.map((property) => (
                                         <PropertyCard key={property._id} property={property} />
                                     ))}

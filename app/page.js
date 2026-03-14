@@ -15,22 +15,17 @@ import SellerPromotions from '@/components/SellerPromotions';
 
 export default function Home() {
   const [featuredProperties, setFeaturedProperties] = useState([]);
-  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [propsRes, reviewsRes] = await Promise.all([
-          fetch('/api/properties?limit=3&featured=true'),
-          fetch('/api/reviews')
-        ]);
-
+        const propsRes = await fetch('/api/properties?limit=3&featured=true');
         const propsData = await propsRes.json();
-        const reviewsData = await reviewsRes.json();
-
-        if (propsData.success) setFeaturedProperties(propsData.data);
-        if (reviewsData.success) setReviews(reviewsData.data);
+        
+        if (propsData.success) {
+          setFeaturedProperties(propsData.data);
+        }
       } catch (error) {
         console.error('Error fetching home data:', error);
       } finally {
@@ -354,34 +349,139 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900 via-slate-900 to-slate-900"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <span className="text-sky-400 font-semibold tracking-wider uppercase text-sm mb-2 block">Testimonials</span>
-            <h2 className="text-4xl font-bold mb-4">What Our Clients Say</h2>
+      {/* Wall of Love - Testimonials */}
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          <div className="inline-block px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold text-[#005BC8] uppercase tracking-widest mb-2">
+              Testimonials
+            </div>
+          <div className="mb-14 md:text-left text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 tracking-tight">
+              Our Wall of Love – <br className="hidden md:block" />
+              Words from Happy Customers 
+            </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {reviews.slice(0, 3).map((review) => (
-              <div key={review._id} className="bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors relative">
-                <Quote className="absolute top-8 right-8 text-sky-500/20" size={48} />
-                <div className="flex gap-1 text-yellow-400 mb-6">
-                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill={review.rating > i ? 'currentColor' : 'none'} strokeWidth={0} />)}
-                </div>
-                <p className="text-slate-300 italic mb-8 leading-relaxed relative z-10">"{review.text}"</p>
-                <div className="flex items-center gap-4 mt-auto">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-sky-500 to-sky-400 flex items-center justify-center font-bold text-white shadow-lg">
-                    {review.name[0]}
+          <div className="grid md:grid-cols-3 gap-6 items-start">
+            {/* Left Column (2 Cards) */}
+            <div className="flex flex-col gap-6">
+              <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 flex flex-col hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-sky-100 flex items-center justify-center text-sky-700 font-extrabold text-lg">
+                      J
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900">JABIR SHA</h4>
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Local Buyer</p>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-white">{review.name}</div>
-                    <div className="text-xs text-sky-400">Verified Client</div>
+                  <div className="flex gap-0.5 text-yellow-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" strokeWidth={0} />)}
+                  </div>
+                </div>
+                <p className="text-slate-600 leading-relaxed text-sm">
+                  "Trustworthy sales in Edappal. Helped me find the perfect plot."
+                </p>
+              </div>
+
+              <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 flex flex-col hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-100 flex items-center justify-center text-slate-700 font-extrabold text-lg">
+                      S
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900">Shabeer</h4>
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Home Buyer</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-0.5 text-yellow-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" strokeWidth={0} />)}
+                  </div>
+                </div>
+                <p className="text-slate-600 leading-relaxed text-sm">
+                  "Highly professional and transparent. Sameer guided us nicely when we were looking for a new house. Strongly recommend."
+                </p>
+              </div>
+            </div>
+
+            {/* Center Column (Featured Dark Card) */}
+            <div className="bg-slate-900 rounded-[2rem] p-8 shadow-xl flex flex-col relative overflow-hidden min-h-[480px] transition-transform duration-300 md:translate-y-4">
+              <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
+                <img 
+                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800"
+                  alt="Real Estate Client"
+                  className="w-full h-full object-cover grayscale"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent z-0"></div>
+              
+              <div className="relative z-10 flex-grow flex flex-col justify-end">
+                <div className="mb-8">
+                  <p className="text-white text-lg font-medium leading-relaxed italic">
+                    "Best local real estate consultant. Highly recommended for quick deals"
+                  </p>
+                </div>
+                <div className="flex justify-between items-end border-t border-white/20 pt-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-white/10 flex items-center justify-center text-white font-extrabold text-lg backdrop-blur-md">
+                      F
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white">Fasil Edappal</h4>
+                      <p className="text-[11px] font-bold text-white/50 uppercase tracking-widest">Property Owner</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-0.5 text-yellow-500">
+                    {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" strokeWidth={0} />)}
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Right Column (2 Cards) */}
+            <div className="flex flex-col gap-6">
+              <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 flex flex-col hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-rose-100 flex items-center justify-center text-rose-700 font-extrabold text-lg">
+                      N
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900">Noufal AT</h4>
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Investor</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-0.5 text-yellow-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" strokeWidth={0} />)}
+                  </div>
+                </div>
+                <p className="text-slate-600 leading-relaxed text-sm">
+                  "Good service for buying and selling properties. Transparent process."
+                </p>
+              </div>
+
+              <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 flex flex-col hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-emerald-100 flex items-center justify-center text-emerald-700 font-extrabold text-lg">
+                      M
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900">Mohammed</h4>
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Seller</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-0.5 text-yellow-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" strokeWidth={0} />)}
+                  </div>
+                </div>
+                <p className="text-slate-600 leading-relaxed text-sm">
+                  "Sold my plot in a week! Their network in Edappal is very strong. Hassle-free experience working with them."
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -414,22 +514,48 @@ export default function Home() {
         </div>
       </section> */}
 
-      {/* CTA Banner */}
-      <section className="py-24 bg-gradient-to-br from-sky-500 to-sky-600 text-white text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] opacity-10"></div>
-        <div className="container mx-auto px-4 relative z-10 max-w-4xl">
-          <h2 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">Looking to Buy or Sell Property in Edappal?</h2>
-          <p className="text-sky-100 text-xl mb-12 max-w-2xl mx-auto">Get the best deals and professional guidance from the most trusted consultant in the region.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 items-center">
-            <a href="tel:9895294949" className="w-full sm:w-auto px-10 py-5 bg-white text-sky-600 rounded-full font-bold shadow-2xl hover:bg-slate-50 transition-all hover:-translate-y-1 flex items-center justify-center gap-3 group">
-              <Phone size={24} className="group-hover:rotate-12 transition-transform" />
-              Call Now: 9895294949
-            </a>
-            <a href="https://wa.me/919895294949" className="w-full sm:w-auto px-10 py-5 bg-[#25D366] text-white rounded-full font-bold shadow-2xl hover:brightness-105 transition-all hover:-translate-y-1 flex items-center justify-center gap-3">
-              <MessageCircle size={24} />
-              WhatsApp Now
-            </a>
-          </div>
+      {/* CTA Banner - Elegant & Modern */}
+      <section className="py-14 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10 max-w-5xl">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative rounded-[3rem] overflow-hidden bg-slate-900 px-8 py-16 md:px-16 md:py-20 text-center text-white shadow-2xl shadow-sky-900/20"
+          >
+            {/* Elegant Background Accents */}
+            <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-[#005BC8] rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob"></div>
+            <div className="absolute -bottom-20 -left-20 w-[30rem] h-[30rem] bg-sky-400 rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20 mix-blend-overlay"></div>
+
+            <div className="relative z-10">
+              <span className="text-sky-400 font-bold tracking-[0.2em] uppercase text-xs mb-4 block">Take the next step</span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight">
+                Looking to Buy or Sell <br className="hidden md:block"/> Property in <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-600">Edappal?</span>
+              </h2>
+              <p className="text-slate-300 text-lg md:text-xl mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+                Get the best deals and professional guidance from the most trusted real estate consultant in the region.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 items-center">
+                <a 
+                  href="tel:9895294949" 
+                  className="w-full sm:w-auto px-8 py-4 bg-white text-[#005BC8] rounded-full font-bold shadow-xl hover:bg-slate-50 transition-all hover:scale-105 flex items-center justify-center gap-3 group"
+                >
+                  <Phone size={20} className="group-hover:rotate-12 transition-transform" />
+                  Call 9895294949
+                </a>
+                <a 
+                  href="https://wa.me/919895294949" 
+                  className="w-full sm:w-auto px-8 py-4 bg-[#25D366] text-white rounded-full font-bold shadow-xl hover:brightness-110 transition-all hover:scale-105 flex items-center justify-center gap-3 group"
+                >
+                  <MessageCircle size={20} className="group-hover:scale-110 transition-transform" />
+                  WhatsApp Us
+                </a>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>
