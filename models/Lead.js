@@ -28,6 +28,10 @@ const LeadSchema = new mongoose.Schema({
         enum: ['New', 'Contacted', 'Checked', 'Rejected'],
         default: 'New',
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     createdAt: {
         type: Date,
         default: Date.now,

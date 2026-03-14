@@ -10,8 +10,9 @@ export default function ClientLayoutWrapper({ children }) {
     // Check if the current route is an admin route
     // Also handling edge case if pathname is null (unlikely but safe)
     const isAdminRoute = pathname?.startsWith('/admin');
+    const isAuthRoute = pathname === '/login' || pathname === '/register';
 
-    if (isAdminRoute) {
+    if (isAdminRoute || isAuthRoute) {
         return <>{children}</>;
     }
 

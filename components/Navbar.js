@@ -12,9 +12,23 @@ import Image from 'next/image';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [user, setUser] = useState(null);
     const pathname = usePathname();
 
     useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await fetch('/api/user/me');
+                const data = await res.json();
+                if (data.success) {
+                    setUser(data.user);
+                }
+            } catch (err) {
+                console.error('Failed to fetch user:', err);
+            }
+        };
+        fetchUser();
+
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
         };
@@ -101,6 +115,23 @@ const Navbar = () => {
                             >
                                 Post Requirement
                             </Link>
+                            {user ? (
+                                <Link
+                                    href="/profile"
+                                    className="bg-[#0056b3] text-white border border-white/40 hover:bg-white hover:text-[#0056b3] px-4 py-2 rounded-sm text-sm font-bold transition-all flex items-center gap-2"
+                                >
+                                    <User size={16} />
+                                    {(user.name || user.email || 'User').split(' ')[0]}
+                                </Link>
+                            ) : (
+                                <Link
+                                    href="/login"
+                                    className="bg-[#0056b3] text-white border border-white/40 hover:bg-white hover:text-[#0056b3] px-4 py-2 rounded-sm text-sm font-bold transition-all flex items-center gap-2"
+                                >
+                                    <User size={16} />
+                                    Login
+                                </Link>
+                            )}
                         </div>
                     </div>
 
@@ -222,7 +253,25 @@ const Navbar = () => {
                                 >
                                     Post Requirement
                                 </Link>
-                                
+                                {user ? (
+                                    <Link
+                                        href="/profile"
+                                        onClick={() => setIsOpen(false)}
+                                        className="border-2 border-slate-200 text-slate-700 hover:bg-slate-50 py-4 rounded-xl flex items-center justify-center gap-2 font-bold text-lg transition-all"
+                                    >
+                                        <User size={20} />
+                                        {user.name || user.email || 'User'} 
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        href="/login"
+                                        onClick={() => setIsOpen(false)}
+                                        className="border-2 border-slate-200 text-slate-700 hover:bg-slate-50 py-4 rounded-xl flex items-center justify-center gap-2 font-bold text-lg transition-all"
+                                    >
+                                        <User size={20} />
+                                        Login
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </motion.div>

@@ -52,10 +52,24 @@ export async function GET(req) {
     }
 }
 
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+
 export async function POST(req) {
     try {
         await dbConnect();
         const body = await req.json();
+
+        // Extract user_token to attach userId
+        const userToken = (await cookies()).get('user_token')?.value;
+        if (userToken) {
+            try {
+                const decoded = jwt.verify(userToken, process.env.JWT_SECRET);
+                body.userId = decoded.userId;
+            } catch (err) {
+                console.error('Invalid token during lead creation:', err);
+            }
+        }
 
         const lead = await Lead.create(body);
         return NextResponse.json({ success: true, data: lead }, { status: 201 });
