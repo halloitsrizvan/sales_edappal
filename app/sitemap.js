@@ -1,9 +1,16 @@
+import dbConnect from '@/lib/mongodb';
+import Property from '@/models/Property';
 
 export default async function sitemap() {
     const baseUrl = 'https://salesedappal.com';
+    
+    await dbConnect();
+    
+    // Fetch all approved properties
+    const properties = await Property.find({ isApproved: true }).select('_id slug updatedAt').lean();
 
     // Static routes
-    const routes = [
+    const staticRoutes = [
         '',
         '/properties',
         '/about',
@@ -19,18 +26,13 @@ export default async function sitemap() {
         priority: route === '' ? 1 : 0.8,
     }));
 
-    // In a real scenario, you would fetch all properties from your database here
-    // and add them to the sitemap. 
-    /*
-    const properties = await fetchProperties();
+    // Dynamic property routes
     const propertyRoutes = properties.map((p) => ({
-      url: `${baseUrl}/properties/${p._id}`,
-      lastModified: p.updatedAt,
-      changeFrequency: 'daily',
-      priority: 0.7,
+        url: `${baseUrl}/properties/${p.slug || p._id}`,
+        lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.6,
     }));
-    return [...routes, ...propertyRoutes];
-    */
 
-    return routes;
+    return [...staticRoutes, ...propertyRoutes];
 }
