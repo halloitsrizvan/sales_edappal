@@ -34,7 +34,7 @@ export default function ProfilePage() {
         };
 
         fetchUserData();
-    }, []);
+    }, [router]);
 
     const handleLogout = async () => {
         try {

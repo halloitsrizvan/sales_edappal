@@ -10,22 +10,21 @@ export default function InquiriesPage() {
     const [page, setPage] = useState(1);
     const [actionId, setActionId] = useState(null);
 
-    const fetchLeads = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch(`/api/leads?type=general&page=${page}&limit=10`);
-            const data = await res.json();
-            if (data.success) {
-                setLeads(data.data);
-            }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const fetchLeads = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch(`/api/leads?type=general&page=${page}&limit=10`);
+                const data = await res.json();
+                if (data.success) {
+                    setLeads(data.data);
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchLeads();
     }, [page]);
 

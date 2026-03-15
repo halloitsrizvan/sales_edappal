@@ -22,23 +22,22 @@ export default function LeadsPage() {
     }, []);
 
     useEffect(() => {
+        const fetchLeads = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch(`/api/leads?type=property&page=${page}&limit=10`);
+                const data = await res.json();
+                if (data.success) {
+                    setLeads(data.data);
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchLeads();
     }, [page]);
-
-    const fetchLeads = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch(`/api/leads?type=property&page=${page}&limit=10`);
-            const data = await res.json();
-            if (data.success) {
-                setLeads(data.data);
-            }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleStatusChange = (id, status) => {
         const titles = {

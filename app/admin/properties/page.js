@@ -30,33 +30,32 @@ export default function PropertiesList() {
         return () => window.removeEventListener('click', handleClick);
     }, []);
 
-    const fetchProperties = async () => {
-        setLoading(true);
-        try {
-            const query = new URLSearchParams({
-                page,
-                limit: 10,
-                search,
-                type: filterType === 'All' ? '' : filterType,
-                status: filterStatus === 'All' ? '' : filterStatus,
-                isApproved: filterApproved === 'All' ? '' : (filterApproved === 'Approved' ? 'true' : 'false'),
-                admin: 'true', // Fetch everything
-            }).toString();
-
-            const res = await fetch(`/api/properties?${query}`);
-            const data = await res.json();
-            if (data.success) {
-                setProperties(data.data);
-                setTotalPages(data.pagination.pages);
-            }
-        } catch (error) {
-            console.error('Failed to fetch properties:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const fetchProperties = async () => {
+            setLoading(true);
+            try {
+                const query = new URLSearchParams({
+                    page,
+                    limit: 10,
+                    search,
+                    type: filterType === 'All' ? '' : filterType,
+                    status: filterStatus === 'All' ? '' : filterStatus,
+                    isApproved: filterApproved === 'All' ? '' : (filterApproved === 'Approved' ? 'true' : 'false'),
+                    admin: 'true', // Fetch everything
+                }).toString();
+
+                const res = await fetch(`/api/properties?${query}`);
+                const data = await res.json();
+                if (data.success) {
+                    setProperties(data.data);
+                    setTotalPages(data.pagination.pages);
+                }
+            } catch (error) {
+                console.error('Failed to fetch properties:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchProperties();
     }, [page, search, filterType, filterStatus, filterApproved]);
 
