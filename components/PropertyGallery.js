@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { Building2, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 export default function PropertyGallery({ images, title, status }) {
     const [mainImage, setMainImage] = useState(images?.[0] || null);
@@ -21,9 +22,10 @@ export default function PropertyGallery({ images, title, status }) {
         <div className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100">
             {/* Main Featured Image */}
             <div className="h-[400px] md:h-[500px] relative group overflow-hidden">
-                <img
+                <Image
                     src={mainImage}
                     alt={title}
+                    fill
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 
@@ -69,7 +71,7 @@ export default function PropertyGallery({ images, title, status }) {
                             className={`aspect-square rounded-xl overflow-hidden cursor-pointer transition-all border-2 ${mainImage === img ? 'border-sky-500 ring-2 ring-sky-200 scale-95 shadow-md' : 'border-transparent opacity-70 hover:opacity-100'
                                 }`}
                         >
-                            <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                            <Image src={img} alt={`Thumbnail ${idx + 1}`} fill className="w-full h-full object-cover" />
                         </div>
                     ))}
                 </div>

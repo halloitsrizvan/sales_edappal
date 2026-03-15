@@ -3,10 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-    Upload, Send, Home, MapPin, DollarSign, FileText, User as UserIcon, Phone, 
-    X, Loader2, Check, Copy, Building, Trees, Map, ShieldCheck, Camera, CreditCard, ChevronRight, Hash
-} from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Check, X, Building2, Phone, User, MessageCircle, Camera, Upload, Loader2, Coins, ArrowRight, ShieldCheck, ChevronRight, CreditCard, Copy, LayoutGrid, Info, Home, Building, FileText, User as UserIcon, DollarSign, Hash, Map, Trees, Send } from 'lucide-react';
+import Image from 'next/image';
 
 export default function ListProperty() {
     const router = useRouter();
@@ -494,7 +492,7 @@ export default function ListProperty() {
                             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                 {formData.images.map((url, index) => (
                                     <div key={index} className="relative aspect-square rounded-2xl overflow-hidden group shadow-sm border border-slate-200">
-                                        <img src={url} alt={`Listing ${index}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                        <Image src={url} alt={`Listing ${index}`} width={200} height={200} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <button type="button" onClick={() => removeImage(index)}
                                                 className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center transform scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all">
@@ -556,7 +554,7 @@ export default function ListProperty() {
                                 <div className="w-full md:w-64 shrink-0">
                                     {formData.paymentScreenshot ? (
                                         <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md border-4 border-white ring-1 ring-slate-200">
-                                            <img src={formData.paymentScreenshot} alt="Payment" className="w-full h-full object-cover" />
+                                            <Image src={formData.paymentScreenshot} alt="Payment" width={256} height={340} className="w-full h-full object-cover" />
                                             <button type="button" onClick={() => setFormData(prev => ({ ...prev, paymentScreenshot: '' }))}
                                                 className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 text-white flex items-center justify-center backdrop-blur-sm hover:bg-rose-500 transition-colors">
                                                 <X size={16} />

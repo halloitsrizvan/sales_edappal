@@ -442,9 +442,11 @@ const EditProperty = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                         {formData.images.map((url, index) => (
                             <div key={index} className="relative aspect-square rounded-2xl overflow-hidden group shadow-sm bg-slate-100 border border-slate-100">
-                                <img
+                                <Image
                                     src={url}
                                     alt={`Property ${index}`}
+                                    width={200}
+                                    height={200}
                                     className="w-full h-full object-cover"
                                 />
                                 <button

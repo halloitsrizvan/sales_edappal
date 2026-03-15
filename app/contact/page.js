@@ -1,7 +1,7 @@
-
 'use client';
 
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, MessageCircle, Send, Globe, Award, ShieldCheck, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -46,10 +46,12 @@ export default function Contact() {
             <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-slate-900">
                 {/* Background Decor */}
                 <div className="absolute inset-0 z-0">
-                    <img
-                        src="https://images.unsplash.com/photo-1578505504285-b15234ad1b7c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-                        alt="Contact Us Background"
-                        className="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale"
+                    <Image
+                        src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
+                        alt="Background"
+                        fill
+                        priority
+                        className="w-full h-full object-cover opacity-10"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-[#002B5B]/80"></div>
                 </div>

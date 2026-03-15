@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { LayoutDashboard, ShoppingBag, Users, Eye, TrendingUp, Building2, Loader2, Clock, CheckCircle, XCircle } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Dashboard = () => {
     const [properties, setProperties] = useState([]);
@@ -158,7 +159,7 @@ const Dashboard = () => {
                                         <div className="flex items-center gap-4 min-w-0 w-full sm:w-auto">
                                             <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
                                                 {prop.images?.[0] ? (
-                                                    <img src={prop.images[0]} className="w-full h-full object-cover" />
+                                                    <Image src={prop.images[0]} alt={prop.title} width={40} height={40} className="w-full h-full object-cover" />
                                                 ) : <Building2 className="w-full h-full p-3 text-slate-300" />}
                                             </div>
                                             <div className="min-w-0">

@@ -1,9 +1,9 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Building2, Search, Edit2, Trash2, CheckCircle, XCircle, Plus, Eye, MoreHorizontal, Tag, ShoppingCart } from 'lucide-react';
+import { Search, Plus, Filter, LayoutGrid, List, MoreVertical, Eye, CheckCircle2, XCircle, Clock, MapPin, Building2, ChevronLeft, ChevronRight, User, Trash2, ShieldCheck, History, ShoppingCart, Tag, Edit2, MoreHorizontal } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function PropertiesList() {
@@ -247,7 +247,7 @@ export default function PropertiesList() {
                                             <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden relative shrink-0">
                                                     {prop.images && prop.images[0] ? (
-                                                        <img src={prop.images[0]} alt={prop.title} className="w-full h-full object-cover" />
+                                                        <Image src={prop.images[0]} alt={prop.title} width={40} height={40} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <Building2 className="w-5 h-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-slate-300" />
                                                     )}
@@ -271,7 +271,7 @@ export default function PropertiesList() {
                                                 className={`p-1 rounded-full transition-colors ${prop.featured ? 'text-amber-500 bg-amber-50 hover:bg-amber-100' : 'text-slate-300 hover:text-amber-500 hover:bg-slate-100'}`}
                                                 suppressHydrationWarning
                                             >
-                                                <CheckCircle size={18} className={prop.featured ? 'fill-current' : ''} />
+                                                <CheckCircle2 size={18} className={prop.featured ? 'fill-current' : ''} />
                                             </button>
                                         </td>
                                         <td className="px-6 py-4">
@@ -283,7 +283,7 @@ export default function PropertiesList() {
                                                 suppressHydrationWarning
                                             >
                                                 {prop.isApproved ? (
-                                                    <><CheckCircle size={14} /> Approved</>
+                                                    <><CheckCircle2 size={14} /> Approved</>
                                                 ) : (
                                                     <><XCircle size={14} /> Pending</>
                                                 )}
@@ -298,7 +298,7 @@ export default function PropertiesList() {
                                                         title="Click to view full screenshot"
                                                         type="button"
                                                     >
-                                                        <img src={prop.paymentScreenshot} className="w-full h-full object-cover" alt="Payment" />
+                                                        <Image src={prop.paymentScreenshot} width={40} height={40} className="w-full h-full object-cover" alt="Payment" />
                                                     </button>
                                                 ) : (
                                                     <div className="text-slate-300" title="No payment screenshot provided">
@@ -316,9 +316,9 @@ export default function PropertiesList() {
                                                     }}
                                                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all mx-auto border shadow-sm hover:shadow-md ${prop.status === 'Sold'
                                                         ? 'bg-rose-50 text-rose-600 border-rose-100'
-                                                        : prop.status === 'Rent' ? 'bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100'
-                                                            : prop.status === 'Lease' ? 'bg-indigo-50 text-indigo-600 border-indigo-100 hover:bg-indigo-100'
-                                                                : 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100'}`}
+                                                        : prop.status === 'Rent' ? 'bg-amber-50 text-amber-600 border-amber-100'
+                                                            : prop.status === 'Lease' ? 'bg-indigo-50 text-indigo-600 border-indigo-100'
+                                                                : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}
                                                     suppressHydrationWarning
                                                 >
                                                     {prop.status === 'Sold' ? <ShoppingCart size={12} /> : <Tag size={12} />}
@@ -394,7 +394,7 @@ export default function PropertiesList() {
                                 <div className="flex gap-4">
                                     <div className="w-16 h-16 rounded-xl bg-slate-100 overflow-hidden relative shrink-0">
                                         {prop.images && prop.images[0] ? (
-                                            <img src={prop.images[0]} alt={prop.title} className="w-full h-full object-cover" />
+                                        <Image src={prop.images[0]} alt={prop.title} width={64} height={64} className="w-full h-full object-cover" />
                                         ) : (
                                             <Building2 className="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-slate-300" />
                                         )}
@@ -413,7 +413,7 @@ export default function PropertiesList() {
                                             className={`p-1.5 rounded-lg transition-colors ${prop.featured ? 'text-amber-500 bg-amber-50' : 'text-slate-300 bg-slate-50'}`}
                                             suppressHydrationWarning
                                         >
-                                            <CheckCircle size={18} className={prop.featured ? 'fill-current' : ''} />
+                                            <CheckCircle2 className={prop.featured ? 'fill-current' : ''} size={18} />
                                         </button>
                                     </div>
                                 </div>
@@ -426,7 +426,7 @@ export default function PropertiesList() {
                                             : 'bg-rose-50 text-rose-600 border border-rose-100'}`}
                                         suppressHydrationWarning
                                     >
-                                        {prop.isApproved ? <CheckCircle size={12} /> : <XCircle size={12} />}
+                                        {prop.isApproved ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
                                         {prop.isApproved ? 'Approved' : 'Pending'}
                                     </button>
 
@@ -527,7 +527,7 @@ export default function PropertiesList() {
                         <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${confirmDialog.type === 'delete' ? 'bg-rose-100 text-rose-600' : 'bg-sky-100 text-sky-600'
                                 }`}>
-                                {confirmDialog.type === 'delete' ? <Trash2 size={20} /> : <CheckCircle size={20} />}
+                                {confirmDialog.type === 'delete' ? <Trash2 size={20} /> : <CheckCircle2 size={20} />}
                             </div>
                             <h3 className="text-lg font-bold text-slate-800">{confirmDialog.title}</h3>
                         </div>
@@ -574,10 +574,13 @@ export default function PropertiesList() {
                             <XCircle size={24} />
                         </button>
                         <div className="p-2">
-                            <img
+                            <Image
                                 src={selectedScreenshot}
-                                alt="Payment Verification"
-                                className="w-full h-auto max-h-[85vh] object-contain rounded-xl"
+                                alt="Payment Screenshot"
+                                layout="intrinsic"
+                                width={800}
+                                height={1000}
+                                className="w-full rounded-xl border border-slate-100"
                             />
                         </div>
                         <div className="p-4 border-t border-slate-100 flex justify-between items-center bg-slate-50/50">

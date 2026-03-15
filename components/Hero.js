@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 
 const Hero = () => {
     const [activeTab, setActiveTab] = useState('Buy');
@@ -32,9 +33,11 @@ const Hero = () => {
         <section className="relative h-[66vh] min-h-[500px] flex items-center justify-center overflow-hidden">
             {/* Background Image with Bokeh Overlay */}
             <div className="absolute inset-0 z-0">
-                <img
+                <Image
                     src="https://as1.ftcdn.net/jpg/10/17/29/42/480_F_1017294245_4DxSgtKTMuFP6i9j75eruIJ5A19gcusO.jpg?token=1774077990_sJ7YAqvXQJ9MnKhVs7-oXiYlWSKNICrp4CU4BfATi6Q"
                     alt="Luxury Real Estate"
+                    fill
+                    priority
                     className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>

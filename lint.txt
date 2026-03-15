@@ -1,0 +1,40 @@
+﻿
+> sales_edappal@0.1.0 lint
+> eslint
+
+
+C:\Users\Acer\coding\sales_edappal\app\admin\inquiries\page.js
+  30:8  warning  React Hook useEffect has a missing dependency: 'fetchLeads'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Acer\coding\sales_edappal\app\admin\leads\page.js
+  26:8  warning  React Hook useEffect has a missing dependency: 'fetchLeads'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Acer\coding\sales_edappal\app\admin\properties\edit\[id]\page.js
+  84:8  warning  React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Acer\coding\sales_edappal\app\admin\properties\page.js
+   61:8    warning  React Hook useEffect has a missing dependency: 'fetchProperties'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  305:58   error    'ShoppingCart' is not defined                                                                                       react/jsx-no-undef
+  324:80   error    'ShoppingCart' is not defined                                                                                       react/jsx-no-undef
+  324:109  error    'Tag' is not defined                                                                                                react/jsx-no-undef
+  367:54   error    'Edit2' is not defined                                                                                              react/jsx-no-undef
+  447:46   error    'MoreHorizontal' is not defined                                                                                     react/jsx-no-undef
+  483:46   error    'Edit2' is not defined                                                                                              react/jsx-no-undef
+
+C:\Users\Acer\coding\sales_edappal\app\list-property\page.js
+  200:30  error  'Home' is not defined        react/jsx-no-undef
+  217:26  error  'Building' is not defined    react/jsx-no-undef
+  234:30  error  'FileText' is not defined    react/jsx-no-undef
+  247:38  error  'UserIcon' is not defined    react/jsx-no-undef
+  276:38  error  'Home' is not defined        react/jsx-no-undef
+  328:51  error  'DollarSign' is not defined  react/jsx-no-undef
+  339:51  error  'Hash' is not defined        react/jsx-no-undef
+  364:50  error  'Map' is not defined         react/jsx-no-undef
+  387:38  error  'Trees' is not defined       react/jsx-no-undef
+  605:52  error  'Send' is not defined        react/jsx-no-undef
+
+C:\Users\Acer\coding\sales_edappal\app\profile\page.js
+  37:8  warning  React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Γ£û 21 problems (16 errors, 5 warnings)
+

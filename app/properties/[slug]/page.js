@@ -1,6 +1,7 @@
 import Property from '@/models/Property';
 import dbConnect from '@/lib/mongodb';
 import Link from 'next/link';
+import Image from 'next/image';
 import { MapPin, Bed, Bath, Square, Check, ArrowLeft, Phone, Calendar, Shield, Building2, Droplets, Map, Share2, Copy } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import Script from 'next/script';
@@ -275,7 +276,7 @@ export default async function PropertyDetails({ params }) {
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="w-16 h-16 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-md flex items-center justify-center">
                                     {/* <Building2 className="text-slate-400" size={32} /> */}
-                                    <img src="/sameer.png" alt="Logo" className="w-full h-full object-cover" />
+                                    <Image src="/sameer.png" alt="Sameer Edappal - Property Consultant" width={64} height={64} className="w-full h-full object-cover" />
                                 </div>
                                 <div>
                                     <div className="font-bold text-slate-800 text-lg">Sameer Edappal</div>
@@ -297,7 +298,7 @@ export default async function PropertyDetails({ params }) {
                                     rel="noreferrer"
                                     className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-200 transition-all flex items-center justify-center gap-2"
                                 >
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" className="w-5 h-5" /> WhatsApp
+                                    <Image src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width={20} height={20} className="w-5 h-5" /> WhatsApp
                                 </a>
 
                                 <PropertyInquiryForm

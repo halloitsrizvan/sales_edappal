@@ -10,6 +10,7 @@ import Link from 'next/link';
 
 import FeedbackForm from '@/components/FeedbackForm';
 
+import Image from 'next/image';
 import PropertyCardSkeleton from '@/components/PropertyCardSkeleton';
 import SellerPromotions from '@/components/SellerPromotions';
 
@@ -194,55 +195,6 @@ export default function Home() {
       <SellerPromotions />
 
 
-      {/* About Section */}
-      {/* <section className="py-24 bg-white relative overflow-hidden">
-        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
-          <div className="relative group">
-            <div className="absolute -inset-4 bg-sky-100 rounded-3xl transform -rotate-2 group-hover:rotate-0 transition-transform duration-500"></div>
-            <img
-              src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-              alt="About Sales Edappal"
-              className="relative rounded-2xl shadow-xl w-full h-[500px] object-cover transition-transform group-hover:scale-[1.01] duration-500 z-10"
-            />
-            <div className="absolute -bottom-6 -right-6 z-20 bg-white p-8 rounded-2xl shadow-2xl border border-sky-100 animate-slide-up">
-              <div className="text-5xl font-bold text-sky-500 mb-1">10+</div>
-              <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">Years Experience</div>
-            </div>
-          </div>
-
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 leading-tight mb-6">
-                Trusted Real Estate Consultant in <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-sky-600">Edappal</span>
-              </h2>
-              <div className="w-24 h-1.5 bg-sky-500 rounded-full opacity-80"></div>
-            </div>
-
-            <p className="text-lg text-slate-600 leading-relaxed font-light">
-              Sales Edappal is your premier real estate partner based near OMG Shoes Footwear, Amsakachery.
-              Led by Sameer, we bring transparency, integrity, and local expertise to every transaction.
-              Whether you are buying your dream home, selling a plot, or looking for a commercial lease,
-              we ensure a seamless experience.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {['Verified Listings', 'Transparent Pricing', 'Documentation Support', 'Local Expertise'].map((item) => (
-                <div key={item} className="flex items-center gap-3 text-slate-700 font-medium p-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-sky-50 hover:border-sky-100 transition-all cursor-default">
-                  <div className="bg-sky-100 p-2 rounded-full text-sky-600">
-                    <Check size={18} />
-                  </div>
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            <Link href="/about" className="inline-flex items-center gap-2 text-sky-600 font-bold hover:gap-4 transition-all group mt-4">
-              Learn More About Us <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-        </div>
-      </section> */}
-
       {/* Services Section - Redesigned */}
       <section className="py-14 px-4 bg-white relative overflow-hidden"> 
         {/* Background Decorative Elements */}
@@ -409,9 +361,10 @@ export default function Home() {
             {/* Center Column (Featured Dark Card) */}
             <div className="bg-slate-900 rounded-[2rem] p-8 shadow-xl flex flex-col relative overflow-hidden min-h-[480px] transition-transform duration-300 md:translate-y-4">
               <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800"
                   alt="Real Estate Client"
+                  fill
                   className="w-full h-full object-cover grayscale"
                 />
               </div>
@@ -458,7 +411,7 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-slate-600 leading-relaxed text-sm">
-                  "Good service for buying and selling properties. Transparent process."
+                  &quot;Good service for buying and selling properties. Transparent process.&quot;
                 </p>
               </div>
 
@@ -478,7 +431,7 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-slate-600 leading-relaxed text-sm">
-                  "Sold my plot in a week! Their network in Edappal is very strong. Hassle-free experience working with them."
+                  &quot;Sold my plot in a week! Their network in Edappal is very strong. Hassle-free experience working with them.&quot;
                 </p>
               </div>
             </div>

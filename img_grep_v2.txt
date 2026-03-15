@@ -1,0 +1,10 @@
+﻿C:\Users\Acer\coding\sales_edappal\app\admin\dashboard\page.js:161:                                                    <img src={prop.images[0]} className="w-full h-full object-cover" />
+C:\Users\Acer\coding\sales_edappal\app\admin\properties\add\page.js:414:                                <img
+C:\Users\Acer\coding\sales_edappal\app\admin\properties\edit\[id]\page.js:445:                                <img
+C:\Users\Acer\coding\sales_edappal\app\admin\properties\page.js:250:                                                        <img src={prop.images[0]} alt={prop.title} className="w-full h-full object-cover" />
+C:\Users\Acer\coding\sales_edappal\app\admin\properties\page.js:301:                                                        <img src={prop.paymentScreenshot} className="w-full h-full object-cover" alt="Payment" />
+C:\Users\Acer\coding\sales_edappal\app\admin\properties\page.js:397:                                            <img src={prop.images[0]} alt={prop.title} className="w-full h-full object-cover" />
+C:\Users\Acer\coding\sales_edappal\app\admin\properties\page.js:577:                            <img
+C:\Users\Acer\coding\sales_edappal\app\contact\page.js:49:                    <img
+C:\Users\Acer\coding\sales_edappal\app\list-property\page.js:497:                                        <img src={url} alt={`Listing ${index}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+C:\Users\Acer\coding\sales_edappal\app\list-property\page.js:559:                                            <img src={formData.paymentScreenshot} alt="Payment" className="w-full h-full object-cover" />

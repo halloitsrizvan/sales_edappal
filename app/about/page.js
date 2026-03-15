@@ -1,8 +1,8 @@
-
 'use client';
 
-import { Check, Target, Compass, Award, Calendar, Users, Building, ShieldCheck, MapPin } from 'lucide-react';
+import { Target, Compass, Award, Building, ShieldCheck, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function About() {
     return (
@@ -11,9 +11,11 @@ export default function About() {
             <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-slate-900">
                 {/* Background Decor */}
                 <div className="absolute inset-0 z-0">
-                    <img
+                    <Image
                         src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                         alt="Background"
+                        fill
+                        priority
                         className="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-[#002B5B]/80"></div>
@@ -48,7 +50,7 @@ export default function About() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed font-light"
                     >
-                        Since 2015, Sales Edappal has redefined property transactions with unwavering transparency, deep local expertise, and a commitment to your family's future.
+                        Since 2015, Sales Edappal has redefined property transactions with unwavering transparency, deep local expertise, and a commitment to your family&apos;s future.
                     </motion.p>
                 </div>
                 
@@ -71,9 +73,11 @@ export default function About() {
                             <div className="absolute -inset-4 bg-sky-100 rounded-[3rem] transform rotate-3 transition-transform duration-500 opacity-50"></div> */}
                             
                             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl">
-                                <img
+                                <Image
                                     src="https://images.unsplash.com/photo-1626178793926-22b28830aa30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
                                     alt="Modern Real Estate Office"
+                                    width={1000}
+                                    height={500}
                                     className="w-full h-[500px] object-cover hover:scale-105 transition-transform duration-700"
                                 />
                                 {/* Overlay Stats Box */}

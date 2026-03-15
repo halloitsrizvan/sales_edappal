@@ -150,7 +150,7 @@ const SellerPromotions = () => {
             Ready to sell your property in Edappal?
           </h3>
           <p className="text-slate-400 mb-10 max-w-xl mx-auto font-medium relative z-10">
-            Let's connect and find the perfect buyer for your property. Our experts are here to guide you every step of the way.
+            Let&apos;s connect and find the perfect buyer for your property. Our experts are here to guide you every step of the way.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
