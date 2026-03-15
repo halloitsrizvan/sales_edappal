@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-export async function middleware(request) {
+export async function proxy(request) {
     const adminToken = request.cookies.get('admin_token')?.value;
     const userToken = request.cookies.get('user_token')?.value;
     const { pathname, search } = request.nextUrl;
