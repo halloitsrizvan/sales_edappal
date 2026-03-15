@@ -6,12 +6,12 @@ import { motion } from 'framer-motion';
 const SellerPromotions = () => {
   const premiumBenefits = [
     '90% Success Rate',
-    'Network of 325+ Trusted Brokers',
-    'Broadcast to 2800+ Buyers & Investor Groups',
-    'Reach 11,700+ Instagram Followers',
-    'Reach 5,300+ Facebook Followers',
-    'Reach 1,230+ YouTube Subscribers',
-    'Reach 650+ WhatsApp Status Viewers',
+    'Network of 360+ Trusted Brokers',
+    'Broadcast to 3500+ Buyers & Investor Groups',
+    'Reach 13,700+ Instagram Followers',
+    'Reach 6,900+ Facebook Followers',
+    'Reach 1,400+ YouTube Followers',
+    'Reach 460+ Facebook Page Followers',
   ];
 
   const standardBenefits = [

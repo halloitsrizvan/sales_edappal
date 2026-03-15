@@ -7,6 +7,8 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
 export async function GET() {
+    console.log('--- GET /api/user/me started ---');
+    const start = Date.now();
     try {
         const userToken = (await cookies()).get('user_token')?.value;
 
@@ -21,9 +23,12 @@ export async function GET() {
             return NextResponse.json({ success: false, message: 'Invalid token' }, { status: 401 });
         }
 
+        console.log('Connect DB start:', Date.now() - start, 'ms');
         await dbConnect();
+        console.log('Connect DB end:', Date.now() - start, 'ms');
 
         const user = await User.findById(decoded.userId).select('-password');
+        console.log('User fetch end:', Date.now() - start, 'ms');
         
         if (!user) {
             return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
@@ -31,6 +36,7 @@ export async function GET() {
 
         // Fetch user's submitted properties
         const properties = await Property.find({ userId: user._id }).sort({ createdAt: -1 });
+        console.log('Properties fetch end:', Date.now() - start, 'ms');
         
         // Fetch user's submitted requirements (leads without propertyId)
         const requirements = await Lead.find({ 
@@ -41,6 +47,7 @@ export async function GET() {
                 { propertyId: null }
             ]
         }).sort({ createdAt: -1 });
+        console.log('Requirements fetch end:', Date.now() - start, 'ms');
 
         return NextResponse.json({ 
             success: true, 
@@ -52,5 +59,7 @@ export async function GET() {
     } catch (error) {
         console.error('Fetch user data error:', error);
         return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+    } finally {
+        console.log('--- GET /api/user/me finished in', Date.now() - start, 'ms ---');
     }
 }

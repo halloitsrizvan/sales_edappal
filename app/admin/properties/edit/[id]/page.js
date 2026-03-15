@@ -81,7 +81,7 @@ const EditProperty = () => {
         };
 
         if (id) fetchProperty();
-    }, [id, router]);
+    }, [id]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;

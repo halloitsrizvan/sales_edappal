@@ -38,9 +38,4 @@ const LeadSchema = new mongoose.Schema({
     },
 });
 
-// Force re-register model to pick up schema changes in dev
-if (process.env.NODE_ENV === 'development') {
-    delete mongoose.models.Lead;
-}
-
 export default mongoose.models.Lead || mongoose.model('Lead', LeadSchema);

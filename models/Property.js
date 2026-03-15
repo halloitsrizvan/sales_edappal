@@ -61,9 +61,4 @@ const PropertySchema = new mongoose.Schema({
     timestamps: true,
 });
 
-// Force re-register model to pick up schema changes in dev
-if (process.env.NODE_ENV === 'development') {
-    delete mongoose.models.Property;
-}
-
 export default mongoose.models.Property || mongoose.model('Property', PropertySchema);

@@ -51,16 +51,19 @@ const Navbar = () => {
             <div className="bg-[#0056b3] text-white py-2 md:py-3 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
                     {/* Logo Section */}
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="relative h-10 w-32 md:h-12 md:w-40 transition-transform duration-300 group-hover:scale-105">
+                    <Link href="/" className="flex items-center -my-2 md:-my-3 group cursor-pointer gap-2">
+                        <div className="relative h-14 w-14 md:h-[3.75rem] md:w-16 transition-transform duration-300">
                             <Image
-                                src="/logo.png"
-                                alt="Sales Edappal"
+                                src="/logo-no-bg.png"
+                                alt="Sales Edappal Logo"
                                 fill
-                                className="object-contain brightness-0 invert" // Make logo white for blue background
+                                className="object-contain brightness-[1.2]"
                                 priority
                             />
                         </div>
+                        <span className="text-white text-base md:text-xl font-bold tracking-tight whitespace-nowrap">
+                            Sales Edappal
+                        </span>
                     </Link>
 
                     {/* Desktop Contact & Buttons */}
