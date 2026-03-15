@@ -65,7 +65,7 @@ const PropertySchema = new mongoose.Schema({
     timestamps: true,
 });
 
-PropertySchema.pre('save', function (next) {
+PropertySchema.pre('save', function () {
     if (this.isModified('title') || this.isModified('location') || !this.slug) {
         const baseSlug = `${this.title}-${this.location}`
             .toLowerCase()
@@ -73,7 +73,6 @@ PropertySchema.pre('save', function (next) {
             .replace(/ +/g, '-');
         this.slug = baseSlug;
     }
-    next();
 });
 
 export default mongoose.models.Property || mongoose.model('Property', PropertySchema);

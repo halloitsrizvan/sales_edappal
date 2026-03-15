@@ -108,7 +108,6 @@ export async function POST(req) {
             }
         }
 
-        console.log('POST Property Body:', body);
         const property = await Property.create(body);
 
         return NextResponse.json({ success: true, data: property }, { status: 201 });
