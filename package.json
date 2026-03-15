@@ -19,7 +19,7 @@
     "lucide-react": "^0.574.0",
     "mongodb": "^7.1.0",
     "mongoose": "^9.3.0",
-    "next": "15.2.1",
+    "next": "^15.2.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.5.0"
@@ -29,7 +29,7 @@
     "@tailwindcss/postcss": "^4.0.0",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "15.2.1",
+    "eslint-config-next": "^15.2.9",
     "tailwindcss": "^4.0.0"
   }
 }
