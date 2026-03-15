@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Plus, Filter, LayoutGrid, List, MoreVertical, Eye, CheckCircle2, XCircle, Clock, MapPin, Building2, ChevronLeft, ChevronRight, User, Trash2, ShieldCheck, History, ShoppingCart, Tag, Edit2, MoreHorizontal } from 'lucide-react';
 import Image from 'next/image';
@@ -30,34 +30,35 @@ export default function PropertiesList() {
         return () => window.removeEventListener('click', handleClick);
     }, []);
 
-    useEffect(() => {
-        const fetchProperties = async () => {
-            setLoading(true);
-            try {
-                const query = new URLSearchParams({
-                    page,
-                    limit: 10,
-                    search,
-                    type: filterType === 'All' ? '' : filterType,
-                    status: filterStatus === 'All' ? '' : filterStatus,
-                    isApproved: filterApproved === 'All' ? '' : (filterApproved === 'Approved' ? 'true' : 'false'),
-                    admin: 'true', // Fetch everything
-                }).toString();
+    const fetchProperties = useCallback(async () => {
+        setLoading(true);
+        try {
+            const query = new URLSearchParams({
+                page,
+                limit: 10,
+                search,
+                type: filterType === 'All' ? '' : filterType,
+                status: filterStatus === 'All' ? '' : filterStatus,
+                isApproved: filterApproved === 'All' ? '' : (filterApproved === 'Approved' ? 'true' : 'false'),
+                admin: 'true', // Fetch everything
+            }).toString();
 
-                const res = await fetch(`/api/properties?${query}`);
-                const data = await res.json();
-                if (data.success) {
-                    setProperties(data.data);
-                    setTotalPages(data.pagination.pages);
-                }
-            } catch (error) {
-                console.error('Failed to fetch properties:', error);
-            } finally {
-                setLoading(false);
+            const res = await fetch(`/api/properties?${query}`);
+            const data = await res.json();
+            if (data.success) {
+                setProperties(data.data);
+                setTotalPages(data.pagination.pages);
             }
-        };
-        fetchProperties();
+        } catch (error) {
+            console.error('Failed to fetch properties:', error);
+        } finally {
+            setLoading(false);
+        }
     }, [page, search, filterType, filterStatus, filterApproved]);
+
+    useEffect(() => {
+        fetchProperties();
+    }, [fetchProperties]);
 
     const handleApproveToggle = async (id, currentStatus) => {
         setConfirmDialog({
