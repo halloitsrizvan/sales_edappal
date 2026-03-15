@@ -1,19 +1,19 @@
 
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
-import Settings from '@/models/Settings';
+import SiteSettings from '@/models/SiteSettings';
 
 export async function POST() {
     try {
         await dbConnect();
 
         // Update the last read timestamp in settings
-        let settings = await Settings.findOne();
-        if (!settings) {
-            settings = await Settings.create({ lastReadNotificationsAt: new Date() });
+        let siteSettings = await SiteSettings.findOne();
+        if (!siteSettings) {
+            siteSettings = await SiteSettings.create({ lastReadNotificationsAt: new Date() });
         } else {
-            settings.lastReadNotificationsAt = new Date();
-            await settings.save();
+            siteSettings.lastReadNotificationsAt = new Date();
+            await siteSettings.save();
         }
 
         return NextResponse.json({ success: true, message: 'Notifications marked as read' });

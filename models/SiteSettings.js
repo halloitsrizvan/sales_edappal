@@ -1,7 +1,6 @@
-
 import mongoose from 'mongoose';
 
-const SettingsSchema = new mongoose.Schema({
+const SiteSettingsSchema = new mongoose.Schema({
     phone: {
         type: String,
         default: '9895294949',
@@ -24,4 +23,5 @@ const SettingsSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-export default mongoose.models.Settings || mongoose.model('Settings', SettingsSchema);
+const SiteSettings = mongoose.models.SiteSettings || mongoose.model('SiteSettings', SiteSettingsSchema);
+export default SiteSettings;

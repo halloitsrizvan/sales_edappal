@@ -4,16 +4,16 @@ import dbConnect from '@/lib/mongodb';
 import Property from '@/models/Property';
 import Lead from '@/models/Lead';
 import Review from '@/models/Review';
-import Settings from '@/models/Settings';
+import SiteSettings from '@/models/SiteSettings';
 
 export async function GET() {
     try {
         await dbConnect();
 
         // Get last read timestamp
-        let settings = await Settings.findOne();
-        if (!settings) settings = await Settings.create({});
-        const lastRead = settings.lastReadNotificationsAt || new Date(0);
+        let siteSettings = await SiteSettings.findOne();
+        if (!siteSettings) siteSettings = await SiteSettings.create({});
+        const lastRead = siteSettings.lastReadNotificationsAt || new Date(0);
 
         // Fetch latest properties
         const latestProperties = await Property.find({ isApproved: false })
