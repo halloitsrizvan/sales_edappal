@@ -1,29 +1,57 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
-    Upload, Send, Home, MapPin, DollarSign, FileText, User, Phone, 
-    X, Loader2, Check, Copy, Building, Trees, Map, ShieldCheck, Camera, CreditCard, ChevronRight
+    Upload, Send, Home, MapPin, DollarSign, FileText, User as UserIcon, Phone, 
+    X, Loader2, Check, Copy, Building, Trees, Map, ShieldCheck, Camera, CreditCard, ChevronRight, Hash
 } from 'lucide-react';
 
 export default function ListProperty() {
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [user, setUser] = useState(null);
 
     const handleCopy = (text) => {
         navigator.clipboard.writeText(text);
-        setCopied(true);
+        setCopied(text === '9895294949');
         setTimeout(() => setCopied(false), 2000);
     };
 
     const [formData, setFormData] = useState({
         name: '', phone: '', title: '', type: 'House', status: 'For Sale',
-        location: '', price: '', area: '', description: '', path: '',
+        location: '', price: '', priceAmount: '', area: '', description: '', path: '',
         water: [], amenities: [], images: [], paymentScreenshot: '', mapUrl: '',
+        userId: ''
     });
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await fetch('/api/user/me');
+                const data = await res.json();
+                if (data.success) {
+                    setUser(data.user);
+                    setFormData(prev => ({
+                        ...prev,
+                        userId: data.user._id,
+                        name: data.user.name || prev.name,
+                        phone: data.user.phone || prev.phone
+                    }));
+                } else {
+                    // Optionally redirect to login if not authenticated
+                    router.push('/login?redirect=/list-property');
+                }
+            } catch (err) {
+                console.error('Auth error:', err);
+            }
+        };
+        fetchUser();
+    }, [router]);
 
     const [newAmenity, setNewAmenity] = useState('');
 
@@ -115,20 +143,25 @@ export default function ListProperty() {
             alert('Please upload the payment screenshot to proceed.');
             return;
         }
+
+        if (!formData.userId) {
+            alert('Please login to submit a property.');
+            router.push('/login?redirect=/list-property');
+            return;
+        }
+
         setLoading(true);
         try {
             const finalAmenities = [...formData.amenities];
             if (formData.water.length > 0) finalAmenities.push(`Water: ${formData.water.join(', ')}`);
             if (formData.path) finalAmenities.push(`Path: ${formData.path}`);
 
-            const numericPrice = parseInt(formData.price.replace(/[^\d]/g, '')) || 0;
-
             const payload = {
                 ...formData,
                 ownerName: formData.name,
                 ownerPhone: formData.phone,
                 amenities: finalAmenities,
-                priceAmount: numericPrice,
+                priceAmount: parseInt(formData.priceAmount) || 0,
                 beds: 0, baths: 0, parking: '', age: '',
                 isApproved: false, featured: false,
             };
@@ -213,7 +246,7 @@ export default function ListProperty() {
                         <section>
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                                    <User size={20} strokeWidth={2.5} />
+                                    <UserIcon size={20} strokeWidth={2.5} />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-bold text-slate-800">Contact Details</h3>
@@ -258,50 +291,61 @@ export default function ListProperty() {
                                         placeholder="e.g. Beautiful 3BHK Villa in Heart of Edappal" suppressHydrationWarning />
                                 </div>
 
-                                <div className="grid md:grid-cols-3 gap-6">
-                                    <div className="space-y-2.5">
-                                        <label className="text-sm font-semibold text-slate-700">Property Type</label>
-                                        <div className="relative">
-                                            <select value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                                                className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 focus:bg-white transition-all outline-none appearance-none font-medium text-slate-800 cursor-pointer" suppressHydrationWarning>
-                                                <option>House</option>
-                                                <option>Plot</option>
-                                                <option>Commercial</option>
-                                                <option>Apartment</option>
-                                                <option>Villa</option>
-                                                <option>Vehicle</option>
-                                            </select>
-                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                                                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2.5">
-                                        <label className="text-sm font-semibold text-slate-700">Listing Purpose</label>
-                                        <div className="relative">
-                                            <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                                className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 focus:bg-white transition-all outline-none appearance-none font-medium text-slate-800 cursor-pointer" suppressHydrationWarning>
-                                                <option>For Sale</option>
-                                                <option>For Rent</option>
-                                                <option>For Lease</option>
-                                            </select>
-                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                                                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2.5">
-                                        <label className="text-sm font-semibold text-slate-700">Price <span className="text-rose-500">*</span></label>
-                                        <div className="relative">
-                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                                <DollarSign size={18} />
-                                            </div>
-                                            <input type="text" required value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                                                className="w-full pl-11 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 focus:bg-white transition-all outline-none font-medium text-slate-800"
-                                                placeholder="e.g. ₹45 Lakhs" suppressHydrationWarning />
-                                        </div>
-                                    </div>
-                                </div>
+                                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                     <div className="space-y-2.5">
+                                         <label className="text-sm font-semibold text-slate-700">Property Type</label>
+                                         <div className="relative">
+                                             <select value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                                                 className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 focus:bg-white transition-all outline-none appearance-none font-medium text-slate-800 cursor-pointer" suppressHydrationWarning>
+                                                 <option>House</option>
+                                                 <option>Plot</option>
+                                                 <option>Commercial</option>
+                                                 <option>Apartment</option>
+                                                 <option>Villa</option>
+                                                 <option>Vehicle</option>
+                                             </select>
+                                             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                                 <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div className="space-y-2.5">
+                                         <label className="text-sm font-semibold text-slate-700">Purpose</label>
+                                         <div className="relative">
+                                             <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                                                 className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 focus:bg-white transition-all outline-none appearance-none font-medium text-slate-800 cursor-pointer" suppressHydrationWarning>
+                                                 <option>For Sale</option>
+                                                 <option>For Rent</option>
+                                                 <option>For Lease</option>
+                                             </select>
+                                             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                                 <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div className="space-y-2.5">
+                                         <label className="text-sm font-semibold text-slate-700">Display Price <span className="text-rose-500">*</span></label>
+                                         <div className="relative">
+                                             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                                 <DollarSign size={18} />
+                                             </div>
+                                             <input type="text" required value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                                                 className="w-full pl-11 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 focus:bg-white transition-all outline-none font-medium text-slate-800"
+                                                 placeholder="₹45 Lakhs" suppressHydrationWarning />
+                                         </div>
+                                     </div>
+                                     <div className="space-y-2.5">
+                                         <label className="text-sm font-semibold text-slate-700">Numeric Price <span className="text-slate-400 font-normal">(Sorting)</span></label>
+                                         <div className="relative">
+                                             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                                 <Hash size={18} />
+                                             </div>
+                                             <input type="number" required value={formData.priceAmount} onChange={(e) => setFormData({ ...formData, priceAmount: e.target.value })}
+                                                 className="w-full pl-11 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 focus:bg-white transition-all outline-none font-medium text-slate-800"
+                                                 placeholder="4500000" suppressHydrationWarning />
+                                         </div>
+                                     </div>
+                                 </div>
 
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2.5">

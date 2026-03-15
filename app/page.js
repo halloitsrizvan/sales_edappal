@@ -20,7 +20,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const propsRes = await fetch('/api/properties?limit=3&featured=true');
+        const propsRes = await fetch('/api/properties?limit=8&featured=true');
         const propsData = await propsRes.json();
         
         if (propsData.success) {

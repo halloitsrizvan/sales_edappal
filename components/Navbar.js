@@ -41,6 +41,7 @@ const Navbar = () => {
         { name: 'Properties for Sale', href: '/properties?status=Buy' },
         { name: 'Properties for Rent', href: '/properties?status=Rent' },
         { name: 'Properties for Lease', href: '/properties?status=Lease' },
+        { name: 'Post Property', href: '/list-property?action=post' },
         { name: 'About Us', href: '/about' },
         { name: 'Contact Us', href: '/contact' },
     ];
@@ -112,12 +113,12 @@ const Navbar = () => {
                             >
                                 Post Property
                             </Link>
-                            <Link
+                            {/* <Link
                                 href="/list-property?action=requirement"
                                 className="bg-white text-[#0056b3] hover:bg-slate-50 px-4 py-2 rounded-sm text-sm font-bold transition-all"
                             >
                                 Post Requirement
-                            </Link>
+                            </Link> */}
                             {user ? (
                                 <Link
                                     href="/profile"
@@ -249,13 +250,13 @@ const Navbar = () => {
                                 >
                                     Post Property
                                 </Link>
-                                <Link
+                                {/* <Link
                                     href="/list-property?action=requirement"
                                     onClick={() => setIsOpen(false)}
                                     className="border-2 border-[#0056b3] text-[#0056b3] py-4 rounded-xl text-center font-bold text-lg"
                                 >
                                     Post Requirement
-                                </Link>
+                                </Link> */}
                                 {user ? (
                                     <Link
                                         href="/profile"
