@@ -57,8 +57,23 @@ const PropertySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    slug: {
+        type: String,
+        unique: true,
+    }
 }, {
     timestamps: true,
+});
+
+PropertySchema.pre('save', function (next) {
+    if (this.isModified('title') || this.isModified('location') || !this.slug) {
+        const baseSlug = `${this.title}-${this.location}`
+            .toLowerCase()
+            .replace(/[^\w ]+/g, '')
+            .replace(/ +/g, '-');
+        this.slug = baseSlug;
+    }
+    next();
 });
 
 export default mongoose.models.Property || mongoose.model('Property', PropertySchema);

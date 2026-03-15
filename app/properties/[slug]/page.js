@@ -1,27 +1,63 @@
-
-import dbConnect from '@/lib/mongodb';
 import Property from '@/models/Property';
+import dbConnect from '@/lib/mongodb';
 import Link from 'next/link';
-import { MapPin, Bed, Bath, Square, Check, ArrowLeft, Phone, Calendar, Shield, Building2, Droplets, Map } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Check, ArrowLeft, Phone, Calendar, Shield, Building2, Droplets, Map, Share2, Copy } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
 
 import PropertyGallery from '@/components/PropertyGallery';
 import PropertyInquiryForm from '@/components/PropertyInquiryForm';
+import CopyLink from '@/components/CopyLink';
 
 export const dynamic = 'force-dynamic';
 
-export default async function PropertyDetails({ params }) {
-    const { id } = await params;
+export async function generateMetadata({ params }) {
+    const { slug } = await params;
+    const isObjectId = slug.match(/^[0-9a-fA-F]{24}$/);
+    await dbConnect();
+    const property = await Property.findOne({
+        $or: [
+            { slug: slug },
+            ...(isObjectId ? [{ _id: slug }] : [])
+        ]
+    }).lean();
 
+    if (!property) return { title: 'Property Not Found' };
+
+    const title = `${property.title} in ${property.location} | Sales Edappal`;
+    const description = property.description.substring(0, 160);
+
+    return {
+        title,
+        description,
+        alternates: {
+            canonical: `/properties/${slug}`,
+        },
+        openGraph: {
+            title,
+            description,
+            images: property.images?.length > 0 ? [property.images[0]] : [],
+        },
+    };
+}
+
+export default async function PropertyDetails({ params }) {
+    const { slug } = await params;
+    const isObjectId = slug.match(/^[0-9a-fA-F]{24}$/);
     await dbConnect();
     let property;
     try {
-        property = await Property.findById(id).lean();
+        property = await Property.findOne({
+            $or: [
+                { slug: slug },
+                ...(isObjectId ? [{ _id: slug }] : [])
+            ]
+        }).lean();
         if (property) {
             property._id = property._id.toString();
         }
     } catch (error) {
-        console.error('Invalid ID or DB error');
+        console.error('Lookup error:', error);
         notFound();
     }
 
@@ -66,12 +102,73 @@ export default async function PropertyDetails({ params }) {
         return property.mapUrl;
     };
 
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        'name': property.title,
+        'image': property.images,
+        'description': property.description,
+        'brand': {
+            '@type': 'Brand',
+            'name': 'Sales Edappal'
+        },
+        'offers': {
+            '@type': 'Offer',
+            'url': `https://salesedappal.com/properties/${property._id}`,
+            'priceCurrency': 'INR',
+            'price': property.priceAmount,
+            'availability': 'https://schema.org/InStock',
+        },
+        'category': property.type,
+        'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': property.location,
+            'addressRegion': 'Kerala',
+            'addressCountry': 'IN'
+        }
+    };
+
+    const breadcrumbLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            {
+                '@type': 'ListItem',
+                'position': 1,
+                'name': 'Home',
+                'item': 'https://salesedappal.com'
+            },
+            {
+                '@type': 'ListItem',
+                'position': 2,
+                'name': 'Properties',
+                'item': 'https://salesedappal.com/properties'
+            },
+            {
+                '@type': 'ListItem',
+                'position': 3,
+                'name': property.title,
+                'item': `https://salesedappal.com/properties/${property._id}`
+            }
+        ]
+    };
+
     return (
-        <div className="bg-slate-50 min-h-screen py-12">
+        <div className="bg-slate-50 min-h-screen py-4">
+            <Script
+                id="property-jsonld"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <Script
+                id="breadcrumb-jsonld"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+            />
             <div className="container mx-auto px-4">
                 {/* Breadcrumb / Back */}
                 <div className="mb-6">
-                    <Link href="/properties" className="inline-flex items-center gap-2 text-slate-500 hover:text-sky-600 transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-sm font-medium">
+                    <Link href="/properties" className="inline-flex items-center gap-2 text-slate-500 hover:text-sky-600 transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-sm font-medium w-fit">
                         <ArrowLeft size={16} /> Back to Listings
                     </Link>
                 </div>
@@ -81,7 +178,10 @@ export default async function PropertyDetails({ params }) {
                     <div className="lg:col-span-2 space-y-8">
                         {/* Title & Price Header (Mobile only) */}
                         <div className="lg:hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                            <h1 className="text-2xl font-bold text-slate-800 mb-2">{property.title}</h1>
+                            <div className="flex justify-between items-start gap-4 mb-2">
+                                <h1 className="text-2xl font-bold text-slate-800">{property.title}</h1>
+                                <CopyLink slug={property.slug || property._id} />
+                            </div>
                             <div className="flex items-center text-slate-500 mb-4">
                                 <MapPin size={18} className="mr-1 text-sky-500" />
                                 {property.location}
@@ -159,7 +259,12 @@ export default async function PropertyDetails({ params }) {
                     <div className="space-y-6 lg:col-span-1">
                         <div className="bg-white p-6 rounded-2xl shadow-lg border border-sky-100 sticky top-24">
                             <div className="hidden lg:block mb-6 border-b border-dashed border-slate-200 pb-6">
-                                <h1 className="text-2xl font-bold text-slate-800 mb-2 leading-tight">{property.title}</h1>
+                                <div className="flex justify-between items-start gap-4 mb-2">
+                                    <h1 className="text-2xl font-bold text-slate-800 leading-tight">{property.title}</h1>
+                                    <div className="shrink-0">
+                                        <CopyLink slug={property.slug || property._id} />
+                                    </div>
+                                </div>
                                 <div className="flex items-center text-slate-500 mb-4">
                                     <MapPin size={18} className="mr-1 text-sky-500" />
                                     {property.location}

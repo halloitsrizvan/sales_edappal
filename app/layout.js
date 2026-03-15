@@ -14,40 +14,44 @@ const poppins = Poppins({
 export const metadata = {
   metadataBase: new URL('https://salesedappal.com'),
   title: {
-    default: 'Sales Edappal | Real Estate Edappal & Malappuram',
+    default: 'Sales Edappal | Real Estate Consultant Edappal & Malappuram',
     template: '%s | Sales Edappal'
   },
-  description: 'Trusted Real Estate Consultant in Edappal led by Sameer. Buy, sell, rent, or lease verified properties, houses, and land across Edappal and Malappuram district.',
+  description: 'The most trusted real estate consultant in Edappal. Sameer offers verified houses, land plots, and commercial properties for sale, rent, and lease across Malappuram district.',
   keywords: [
-    'Real Estate Edappal',
-    'Property for Sale Malappuram',
-    'Rent House Edappal',
-    'Land for Sale Edappal',
-    'Vehicle Sale Edappal',
-    'Commercial Property Edappal',
-    'Sameer Real Estate Edappal',
-    'Buy House Edappal',
-    'Lease Property Malappuram'
+    'property for sale in edappal',
+    'land for sale edappal',
+    'real estate edappal',
+    'house for sale malappuram',
+    'plots for sale edappal',
+    'real estate consultant edappal',
+    'commercial property edappal',
+    'rent house edappal',
+    'Sameer Edappal real estate',
+    'verified properties edappal'
   ],
-  authors: [{ name: 'Sameer', url: 'https://salesedappal.com' }],
-  creator: 'Sameer',
+  authors: [{ name: 'Sameer Edappal', url: 'https://salesedappal.com' }],
+  creator: 'Sameer Edappal',
   publisher: 'Sales Edappal',
   formatDetection: {
     email: false,
     address: true,
     telephone: true,
   },
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'Sales Edappal | Buy, Sell, Rent, Lease in Edappal & Malappuram',
-    description: 'Trusted Real Estate Consultant in Edappal. Verified listings for houses, plots, and commercial spaces.',
+    title: 'Sales Edappal | Real Estate Consultant in Malappuram',
+    description: 'Find your dream home or investment plot in Edappal. Verified listings and expert guidance by Sameer.',
     url: 'https://salesedappal.com',
     siteName: 'Sales Edappal',
     images: [
       {
-        url: '/logo.png',
-        width: 800,
-        height: 600,
-        alt: 'Sales Edappal Logo',
+        url: '/og-image.jpg', // Should create this image
+        width: 1200,
+        height: 630,
+        alt: 'Sales Edappal - Real Estate Edappal',
       },
     ],
     locale: 'en_IN',
@@ -55,13 +59,15 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sales Edappal | Real Estate Edappal',
-    description: 'Trusted Real Estate Consultant in Edappal. Buy, sell, or rent verified properties.',
-    images: ['/logo.png'],
+    title: 'Sales Edappal | Property Consultant Edappal',
+    description: 'Verified houses and land for sale in Edappal and Malappuram district.',
+    images: ['/og-image.jpg'],
+    creator: '@salesedappal',
   },
   robots: {
     index: true,
     follow: true,
+    nocache: true,
     googleBot: {
       index: true,
       follow: true,
@@ -71,19 +77,21 @@ export const metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code', // User should replace this
+    google: 'your-google-verification-code',
   },
 };
 
 export default function RootLayout({ children }) {
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': 'RealEstateAgent',
     'name': 'Sales Edappal',
+    'description': 'Trusted Real Estate Consultant in Edappal. Expert in buying, selling, and renting houses and land plots.',
     'image': 'https://salesedappal.com/logo.png',
     '@id': 'https://salesedappal.com',
     'url': 'https://salesedappal.com',
     'telephone': '+919895294949',
+    'priceRange': '₹₹₹',
     'address': {
       '@type': 'PostalAddress',
       'streetAddress': 'OMG Shoes Footwear, Amsakachery',
@@ -94,18 +102,13 @@ export default function RootLayout({ children }) {
     },
     'geo': {
       '@type': 'GeoCoordinates',
-      'latitude': 10.7634, // Approximate latitude for Edappal
-      'longitude': 75.9892 // Approximate longitude for Edappal
+      'latitude': 10.7634,
+      'longitude': 75.9892
     },
     'openingHoursSpecification': {
       '@type': 'OpeningHoursSpecification',
       'dayOfWeek': [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
+        'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
       ],
       'opens': '09:00',
       'closes': '20:00'
@@ -114,6 +117,12 @@ export default function RootLayout({ children }) {
       'https://www.facebook.com/profile.php?id=61552641255941&mibextid=ViGcVu',
       'https://instagram.com/sales_edappal?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr',
       'https://www.youtube.com/@salesedappal'
+    ],
+    'areaServed': [
+      { '@type': 'Place', 'name': 'Edappal' },
+      { '@type': 'Place', 'name': 'Malappuram' },
+      { '@type': 'Place', 'name': 'Ponnani' },
+      { '@type': 'Place', 'name': 'Kuttippuram' }
     ]
   };
 

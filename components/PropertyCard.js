@@ -11,12 +11,14 @@ const PropertyCard = ({ property }) => {
     return (
         <div className="group bg-white rounded-md overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 flex flex-col h-full">
             <div className="relative h-64 overflow-hidden">
-                <Link href={`/properties/${property._id}`}>
+                <Link href={`/properties/${property.slug || property._id}`}>
                     {property.images && property.images[0] ? (
-                        <img
+                        <Image
                             src={property.images[0]}
-                            alt={property.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            alt={`${property.title} for sale in ${property.location} - Sales Edappal`}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                         />
                     ) : (
                         <div className="w-full h-full bg-slate-100 flex items-center justify-center">
@@ -36,7 +38,7 @@ const PropertyCard = ({ property }) => {
                     </span> */}
                 </div>
                 <div className="absolute bottom-4 right-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <Link href={`/properties/${property._id}`} className="bg-white text-sky-600 p-2 rounded-full shadow-lg hover:bg-sky-50 transition-colors block">
+                    <Link href={`/properties/${property.slug || property._id}`} className="bg-white text-sky-600 p-2 rounded-full shadow-lg hover:bg-sky-50 transition-colors block">
                         <ArrowRight size={20} />
                     </Link>
                 </div>
@@ -46,7 +48,7 @@ const PropertyCard = ({ property }) => {
                 <div className="flex justify-between items-start mb-2">
                     <div>
                         <h3 className="text-lg font-bold text-slate-800 line-clamp-1 group-hover:text-sky-600 transition-colors">
-                            <Link href={`/properties/${property._id}`}>{property.title}</Link>
+                            <Link href={`/properties/${property.slug || property._id}`}>{property.title}</Link>
                         </h3>
                         <div className="flex items-center text-slate-500 text-sm mt-1">
                             <MapPin size={14} className="mr-1 text-sky-400" />
@@ -81,7 +83,7 @@ const PropertyCard = ({ property }) => {
 
                 <div className="flex gap-3 mt-auto">
                     <Link
-                        href={`/properties/${property._id}`}
+                        href={`/properties/${property.slug || property._id}`}
                         className="flex-1 text-center py-2.5 rounded-xl border border-sky-100 text-sky-600 font-medium hover:bg-sky-50 transition-colors"
                     >
                         View Details

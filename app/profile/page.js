@@ -169,7 +169,7 @@ export default function ProfilePage() {
                                             <span className="text-xs font-bold px-3 py-1.5 bg-slate-50 text-slate-600 rounded-lg">{prop.type}</span>
                                             <span className="text-xs font-bold px-3 py-1.5 bg-slate-50 text-slate-600 rounded-lg">{prop.status}</span>
                                             {prop.isApproved && (
-                                                <Link href={`/properties/${prop._id}`} className="ml-auto text-xs font-bold text-sky-500 hover:underline">
+                                                <Link href={`/properties/${prop.slug || prop._id}`} className="ml-auto text-xs font-bold text-sky-500 hover:underline">
                                                     View Public Listing →
                                                 </Link>
                                             )}
@@ -181,7 +181,7 @@ export default function ProfilePage() {
                     </motion.div>
 
                     {/* Requirements Section */}
-                    <motion.div 
+                    {/* <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
@@ -229,7 +229,7 @@ export default function ProfilePage() {
                                 ))}
                             </div>
                         )}
-                    </motion.div>
+                    </motion.div> */}
                 </div>
             </div>
         </div>

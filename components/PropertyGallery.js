@@ -29,7 +29,7 @@ export default function PropertyGallery({ images, title, status }) {
 
                 {/* Status Badge */}
                 <div className="absolute top-4 right-4 bg-sky-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg z-10">
-                    {status === 'Sold' ? 'Sold Out' : 'Available'}
+                    {status }
                 </div>
 
                 {/* Overlays for navigation if many images (optional, but nice) */}
