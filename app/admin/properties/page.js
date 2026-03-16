@@ -73,17 +73,30 @@ export default function PropertiesList() {
 
     const processApproveToggle = async () => {
         const { id, currentStatus } = confirmDialog;
+        setConfirmDialog(prev => ({ ...prev, isLoading: true }));
         try {
             const res = await fetch(`/api/properties/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isApproved: !currentStatus }),
             });
-            if (res.ok) fetchProperties();
+            const data = await res.json();
+            
+            if (res.ok && data.success) {
+                // Optimistic update
+                setProperties(prev => prev.map(p => p._id === id ? { ...p, isApproved: !currentStatus } : p));
+                setConfirmDialog({ isOpen: false, type: null, id: null, currentStatus: null, title: '', isLoading: false });
+                // Background refresh to stay in sync
+                fetchProperties();
+            } else {
+                alert(data.message || 'Failed to update property status');
+                setConfirmDialog(prev => ({ ...prev, isLoading: false }));
+            }
         } catch (error) {
             console.error('Approval toggle error:', error);
+            alert('Something went wrong. Please try again.');
+            setConfirmDialog(prev => ({ ...prev, isLoading: false }));
         }
-        setConfirmDialog({ ...confirmDialog, isOpen: false });
     };
 
     const handleDelete = async (id) => {
@@ -290,10 +303,12 @@ export default function PropertiesList() {
                                                     : 'bg-rose-50 text-rose-600 border border-rose-100'}`}
                                                 suppressHydrationWarning
                                             >
-                                                {prop.isApproved ? (
-                                                    <><CheckCircle2 size={14} /> Approved</>
-                                                ) : (
-                                                    <><XCircle size={14} /> Pending</>
+                                                {confirmDialog.isLoading && confirmDialog.id === prop._id ? 'Processing...' : (
+                                                    prop.isApproved ? (
+                                                        <><CheckCircle2 size={14} /> Approved</>
+                                                    ) : (
+                                                        <><XCircle size={14} /> Pending</>
+                                                    )
                                                 )}
                                             </button>
                                         </td>
@@ -435,7 +450,7 @@ export default function PropertiesList() {
                                         suppressHydrationWarning
                                     >
                                         {prop.isApproved ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
-                                        {prop.isApproved ? 'Approved' : 'Pending'}
+                                        {confirmDialog.isLoading && confirmDialog.id === prop._id ? 'Processing...' : (prop.isApproved ? 'Approved' : 'Pending')}
                                     </button>
 
                                     <div className="relative shrink-0">
