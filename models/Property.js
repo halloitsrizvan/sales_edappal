@@ -51,6 +51,7 @@ const PropertySchema = new mongoose.Schema({
     },
     ownerName: String,
     ownerPhone: String,
+    ownerEmail: String,
     paymentScreenshot: String,
     mapUrl: String,
     userId: {

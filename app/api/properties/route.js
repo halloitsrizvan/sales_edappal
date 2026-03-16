@@ -1,7 +1,7 @@
-
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Property from '@/models/Property';
+import { sendEmail } from '@/lib/email';
 
 export async function GET(req) {
     try {
@@ -89,14 +89,54 @@ export async function GET(req) {
     }
 }
 
-
-
 export async function POST(req) {
     try {
         await dbConnect();
         const body = await req.json();
         
         const property = await Property.create(body);
+
+        // Send Email Notifications (Background - don't block response)
+        (async () => {
+            console.log('Sending submission notifications for:', property._id);
+            try {
+                // To User
+                if (property.ownerEmail) {
+                    const userEmailRes = await sendEmail({
+                        to: property.ownerEmail,
+                        subject: 'Property Submission Received – Sales Edappal',
+                        html: `
+                            <h2>Thank you for submitting your property!</h2>
+                            <p>Hi ${property.ownerName || 'User'},</p>
+                            <p>We have received your listing for: <strong>${property.title}</strong> in <strong>${property.location}</strong>.</p>
+                            <p>Your property is currently under review by our moderation team. It will be published on our platform once verification is complete.</p>
+                            <p>If you have any questions, feel free to contact us at +91 98952 94949.</p>
+                        `
+                    });
+                    console.log('User submission email result:', userEmailRes);
+                } else {
+                    console.log('No owner email found for submission notifications.');
+                }
+
+                // To Admin
+                const adminEmail = process.env.ADMIN_EMAIL || 'clgrizvan@gmail.com';
+                const adminEmailRes = await sendEmail({
+                    to: adminEmail,
+                    subject: 'New Property Submission',
+                    html: `
+                        <h2>New Listing for Review</h2>
+                        <p><strong>Title:</strong> ${property.title}</p>
+                        <p><strong>Seller:</strong> ${property.ownerName}</p>
+                        <p><strong>Phone:</strong> ${property.ownerPhone}</p>
+                        <p><strong>Location:</strong> ${property.location}</p>
+                        <p><a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://salesedappal.com'}/admin/properties">Review in Dashboard</a></p>
+                    `
+                });
+                console.log('Admin submission email result:', adminEmailRes);
+            } catch (emailErr) {
+                console.error('Submission Email Failed:', emailErr);
+            }
+        })();
 
         return NextResponse.json({ success: true, data: property }, { status: 201 });
 

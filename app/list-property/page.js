@@ -21,7 +21,7 @@ export default function ListProperty() {
     };
 
     const [formData, setFormData] = useState({
-        name: '', phone: '', title: '', type: 'House', status: 'For Sale',
+        name: '', phone: '', email: '', title: '', type: 'House', status: 'For Sale',
         location: '', price: '', priceAmount: '', area: '', description: '', path: '',
         water: [], amenities: [], images: [], paymentScreenshot: '', mapUrl: ''
     });
@@ -131,6 +131,7 @@ export default function ListProperty() {
                 ...formData,
                 ownerName: formData.name,
                 ownerPhone: formData.phone,
+                ownerEmail: formData.email,
                 amenities: finalAmenities,
                 priceAmount: parseInt(formData.priceAmount) || 0,
                 beds: 0, baths: 0, parking: '', age: '',
@@ -224,7 +225,7 @@ export default function ListProperty() {
                                     <p className="text-sm text-slate-500">How buyers will reach you.</p>
                                 </div>
                             </div>
-                            <div className="grid md:grid-cols-2 gap-6 p-6 rounded-2xl bg-slate-50/50 border border-slate-100">
+                            <div className="grid md:grid-cols-3 gap-6 p-6 rounded-2xl bg-slate-50/50 border border-slate-100">
                                 <div className="space-y-2.5">
                                     <label className="text-sm font-semibold text-slate-700">Full Name</label>
                                     <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -236,6 +237,12 @@ export default function ListProperty() {
                                     <input type="tel" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                         className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none font-medium text-slate-800 placeholder:font-normal placeholder:text-slate-400"
                                         placeholder="+91 99999 99999" suppressHydrationWarning />
+                                </div>
+                                <div className="space-y-2.5">
+                                    <label className="text-sm font-semibold text-slate-700">Email Address</label>
+                                    <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none font-medium text-slate-800 placeholder:font-normal placeholder:text-slate-400"
+                                        placeholder="john@example.com" suppressHydrationWarning />
                                 </div>
                             </div>
                         </section>
