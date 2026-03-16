@@ -60,7 +60,7 @@ const Footer = () => {
                     <div className="space-y-6">
                         <h4 className="text-lg font-bold text-gray-800">Quick Links</h4>
                         <ul className="space-y-3">
-                            {['Properties', 'About Us', 'Services', 'Contact'].map((item) => (
+                            {['Properties', 'About Us', 'Contact'].map((item) => (
                                 <li key={item}>
                                     <Link href={`/${item.toLowerCase().replace(' ', '-')}`} className="text-gray-500 hover:text-sky-600 hover:translate-x-1.5 inline-block transition-transform duration-200">
                                         {item}
@@ -89,7 +89,7 @@ const Footer = () => {
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3 text-gray-500">
                                 <MapPin className="text-sky-500 mt-1 flex-shrink-0" size={18} />
-                                <span>OMG Shoes Footwear,<br />Amsakachery, Edappal,<br />Kerala 679576</span>
+                                <span>Nurukkuparambil building,<br />Opposite alnoor masjid,<br />Ponnani road, Amsakkachery,<br />Edappal, Kerala 679576</span>
                             </li>
                             <li className="flex items-center gap-3 text-gray-500">
                                 <PhoneCall className="text-sky-500 flex-shrink-0" size={18} />

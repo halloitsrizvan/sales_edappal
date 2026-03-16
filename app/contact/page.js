@@ -116,10 +116,11 @@ export default function Contact() {
                                             </div>
                                             <div>
                                                 <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Our Office</h3>
-                                                <p className="text-slate-700 font-medium leading-relaxed">
-                                                    OMG Shoes Footwear,<br />
-                                                    Amsakachery, Edappal,<br />
-                                                    Kerala 679576
+                                                <p className="text-slate-700 font-medium leading-relaxed font-semibold">
+                                                    Nurukkuparambil building,<br />
+                                                    Opposite alnoor masjid,<br />
+                                                    Ponnani road, Amsakkachery,<br />
+                                                    Po Edappal, Pin 679576
                                                 </p>
                                             </div>
                                         </div>

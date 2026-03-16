@@ -94,7 +94,7 @@ export default function RootLayout({ children }) {
     'priceRange': '₹₹₹',
     'address': {
       '@type': 'PostalAddress',
-      'streetAddress': 'OMG Shoes Footwear, Amsakachery',
+      'streetAddress': 'Nurukkuparambil building, Opposite alnoor masjid, Ponnani road, Amsakkachery',
       'addressLocality': 'Edappal',
       'addressRegion': 'Kerala',
       'postalCode': '679576',

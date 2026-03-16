@@ -106,7 +106,7 @@ export default function About() {
                                     Who We Are
                                 </h2>
                                 <p className="text-slate-600 leading-relaxed text-lg mb-4">
-                                    Sales Edappal is a premier real estate consultancy located near OMG Shoes Footwear, Amsakachery, Edappal. Founded by Sameer, we have grown to become the most reliable name in the Malappuram real estate market.
+                                    Sales Edappal is a premier real estate consultancy located at Nurukkuparambil building, Amsakkachery, Edappal. Founded by Sameer, we have grown to become the most reliable name in the Malappuram real estate market.
                                 </p>
                                 <p className="text-slate-600 leading-relaxed text-lg">
                                     We specialize in residential spaces, commercial properties, and land investments. Our approach is uniquely simple: Honesty, Integrity, and absolute Customer Satisfaction.

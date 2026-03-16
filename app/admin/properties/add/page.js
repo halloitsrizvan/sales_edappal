@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Upload, X, Loader2, Save } from 'lucide-react';
+import { Upload, X, Loader2, Save, Trees, ShieldCheck, Check, Camera, Send, MapPin, Home, Info, DollarSign, Hash, Map } from 'lucide-react';
 import Image from 'next/image';
 
 const AddProperty = () => {
@@ -301,108 +301,100 @@ const AddProperty = () => {
                     </div>
                 </div>
 
-                {/* Key Features: Water & Path */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 bg-sky-50/50 rounded-2xl border border-sky-100">
-                    <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-3">Water Source</label>
-                        <div className="flex flex-wrap gap-3">
-                            {waterOptions.map(opt => (
-                                <label key={opt} className="flex items-center gap-2 cursor-pointer bg-white px-4 py-2 rounded-xl border border-slate-200 hover:border-sky-500 transition-all">
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.water.includes(opt)}
-                                        onChange={() => handleWaterToggle(opt)}
-                                        className="w-4 h-4 text-sky-600 rounded focus:ring-sky-500"
-                                    />
-                                    <span className="text-sm font-medium text-slate-600">{opt}</span>
-                                </label>
-                            ))}
+                <hr className="border-slate-100" />
+                
+                {/* Section 3: Specialized Specifics */}
+                <section>
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
+                            <Trees size={20} strokeWidth={2.5} />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-slate-800">Additional Specifics</h3>
+                            <p className="text-sm text-slate-500">Utilities and access parameters.</p>
                         </div>
                     </div>
-                    <div>
-                        <label htmlFor="path" className="block text-sm font-bold text-slate-700 mb-3">Path / Road Access</label>
-                        <input
-                            id="path"
-                            type="text"
-                            name="path"
-                            value={formData.path}
-                            onChange={handleInputChange}
-                            placeholder="e.g. 15ft Tar Road / Wide Path"
-                            className="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none bg-white font-medium"
-                            suppressHydrationWarning={true}
-                        />
+
+                    <div className="grid md:grid-cols-2 gap-8 mb-6">
+                        <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:border-violet-300 transition-colors">
+                            <label className="block text-sm font-bold text-slate-800 mb-4">Water Source Available</label>
+                            <div className="flex flex-wrap gap-2.5">
+                                {waterOptions.map(opt => (
+                                    <button type="button" key={opt} onClick={() => handleWaterToggle(opt)}
+                                        className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all flex items-center gap-2
+                                        ${formData.water.includes(opt) ? 'bg-violet-600 border-violet-600 text-white shadow-md shadow-violet-200' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'}`}>
+                                        {formData.water.includes(opt) && <Check size={14} strokeWidth={3} />}
+                                        {opt}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:border-violet-300 transition-colors">
+                            <label className="block text-sm font-bold text-slate-800 mb-4">Road Access Type</label>
+                            <input type="text" name="path" value={formData.path} onChange={handleInputChange}
+                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 outline-none font-medium text-slate-700"
+                                placeholder="e.g. 15ft Tar Road" suppressHydrationWarning />
+                        </div>
                     </div>
-                </div>
 
-                {/* Description */}
-                <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">Description</label>
-                    <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        rows={6}
-                        required
-                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
-                        placeholder="Detailed description of the property..."
-                    ></textarea>
-                </div>
+                    <div className="space-y-2.5">
+                        <label className="text-sm font-semibold text-slate-700">Detailed Description</label>
+                        <textarea rows="5" name="description" value={formData.description} onChange={handleInputChange}
+                            className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 focus:bg-white transition-all outline-none resize-none font-medium text-slate-800 leading-relaxed"
+                            placeholder="Write a compelling description highlighting the best features of your property..." required suppressHydrationWarning></textarea>
+                    </div>
+                </section>
 
-                {/* Amenities */}
-                <div className="space-y-4">
-                    <div className="flex justify-between items-center bg-slate-50 p-4 rounded-xl">
-                        <label className="text-sm font-bold text-slate-700">Amenities & Features</label>
-                        <div className="flex gap-2">
-                            <input
-                                id="newAmenity"
-                                type="text"
-                                value={newAmenity}
-                                onChange={(e) => setNewAmenity(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && addCustomAmenity(e)}
-                                placeholder="Add new amenity..."
-                                className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500/20 outline-none"
-                                suppressHydrationWarning={true}
-                            />
-                            <button
-                                onClick={addCustomAmenity}
-                                type="button"
-                                className="bg-sky-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-sky-700 transition-colors"
-                                suppressHydrationWarning
-                            >
-                                + Add
+                <hr className="border-slate-100" />
+
+                {/* Section 4: Amenities */}
+                <section>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
+                                <ShieldCheck size={20} strokeWidth={2.5} />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-slate-800">Amenities & Perks</h3>
+                                <p className="text-sm text-slate-500">Select all that apply.</p>
+                            </div>
+                        </div>
+                        <div className="flex gap-2 relative">
+                            <input type="text" value={newAmenity} onChange={(e) => setNewAmenity(e.target.value)}
+                                placeholder="Add custom amenity..."
+                                className="pl-4 pr-20 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-400 outline-none w-full sm:w-64" suppressHydrationWarning />
+                            <button type="button" onClick={addCustomAmenity}
+                                className="absolute right-1 top-1 bottom-1 bg-slate-900 text-white px-4 rounded-lg text-xs font-bold hover:bg-slate-800 transition-colors" suppressHydrationWarning>
+                                Add
                             </button>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {/* Core Amenities */}
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                         {coreAmenities.map(item => (
-                            <label key={item} className={`flex items-center gap-2 cursor-pointer p-3 border rounded-xl transition-all ${formData.amenities.includes(item) ? 'bg-sky-50 border-sky-200 text-sky-700 shadow-sm' : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50'
-                                }`}>
-                                <input
-                                    type="checkbox"
-                                    checked={formData.amenities.includes(item)}
-                                    onChange={() => handleAmenityToggle(item)}
-                                    className="w-4 h-4 text-sky-600 rounded focus:ring-sky-50"
-                                />
+                            <button type="button" key={item} onClick={() => handleAmenityToggle(item)}
+                                className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all text-left group
+                                ${formData.amenities.includes(item)
+                                    ? 'bg-orange-50 border-orange-500 text-orange-900'
+                                    : 'bg-white border-slate-100 text-slate-600 hover:border-orange-200 hover:bg-orange-50/30'}`}>
                                 <span className="text-xs font-semibold">{item}</span>
-                            </label>
+                                <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-colors
+                                    ${formData.amenities.includes(item) ? 'bg-orange-500 text-white' : 'bg-slate-100 text-transparent group-hover:bg-slate-200'}`}>
+                                    <Check size={12} strokeWidth={4} />
+                                </div>
+                            </button>
                         ))}
-
-                        {/* Custom Added Amenities */}
                         {formData.amenities.filter(a => !coreAmenities.includes(a)).map(item => (
-                            <div key={item} className="flex items-center justify-between p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-xl shadow-sm">
-                                <span className="text-xs font-bold truncate max-w-[80%]">{item}</span>
-                                <button
-                                    onClick={() => handleAmenityToggle(item)}
-                                    className="text-indigo-400 hover:text-rose-500 transition-colors"
-                                >
-                                    <X size={14} />
+                            <div key={item} className="flex items-center justify-between p-3.5 rounded-xl border border-slate-300 bg-slate-100 text-slate-800 shadow-sm relative pr-10 overflow-hidden group">
+                                <span className="text-xs font-semibold truncate z-10">{item}</span>
+                                <button type="button" onClick={() => handleAmenityToggle(item)}
+                                    className="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center bg-rose-100 text-rose-600 hover:bg-rose-500 hover:text-white transition-colors z-20">
+                                    <X size={16} />
                                 </button>
                             </div>
                         ))}
                     </div>
-                </div>
+                </section>
 
                 {/* Images */}
                 <div>
