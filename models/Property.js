@@ -67,11 +67,12 @@ const PropertySchema = new mongoose.Schema({
 
 PropertySchema.pre('save', function () {
     if (this.isModified('title') || this.isModified('location') || !this.slug) {
+        const randomStr = Math.random().toString(36).substring(2, 7);
         const baseSlug = `${this.title}-${this.location}`
             .toLowerCase()
             .replace(/[^\w ]+/g, '')
             .replace(/ +/g, '-');
-        this.slug = baseSlug;
+        this.slug = `${baseSlug}-${randomStr}`;
     }
 });
 

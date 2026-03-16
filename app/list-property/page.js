@@ -12,7 +12,7 @@ export default function ListProperty() {
     const [uploading, setUploading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [copied, setCopied] = useState(false);
-    const [user, setUser] = useState(null);
+
 
     const handleCopy = (text) => {
         navigator.clipboard.writeText(text);
@@ -23,33 +23,10 @@ export default function ListProperty() {
     const [formData, setFormData] = useState({
         name: '', phone: '', title: '', type: 'House', status: 'For Sale',
         location: '', price: '', priceAmount: '', area: '', description: '', path: '',
-        water: [], amenities: [], images: [], paymentScreenshot: '', mapUrl: '',
-        userId: ''
+        water: [], amenities: [], images: [], paymentScreenshot: '', mapUrl: ''
     });
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await fetch('/api/user/me');
-                const data = await res.json();
-                if (data.success) {
-                    setUser(data.user);
-                    setFormData(prev => ({
-                        ...prev,
-                        userId: data.user._id,
-                        name: data.user.name || prev.name,
-                        phone: data.user.phone || prev.phone
-                    }));
-                } else {
-                    // Optionally redirect to login if not authenticated
-                    router.push('/login?redirect=/list-property');
-                }
-            } catch (err) {
-                console.error('Auth error:', err);
-            }
-        };
-        fetchUser();
-    }, [router]);
+
 
     const [newAmenity, setNewAmenity] = useState('');
 
@@ -142,11 +119,7 @@ export default function ListProperty() {
             return;
         }
 
-        if (!formData.userId) {
-            alert('Please login to submit a property.');
-            router.push('/login?redirect=/list-property');
-            return;
-        }
+
 
         setLoading(true);
         try {
@@ -397,7 +370,7 @@ export default function ListProperty() {
                                     <label className="block text-sm font-bold text-slate-800 mb-4">Water Source Available</label>
                                     <div className="flex flex-wrap gap-2.5">
                                         {waterOptions.map(opt => (
-                                            <button type="button" key={opt} onClick={() => handleWaterToggle(opt)}
+                                            <button type="button" key={opt} onClick={() => handleWaterToggle(opt)} suppressHydrationWarning
                                                 className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all flex items-center gap-2
                                                 ${formData.water.includes(opt) ? 'bg-violet-600 border-violet-600 text-white shadow-md shadow-violet-200' : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'}`}>
                                                 {opt}
@@ -415,7 +388,7 @@ export default function ListProperty() {
 
                             <div className="space-y-2.5">
                                 <label className="text-sm font-semibold text-slate-700">Detailed Description</label>
-                                <textarea rows="5" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                <textarea rows="5" required value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 focus:bg-white transition-all outline-none resize-none font-medium text-slate-800 leading-relaxed"
                                     placeholder="Write a compelling description highlighting the best features of your property..." suppressHydrationWarning></textarea>
                             </div>
@@ -448,7 +421,7 @@ export default function ListProperty() {
 
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                                 {coreAmenities.map(item => (
-                                    <button type="button" key={item} onClick={() => handleAmenityToggle(item)}
+                                    <button type="button" key={item} onClick={() => handleAmenityToggle(item)} suppressHydrationWarning
                                         className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all text-left group
                                         ${formData.amenities.includes(item)
                                             ? 'bg-orange-50 border-orange-500 text-orange-900'
@@ -494,7 +467,7 @@ export default function ListProperty() {
                                     <div key={index} className="relative aspect-square rounded-2xl overflow-hidden group shadow-sm border border-slate-200">
                                         <Image src={url} alt={`Listing ${index}`} width={200} height={200} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <button type="button" onClick={() => removeImage(index)}
+                                            <button type="button" onClick={() => removeImage(index)} suppressHydrationWarning
                                                 className="w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center transform scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all">
                                                 <X size={18} strokeWidth={3} />
                                             </button>
@@ -502,7 +475,7 @@ export default function ListProperty() {
                                     </div>
                                 ))}
                                 {formData.images.length < 5 && (
-                                    <label className={`aspect-square border-2 border-dashed rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all group overflow-hidden
+                                    <label suppressHydrationWarning className={`aspect-square border-2 border-dashed rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all group overflow-hidden
                                         ${uploading ? 'bg-slate-50 border-slate-200' : 'border-slate-300 hover:border-pink-500 hover:bg-pink-50/50 bg-slate-50/50'}`}>
                                         {uploading ? (
                                             <div className="flex flex-col items-center gap-2">
@@ -544,7 +517,7 @@ export default function ListProperty() {
                                             <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">UPI Number</p>
                                             <p className="font-mono text-lg font-bold text-slate-800 tracking-wider">9895294949</p>
                                         </div>
-                                        <button type="button" onClick={() => handleCopy('9895294949')}
+                                        <button type="button" onClick={() => handleCopy('9895294949')} suppressHydrationWarning
                                             className={`p-2.5 rounded-lg border transition-all ${copied ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-500 hover:text-indigo-600'}`}>
                                             {copied ? <Check size={18} /> : <Copy size={18} />}
                                         </button>
@@ -555,7 +528,7 @@ export default function ListProperty() {
                                     {formData.paymentScreenshot ? (
                                         <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md border-4 border-white ring-1 ring-slate-200">
                                             <Image src={formData.paymentScreenshot} alt="Payment" width={256} height={340} className="w-full h-full object-cover" />
-                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, paymentScreenshot: '' }))}
+                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, paymentScreenshot: '' }))} suppressHydrationWarning
                                                 className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 text-white flex items-center justify-center backdrop-blur-sm hover:bg-rose-500 transition-colors">
                                                 <X size={16} />
                                             </button>
@@ -564,7 +537,7 @@ export default function ListProperty() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <label className="aspect-[3/4] border-2 border-dashed border-indigo-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/50 bg-slate-50/50 transition-all group overflow-hidden">
+                                        <label suppressHydrationWarning className="aspect-[3/4] border-2 border-dashed border-indigo-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/50 bg-slate-50/50 transition-all group overflow-hidden">
                                             {uploading ? (
                                                 <div className="flex flex-col items-center gap-3">
                                                     <Loader2 className="animate-spin text-indigo-500" size={32} />
@@ -594,7 +567,7 @@ export default function ListProperty() {
                             <ShieldCheck size={20} className="text-emerald-500" />
                             Secure & Encrypted Form
                         </div>
-                        <button type="submit" disabled={uploading || loading || !formData.paymentScreenshot}
+                        <button type="submit" disabled={uploading || loading || !formData.paymentScreenshot} suppressHydrationWarning
                             className={`px-10 py-4 rounded-xl font-bold flex items-center gap-3 transition-all duration-300
                             ${(uploading || loading || !formData.paymentScreenshot) 
                                 ? 'bg-slate-200 text-slate-400 cursor-not-allowed' 

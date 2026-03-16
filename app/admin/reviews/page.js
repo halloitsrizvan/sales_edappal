@@ -122,7 +122,7 @@ export default function ReviewsManagement() {
 
                             <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-50 mb-8 flex-grow">
                                 <p className="text-slate-600 italic leading-relaxed font-medium">"{review.text}"</p>
-                                <p className="text-[10px] text-slate-400 mt-4 uppercase font-bold tracking-widest">
+                                <p className="text-[10px] text-slate-400 mt-4 uppercase font-bold tracking-widest" suppressHydrationWarning>
                                     Submitted: {new Date(review.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' })}
                                 </p>
                             </div>

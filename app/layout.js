@@ -114,7 +114,7 @@ export default function RootLayout({ children }) {
       'closes': '20:00'
     },
     'sameAs': [
-      'https://www.facebook.com/profile.php?id=61552641255941&mibextid=ViGcVu',
+      'https://www.facebook.com/profile.php?id=100070670615796&mibextid=LQQJ4d',
       'https://instagram.com/sales_edappal?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr',
       'https://www.youtube.com/@salesedappal'
     ],

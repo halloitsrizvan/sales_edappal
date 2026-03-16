@@ -12,23 +12,8 @@ import Image from 'next/image';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [user, setUser] = useState(null);
     const pathname = usePathname();
-
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await fetch('/api/user/me');
-                const data = await res.json();
-                if (data.success) {
-                    setUser(data.user);
-                }
-            } catch (err) {
-                console.error('Failed to fetch user:', err);
-            }
-        };
-        fetchUser();
-
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
         };
@@ -71,7 +56,7 @@ const Navbar = () => {
                     <div className="hidden lg:flex items-center gap-4 xl:gap-6">
                         {/* Social Icons Desktop */}
                         <div className="flex items-center gap-3 border-r border-white/20 pr-4 mr-2">
-                            <a href="https://www.facebook.com/profile.php?id=61552641255941&mibextid=ViGcVu" target="_blank" rel="noopener noreferrer" className="hover:text-sky-200 transition-colors">
+                            <a href="https://www.facebook.com/profile.php?id=100070670615796&mibextid=LQQJ4d" target="_blank" rel="noopener noreferrer" className="hover:text-sky-200 transition-colors">
                                 <Facebook size={18} />
                             </a>
                             <a href="https://instagram.com/sales_edappal?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-sky-200 transition-colors">
@@ -113,29 +98,6 @@ const Navbar = () => {
                             >
                                 Post Property
                             </Link>
-                            {/* <Link
-                                href="/list-property?action=requirement"
-                                className="bg-white text-[#0056b3] hover:bg-slate-50 px-4 py-2 rounded-sm text-sm font-bold transition-all"
-                            >
-                                Post Requirement
-                            </Link> */}
-                            {user ? (
-                                <Link
-                                    href="/profile"
-                                    className="bg-[#0056b3] text-white border border-white/40 hover:bg-white hover:text-[#0056b3] px-4 py-2 rounded-sm text-sm font-bold transition-all flex items-center gap-2"
-                                >
-                                    <User size={16} />
-                                    {(user.name || user.email || 'User').split(' ')[0]}
-                                </Link>
-                            ) : (
-                                <Link
-                                    href="/login"
-                                    className="bg-[#0056b3] text-white border border-white/40 hover:bg-white hover:text-[#0056b3] px-4 py-2 rounded-sm text-sm font-bold transition-all flex items-center gap-2"
-                                >
-                                    <User size={16} />
-                                    Login
-                                </Link>
-                            )}
                         </div>
                     </div>
 
@@ -229,7 +191,7 @@ const Navbar = () => {
                                         <span>+91 98952 94949</span>
                                     </div>
                                     <div className="flex gap-3">
-                                        <a href="https://www.facebook.com/profile.php?id=61552641255941&mibextid=ViGcVu" target="_blank" rel="noopener noreferrer" className="p-2 bg-white text-blue-600 rounded-lg shadow-sm">
+                                        <a href="https://www.facebook.com/profile.php?id=100070670615796&mibextid=LQQJ4d" target="_blank" rel="noopener noreferrer" className="p-2 bg-white text-blue-600 rounded-lg shadow-sm">
                                             <Facebook size={20} />
                                         </a>
                                         <a href="https://instagram.com/sales_edappal?igshid=MzMyNGUyNmU2YQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="p-2 bg-white text-pink-600 rounded-lg shadow-sm">
@@ -250,32 +212,6 @@ const Navbar = () => {
                                 >
                                     Post Property
                                 </Link>
-                                {/* <Link
-                                    href="/list-property?action=requirement"
-                                    onClick={() => setIsOpen(false)}
-                                    className="border-2 border-[#0056b3] text-[#0056b3] py-4 rounded-xl text-center font-bold text-lg"
-                                >
-                                    Post Requirement
-                                </Link> */}
-                                {user ? (
-                                    <Link
-                                        href="/profile"
-                                        onClick={() => setIsOpen(false)}
-                                        className="border-2 border-slate-200 text-slate-700 hover:bg-slate-50 py-4 rounded-xl flex items-center justify-center gap-2 font-bold text-lg transition-all"
-                                    >
-                                        <User size={20} />
-                                        {user.name || user.email || 'User'} 
-                                    </Link>
-                                ) : (
-                                    <Link
-                                        href="/login"
-                                        onClick={() => setIsOpen(false)}
-                                        className="border-2 border-slate-200 text-slate-700 hover:bg-slate-50 py-4 rounded-xl flex items-center justify-center gap-2 font-bold text-lg transition-all"
-                                    >
-                                        <User size={20} />
-                                        Login
-                                    </Link>
-                                )}
                             </div>
                         </div>
                     </motion.div>

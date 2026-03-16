@@ -11,7 +11,7 @@ export default function LeadsPage() {
     const [page, setPage] = useState(1);
 
     // Dialog state
-    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, type: null, id: null, status: null, title: '', message: '' });
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, type: null, id: null, status: null, title: '', message: '', isLoading: false });
     const [openStatusId, setOpenStatusId] = useState(null);
 
     // Close dropdown on outside click
@@ -65,17 +65,26 @@ export default function LeadsPage() {
 
     const processStatusChange = async () => {
         const { id, status } = confirmDialog;
+        setConfirmDialog(prev => ({ ...prev, isLoading: true }));
         try {
             const res = await fetch(`/api/leads/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status, contacted: status === 'Contacted' || status === 'Checked' })
             });
-            if (res.ok) fetchLeads();
+            if (res.ok) {
+                // Optimistic update
+                setLeads(prev => prev.map(l => l._id === id ? { ...l, status } : l));
+                setConfirmDialog({ isOpen: false, type: null, id: null, status: null, title: '', message: '', isLoading: false });
+            } else {
+                alert('Failed to update lead status');
+            }
         } catch (error) {
             console.error(error);
+            alert('Something went wrong');
+        } finally {
+            setConfirmDialog(prev => ({ ...prev, isLoading: false, isOpen: false }));
         }
-        setConfirmDialog({ ...confirmDialog, isOpen: false });
     };
 
     const handleDelete = (id) => {
@@ -90,13 +99,21 @@ export default function LeadsPage() {
 
     const processDelete = async () => {
         const { id } = confirmDialog;
+        setConfirmDialog(prev => ({ ...prev, isLoading: true }));
         try {
             const res = await fetch(`/api/leads/${id}`, { method: 'DELETE' });
-            if (res.ok) fetchLeads();
+            if (res.ok) {
+                setLeads(prev => prev.filter(l => l._id !== id));
+                setConfirmDialog({ isOpen: false, type: null, id: null, status: null, title: '', message: '', isLoading: false });
+            } else {
+                alert('Failed to delete lead');
+            }
         } catch (error) {
             console.error(error);
+            alert('Something went wrong');
+        } finally {
+            setConfirmDialog(prev => ({ ...prev, isLoading: false, isOpen: false }));
         }
-        setConfirmDialog({ ...confirmDialog, isOpen: false });
     };
 
     return (
@@ -348,12 +365,17 @@ export default function LeadsPage() {
                                     if (confirmDialog.type === 'delete') processDelete();
                                     else if (confirmDialog.type === 'status') processStatusChange();
                                 }}
-                                className={`flex-1 px-4 py-2 text-white rounded-xl text-sm font-bold transition-all shadow-lg ${confirmDialog.type === 'delete' || confirmDialog.status === 'Rejected'
+                                disabled={confirmDialog.isLoading}
+                                className={`flex-1 px-4 py-2 text-white rounded-xl text-sm font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${confirmDialog.type === 'delete' || confirmDialog.status === 'Rejected'
                                     ? 'bg-rose-500 hover:bg-rose-600 shadow-rose-100'
                                     : 'bg-sky-600 hover:bg-sky-700 shadow-sky-100'
-                                    }`}
+                                    } ${confirmDialog.isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
-                                Confirm
+                                {confirmDialog.isLoading ? (
+                                    <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Processing...</>
+                                ) : (
+                                    'Confirm'
+                                )}
                             </button>
                         </div>
                     </div>

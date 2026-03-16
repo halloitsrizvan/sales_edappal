@@ -18,7 +18,7 @@ export default function PropertiesList() {
 
     // Modal states
     const [selectedScreenshot, setSelectedScreenshot] = useState(null);
-    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, type: null, id: null, currentStatus: null, newStatus: null, title: '' });
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, type: null, id: null, currentStatus: null, newStatus: null, title: '', isLoading: false });
     const [openStatusId, setOpenStatusId] = useState(null);
 
     const router = useRouter();
@@ -98,18 +98,26 @@ export default function PropertiesList() {
 
     const processDelete = async () => {
         const { id } = confirmDialog;
+        setConfirmDialog(prev => ({ ...prev, isLoading: true }));
         try {
             const res = await fetch(`/api/properties/${id}`, { method: 'DELETE' });
-            if (res.ok) {
+            const data = await res.json();
+            
+            if (res.ok && data.success) {
+                // Remove from state immediately for better UX
+                setProperties(prev => prev.filter(p => p._id !== id));
+                // Then fetch fresh data to sync pagination
                 fetchProperties();
+                setConfirmDialog({ isOpen: false, type: null, id: null, currentStatus: null, newStatus: null, title: '', isLoading: false });
             } else {
-                alert('Failed to delete property');
+                alert(data.message || 'Failed to delete property');
+                setConfirmDialog(prev => ({ ...prev, isLoading: false }));
             }
         } catch (error) {
             console.error('Delete error:', error);
-            alert('Something went wrong');
+            alert('Something went wrong. Please try again.');
+            setConfirmDialog(prev => ({ ...prev, isLoading: false }));
         }
-        setConfirmDialog({ ...confirmDialog, isOpen: false });
     };
 
     const handleFeatureToggle = async (id, currentStatus) => {
@@ -545,12 +553,17 @@ export default function PropertiesList() {
                                     else if (confirmDialog.type === 'approve') processApproveToggle();
                                     else if (confirmDialog.type === 'status') processStatusToggle();
                                 }}
-                                className={`flex-1 px-4 py-2 text-white rounded-xl text-sm font-bold transition-all shadow-lg ${confirmDialog.type === 'delete'
+                                disabled={confirmDialog.isLoading}
+                                className={`flex-1 px-4 py-2 text-white rounded-xl text-sm font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${confirmDialog.type === 'delete'
                                     ? 'bg-rose-500 hover:bg-rose-600 shadow-rose-100'
                                     : 'bg-sky-600 hover:bg-sky-700 shadow-sky-100'
-                                    }`}
+                                    } ${confirmDialog.isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
-                                Confirm
+                                {confirmDialog.isLoading ? (
+                                    <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Processing...</>
+                                ) : (
+                                    'Confirm'
+                                )}
                             </button>
                         </div>
                     </div>

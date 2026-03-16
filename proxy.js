@@ -37,42 +37,9 @@ export async function proxy(request) {
         }
     }
 
-    // --- PROTECTED USER ROUTES ---
-    if (pathname.startsWith('/list-property') || pathname.startsWith('/profile')) {
-        if (!userToken) {
-            const loginUrl = new URL('/login', request.url);
-            loginUrl.searchParams.set('returnUrl', pathname + search);
-            return NextResponse.redirect(loginUrl);
-        }
-
-        try {
-            const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-            await jwtVerify(userToken, secret);
-            return NextResponse.next();
-        } catch (error) {
-            const loginUrl = new URL('/login', request.url);
-            loginUrl.searchParams.set('returnUrl', pathname + search);
-            return NextResponse.redirect(loginUrl);
-        }
-    }
-
-    // --- USER LOGIN/REGISTER PAGES ---
-    if (pathname === '/login' || pathname === '/register') {
-        if (userToken) {
-            try {
-                const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-                await jwtVerify(userToken, secret);
-                return NextResponse.redirect(new URL('/', request.url));
-            } catch (error) {
-                return NextResponse.next();
-            }
-        }
-        return NextResponse.next();
-    }
-
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/list-property/:path*', '/profile/:path*', '/login', '/register'],
+    matcher: ['/admin/:path*'],
 };
