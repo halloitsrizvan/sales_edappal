@@ -86,21 +86,40 @@ export default async function PropertyDetails({ params }) {
             return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15671.37890632348!2d76.0242!3d10.7788!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ba1f8c14828d%3A0xf6a2a07d4b4f0b2a!2s${encodeURIComponent(property.location)}%2C%20Kerala!5e0!3m2!1sen!2sin!4v1625123456789!5m2!1sen!2sin`;
         }
 
-        // Handle case where user pastes full iframe tag
-        if (property.mapUrl.includes('<iframe')) {
-            const match = property.mapUrl.match(/src="([^"]+)"/);
-            return match ? match[1] : property.mapUrl;
+        const url = property.mapUrl;
+
+        // 1. Handle full iframe tag
+        if (url.includes('<iframe')) {
+            const match = url.match(/src="([^"]+)"/);
+            return match ? match[1] : url;
         }
 
-        // If it's a share link (not an embed link), we can't easily turn it into an embed link without API
-        // But if it's already an embed link, use it.
-        if (property.mapUrl.includes('google.com/maps/embed')) {
-            return property.mapUrl;
+        // 2. Handle standard embed links
+        if (url.includes('google.com/maps/embed')) {
+            return url;
         }
 
-        // Fallback for direct share links - try to wrap it (though Google often blocks this in iframes)
-        // Best practice is to tell users to use the 'Embed' link
-        return property.mapUrl;
+        // 3. Handle query links like ?q=10.69,76.10
+        if (url.includes('?q=')) {
+            const match = url.match(/\?q=([^&]+)/);
+            if (match) {
+                return `https://maps.google.com/maps?q=${match[1]}&output=embed`;
+            }
+        }
+
+        // 4. Handle search/query links like /search/10.69,76.10
+        if (url.includes('/search/') || url.includes('/query/')) {
+            const parts = url.split('/');
+            const query = parts[parts.length - 1] || parts[parts.length - 2];
+            if (query) return `https://maps.google.com/maps?q=${query}&output=embed`;
+        }
+
+        // 5. Fallback for any other google maps link - try to convert to embed format
+        if (url.includes('google.com/maps')) {
+            return `${url}${url.includes('?') ? '&' : '?'}output=embed`;
+        }
+
+        return url;
     };
 
     const jsonLd = {
