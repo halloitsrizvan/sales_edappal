@@ -75,3 +75,11 @@ input, select, textarea {
 ::-webkit-scrollbar-thumb {
   @apply bg-gray-300 rounded-full hover:bg-primary transition-colors;
 }
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

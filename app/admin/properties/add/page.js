@@ -78,8 +78,8 @@ const AddProperty = () => {
         const files = Array.from(e.target.files);
         if (files.length === 0) return;
 
-        if (formData.images.length + files.length > 4) {
-            alert('You can only upload up to 4 images per property.');
+        if (formData.images.length + files.length > 10) {
+            alert('You can only upload up to 10 images per property.');
             return;
         }
 
@@ -418,7 +418,7 @@ const AddProperty = () => {
                                 </button>
                             </div>
                         ))}
-                        {formData.images.length < 4 && (
+                        {formData.images.length < 10 && (
                             <label className="aspect-square border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-sky-500 hover:bg-sky-50 transition-all group">
                                 {uploading ? (
                                     <Loader2 className="animate-spin text-sky-500" size={24} />
@@ -439,7 +439,7 @@ const AddProperty = () => {
                             </label>
                         )}
                     </div>
-                    <p className="text-xs text-slate-400">First image will be the cover image.</p>
+                    <p className="text-xs text-slate-400">First image will be the cover image. You can upload up to 10 images.</p>
                 </div>
 
                 {/* Settings */}

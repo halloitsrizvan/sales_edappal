@@ -18,6 +18,7 @@ export default function CopyLink({ slug }) {
         <button
             onClick={handleCopy}
             className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg text-sm font-bold transition-all border border-slate-200"
+            suppressHydrationWarning
         >
             {copied ? (
                 <>
