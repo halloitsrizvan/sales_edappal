@@ -17,7 +17,7 @@ export default function PropertiesList() {
     const [filterApproved, setFilterApproved] = useState('All');
 
     // Modal states
-    const [selectedScreenshot, setSelectedScreenshot] = useState(null);
+
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, type: null, id: null, currentStatus: null, newStatus: null, title: '', isLoading: false });
     const [openStatusId, setOpenStatusId] = useState(null);
 
@@ -242,7 +242,6 @@ export default function PropertiesList() {
                                 <th className="px-6 py-4">Type</th>
                                 <th className="px-6 py-4">Featured</th>
                                 <th className="px-6 py-4">Approved</th>
-                                <th className="px-6 py-4 text-center">Payment</th>
                                 <th className="px-6 py-4 text-center">Status</th>
                                 <th className="px-6 py-4 text-center">Actions</th>
                             </tr>
@@ -250,13 +249,13 @@ export default function PropertiesList() {
                         <tbody className="divide-y divide-slate-100">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="9" className="px-6 py-12 text-center text-slate-400">
+                                    <td colSpan="8" className="px-6 py-12 text-center text-slate-400">
                                         Loading properties...
                                     </td>
                                 </tr>
                             ) : properties.length === 0 ? (
                                 <tr>
-                                    <td colSpan="9" className="px-6 py-12 text-center text-slate-400">
+                                    <td colSpan="8" className="px-6 py-12 text-center text-slate-400">
                                         No properties found.
                                     </td>
                                 </tr>
@@ -312,24 +311,7 @@ export default function PropertiesList() {
                                                 )}
                                             </button>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex justify-center">
-                                                {prop.paymentScreenshot ? (
-                                                    <button
-                                                        onClick={() => setSelectedScreenshot(prop.paymentScreenshot)}
-                                                        className="w-10 h-10 rounded bg-slate-100 border border-slate-200 overflow-hidden block hover:ring-2 hover:ring-orange-500 transition-all cursor-zoom-in"
-                                                        title="Click to view full screenshot"
-                                                        type="button"
-                                                    >
-                                                        <Image src={prop.paymentScreenshot} width={40} height={40} className="w-full h-full object-cover" alt="Payment" />
-                                                    </button>
-                                                ) : (
-                                                    <div className="text-slate-300" title="No payment screenshot provided">
-                                                        <ShoppingCart size={18} className="opacity-20" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </td>
+
                                         <td className="px-6 py-4 text-center">
                                             <div className="relative">
                                                 <button
@@ -585,46 +567,7 @@ export default function PropertiesList() {
                 </div>
             )}
 
-            {/* Screenshot Viewer Modal */}
-            {selectedScreenshot && (
-                <div
-                    className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300"
-                    onClick={() => setSelectedScreenshot(null)}
-                >
-                    <div
-                        className="relative max-w-4xl w-full max-h-[90vh] rounded-2xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300 bg-white"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <button
-                            onClick={() => setSelectedScreenshot(null)}
-                            className="absolute top-4 right-4 z-10 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-all backdrop-blur-md"
-                        >
-                            <XCircle size={24} />
-                        </button>
-                        <div className="p-2">
-                            <Image
-                                src={selectedScreenshot}
-                                alt="Payment Screenshot"
-                                layout="intrinsic"
-                                width={800}
-                                height={1000}
-                                className="w-full rounded-xl border border-slate-100"
-                            />
-                        </div>
-                        <div className="p-4 border-t border-slate-100 flex justify-between items-center bg-slate-50/50">
-                            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Payment Verification Screenshot</span>
-                            <a
-                                href={selectedScreenshot}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-sky-600 text-xs font-bold hover:underline py-1 px-3"
-                            >
-                                Open Original
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            )}
+
         </div>
     );
 }

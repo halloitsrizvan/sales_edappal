@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Bed, Bath, Square, Check, X, Building2, Phone, User, MessageCircle, Camera, Upload, Loader2, Coins, ArrowRight, ShieldCheck, ChevronRight, CreditCard, Copy, LayoutGrid, Info, Home, Building, FileText, User as UserIcon, DollarSign, Hash, Map, Trees, Send } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Check, X, Building2, Phone, User, Camera, Upload, Loader2, Coins, ArrowRight, ShieldCheck, ChevronRight, Copy, LayoutGrid, Info, Home, Building, FileText, User as UserIcon, DollarSign, Hash, Map, Trees, Send } from 'lucide-react';
 import Image from 'next/image';
 
 export default function ListProperty() {
@@ -23,7 +23,7 @@ export default function ListProperty() {
     const [formData, setFormData] = useState({
         name: '', phone: '', email: '', title: '', type: 'House', status: 'For Sale',
         location: '', price: '', priceAmount: '', area: '', description: '', path: '',
-        water: [], amenities: [], images: [], paymentScreenshot: '', mapUrl: ''
+        water: [], amenities: [], images: [], mapUrl: ''
     });
 
 
@@ -64,23 +64,7 @@ export default function ListProperty() {
         setNewAmenity('');
     };
 
-    const handleScreenshotUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        setUploading(true);
-        try {
-            const data = new FormData();
-            data.append('file', file);
-            const res = await fetch('/api/upload', { method: 'POST', body: data });
-            const result = await res.json();
-            if (result.success) setFormData(prev => ({ ...prev, paymentScreenshot: result.url }));
-        } catch (error) {
-            console.error('Upload failed:', error);
-            alert('Screenshot upload failed');
-        } finally {
-            setUploading(false);
-        }
-    };
+
 
     const handleImageUpload = async (e) => {
         const files = Array.from(e.target.files);
@@ -114,10 +98,7 @@ export default function ListProperty() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.paymentScreenshot) {
-            alert('Please upload the payment screenshot to proceed.');
-            return;
-        }
+
 
 
 
@@ -504,67 +485,21 @@ export default function ListProperty() {
                         </section>
 
                         {/* Section 6: Payment */}
-                        <section className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-1 relative overflow-hidden shadow-2xl shadow-indigo-900/20">
+                        {/* <section className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-1 relative overflow-hidden shadow-2xl shadow-indigo-900/20">
                             <div className="absolute -right-20 -top-20 w-64 h-64 bg-indigo-500 rounded-full blur-[80px] opacity-30"></div>
                             <div className="bg-white rounded-[22px] p-6 md:p-8 relative z-10 flex flex-col md:flex-row gap-8 items-center">
                                 <div className="flex-1 space-y-4">
                                     <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold mb-2">
-                                        <ShieldCheck size={14} /> Low One-Time Fee
+                                        <ShieldCheck size={14} /> Free Property Listing
                                     </div>
-                                    <h3 className="text-2xl font-black text-slate-800 tracking-tight">Verification Fee</h3>
+                                    <h3 className="text-2xl font-black text-slate-800 tracking-tight">Verified Listing</h3>
                                     <p className="text-slate-500 text-sm leading-relaxed max-w-sm">
-                                        To maintain platform quality and filter spam, we require a nominal verification fee of <strong className="text-slate-800">₹100</strong>. Transfer via UPI and attach proof.
+                                        List your property for free and reach thousands of potential buyers in Edappal. Our team will verify the details and publish it.
                                     </p>
                                     
-                                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center gap-4 max-w-sm">
-                                        <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center shrink-0">
-                                            <CreditCard size={24} className="text-indigo-600" />
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">UPI Number</p>
-                                            <p className="font-mono text-lg font-bold text-slate-800 tracking-wider">9895294949</p>
-                                        </div>
-                                        <button type="button" onClick={() => handleCopy('9895294949')} suppressHydrationWarning
-                                            className={`p-2.5 rounded-lg border transition-all ${copied ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-500 hover:text-indigo-600'}`}>
-                                            {copied ? <Check size={18} /> : <Copy size={18} />}
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div className="w-full md:w-64 shrink-0">
-                                    {formData.paymentScreenshot ? (
-                                        <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md border-4 border-white ring-1 ring-slate-200">
-                                            <Image src={formData.paymentScreenshot} alt="Payment" width={256} height={340} className="w-full h-full object-cover" />
-                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, paymentScreenshot: '' }))} suppressHydrationWarning
-                                                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 text-white flex items-center justify-center backdrop-blur-sm hover:bg-rose-500 transition-colors">
-                                                <X size={16} />
-                                            </button>
-                                            <div className="absolute bottom-0 inset-x-0 bg-emerald-500 text-white text-center py-1.5 text-xs font-bold backdrop-blur-md">
-                                                PROOF ATTACHED
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <label suppressHydrationWarning className="aspect-[3/4] border-2 border-dashed border-indigo-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/50 bg-slate-50/50 transition-all group overflow-hidden">
-                                            {uploading ? (
-                                                <div className="flex flex-col items-center gap-3">
-                                                    <Loader2 className="animate-spin text-indigo-500" size={32} />
-                                                    <span className="text-xs font-bold text-indigo-600">Uploading...</span>
-                                                </div>
-                                            ) : (
-                                                <>
-                                                    <div className="w-14 h-14 bg-white rounded-full shadow-sm flex items-center justify-center mb-4 text-indigo-300 group-hover:text-indigo-600 group-hover:scale-110 transition-all">
-                                                        <Upload size={24} strokeWidth={2.5} />
-                                                    </div>
-                                                    <span className="text-sm font-bold text-slate-700">Upload Screenshot</span>
-                                                    <span className="text-[10px] text-slate-400 font-medium mt-1 uppercase tracking-wider">Required *</span>
-                                                </>
-                                            )}
-                                            <input type="file" className="hidden" accept="image/*" onChange={handleScreenshotUpload} disabled={uploading} />
-                                        </label>
-                                    )}
                                 </div>
                             </div>
-                        </section>
+                        </section> */}
                         
                     </div>
 
@@ -574,9 +509,9 @@ export default function ListProperty() {
                             <ShieldCheck size={20} className="text-emerald-500" />
                             Secure & Encrypted Form
                         </div>
-                        <button type="submit" disabled={uploading || loading || !formData.paymentScreenshot} suppressHydrationWarning
+                        <button type="submit" disabled={uploading || loading} suppressHydrationWarning
                             className={`px-10 py-4 rounded-xl font-bold flex items-center gap-3 transition-all duration-300
-                            ${(uploading || loading || !formData.paymentScreenshot) 
+                            ${(uploading || loading) 
                                 ? 'bg-slate-200 text-slate-400 cursor-not-allowed' 
                                 : 'bg-slate-900 text-white hover:bg-indigo-600 shadow-xl shadow-indigo-600/20 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-600/30'}`}>
                             {loading ? (
