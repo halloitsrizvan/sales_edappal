@@ -134,7 +134,7 @@ export default async function PropertyDetails({ params }) {
         },
         'offers': {
             '@type': 'Offer',
-            'url': `https://salesedappal.com/properties/${property._id}`,
+            'url': `https://www.salesedappal.com/properties/${property._id}`,
             'priceCurrency': 'INR',
             'price': property.priceAmount,
             'availability': 'https://schema.org/InStock',
@@ -156,19 +156,19 @@ export default async function PropertyDetails({ params }) {
                 '@type': 'ListItem',
                 'position': 1,
                 'name': 'Home',
-                'item': 'https://salesedappal.com'
+                'item': 'https://www.salesedappal.com'
             },
             {
                 '@type': 'ListItem',
                 'position': 2,
                 'name': 'Properties',
-                'item': 'https://salesedappal.com/properties'
+                'item': 'https://www.salesedappal.com/properties'
             },
             {
                 '@type': 'ListItem',
                 'position': 3,
                 'name': property.title,
-                'item': `https://salesedappal.com/properties/${property._id}`
+                'item': `https://www.salesedappal.com/properties/${property._id}`
             }
         ]
     };

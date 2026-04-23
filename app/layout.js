@@ -12,7 +12,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://salesedappal.com'),
+  metadataBase: new URL('https://www.salesedappal.com'),
   title: {
     default: 'Sales Edappal | Real Estate Consultant Edappal & Malappuram',
     template: '%s | Sales Edappal'
@@ -30,7 +30,7 @@ export const metadata = {
     'Sameer Edappal real estate',
     'verified properties edappal'
   ],
-  authors: [{ name: 'Sameer Edappal', url: 'https://salesedappal.com' }],
+  authors: [{ name: 'Sameer Edappal', url: 'https://www.salesedappal.com' }],
   creator: 'Sameer Edappal',
   publisher: 'Sales Edappal',
   formatDetection: {
@@ -44,7 +44,7 @@ export const metadata = {
   openGraph: {
     title: 'Sales Edappal | Real Estate Consultant in Malappuram',
     description: 'Find your dream home or investment plot in Edappal. Verified listings and expert guidance by Sameer.',
-    url: 'https://salesedappal.com',
+    url: 'https://www.salesedappal.com',
     siteName: 'Sales Edappal',
     images: [
       {
@@ -87,9 +87,9 @@ export default function RootLayout({ children }) {
     '@type': 'RealEstateAgent',
     'name': 'Sales Edappal',
     'description': 'Trusted Real Estate Consultant in Edappal. Expert in buying, selling, and renting houses and land plots.',
-    'image': 'https://salesedappal.com/logo.png',
-    '@id': 'https://salesedappal.com',
-    'url': 'https://salesedappal.com',
+    'image': 'https://www.salesedappal.com/logo.png',
+    '@id': 'https://www.salesedappal.com',
+    'url': 'https://www.salesedappal.com',
     'telephone': '+919895294949',
     'priceRange': '₹₹₹',
     'address': {

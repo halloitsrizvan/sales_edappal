@@ -5,6 +5,6 @@ export default function robots() {
             allow: '/',
             disallow: ['/admin/', '/api/', '/profile/'],
         },
-        sitemap: 'https://salesedappal.com/sitemap.xml',
+        sitemap: 'https://www.salesedappal.com/sitemap.xml',
     }
 }

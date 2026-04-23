@@ -2,7 +2,7 @@ import dbConnect from '@/lib/mongodb';
 import Property from '@/models/Property';
 
 export default async function sitemap() {
-    const baseUrl = 'https://salesedappal.com';
+    const baseUrl = 'https://www.salesedappal.com';
     
     await dbConnect();
     
