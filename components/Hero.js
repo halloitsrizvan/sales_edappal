@@ -34,7 +34,7 @@ const Hero = () => {
             {/* Background Image with Bokeh Overlay */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="https://as1.ftcdn.net/jpg/10/17/29/42/480_F_1017294245_4DxSgtKTMuFP6i9j75eruIJ5A19gcusO.jpg?token=1774077990_sJ7YAqvXQJ9MnKhVs7-oXiYlWSKNICrp4CU4BfATi6Q"
+                    src="/hero-bg.png"
                     alt="Luxury Real Estate"
                     fill
                     priority
