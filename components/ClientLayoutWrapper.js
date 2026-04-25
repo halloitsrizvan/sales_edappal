@@ -4,6 +4,7 @@
 import { usePathname } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PostPropertyPopup from '@/components/PostPropertyPopup';
 
 export default function ClientLayoutWrapper({ children }) {
     const pathname = usePathname();
@@ -23,6 +24,7 @@ export default function ClientLayoutWrapper({ children }) {
                 {children}
             </main>
             <Footer />
+            <PostPropertyPopup />
             {/* Sticky Buttons for User Side Only */}
             <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
                 <a
