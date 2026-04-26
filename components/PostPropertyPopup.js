@@ -21,12 +21,21 @@ export default function PostPropertyPopup() {
         const isDismissed = sessionStorage.getItem('postPropertyPopupDismissed');
         if (isDismissed) return;
 
+        let hideTimer;
         // Show after a short delay
-        const timer = setTimeout(() => {
+        const showTimer = setTimeout(() => {
             setIsVisible(true);
-        }, 3000); // 3 seconds delay for a better user experience
+            
+            // Auto-hide after 10 seconds of being visible
+            hideTimer = setTimeout(() => {
+                setIsVisible(false);
+            }, 10000);
+        }, 3000); 
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(showTimer);
+            if (hideTimer) clearTimeout(hideTimer);
+        };
     }, [pathname]);
 
     const handleDismiss = (e) => {
