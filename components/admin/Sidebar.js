@@ -46,6 +46,7 @@ const AdminSidebar = ({ isMobileOpen, toggleMobile }) => {
                 <div
                     className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
                     onClick={toggleMobile}
+                    suppressHydrationWarning
                 />
             )}
 
@@ -63,7 +64,7 @@ const AdminSidebar = ({ isMobileOpen, toggleMobile }) => {
                         </div>
                         <span className="font-bold text-lg tracking-wide">Admin</span>
                     </Link>
-                    <button onClick={toggleMobile} className="md:hidden text-slate-400 hover:text-white">
+                    <button onClick={toggleMobile} className="md:hidden text-slate-400 hover:text-white" suppressHydrationWarning>
                         <X size={24} />
                     </button>
                 </div>

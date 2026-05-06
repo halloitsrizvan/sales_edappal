@@ -32,7 +32,12 @@ export default function PropertyGallery({ images, title, status }) {
 
                 {/* Status Badge */}
                 <div className="absolute top-6 right-6 bg-sky-600/90 backdrop-blur-md text-white px-5 py-2 rounded-full text-xs font-black shadow-2xl z-20 border border-white/20 uppercase tracking-widest">
-                    {status}
+                    {status === 'Sold' ? 'Sold Out' :
+                        status === 'Rented' ? 'Rented Out' :
+                            status === 'Leased' ? 'Lease Out' :
+                                status === 'Rent' ? 'For Rent' :
+                                    status === 'Lease' ? 'For Lease' :
+                                        status}
                 </div>
 
                 {/* Overlays for navigation if many images */}

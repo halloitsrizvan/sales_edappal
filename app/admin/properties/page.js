@@ -160,17 +160,30 @@ export default function PropertiesList() {
 
     const processStatusToggle = async () => {
         const { id, newStatus } = confirmDialog;
+        setConfirmDialog(prev => ({ ...prev, isLoading: true }));
         try {
             const res = await fetch(`/api/properties/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus }),
             });
-            if (res.ok) fetchProperties();
+            const data = await res.json();
+            
+            if (res.ok && data.success) {
+                // Optimistic update
+                setProperties(prev => prev.map(p => p._id === id ? { ...p, status: newStatus } : p));
+                setConfirmDialog({ isOpen: false, type: null, id: null, currentStatus: null, newStatus: null, title: '', isLoading: false });
+                // Background refresh
+                fetchProperties();
+            } else {
+                alert(data.message || 'Failed to update property status');
+                setConfirmDialog(prev => ({ ...prev, isLoading: false }));
+            }
         } catch (error) {
             console.error('Status update error:', error);
+            alert('Something went wrong. Please try again.');
+            setConfirmDialog(prev => ({ ...prev, isLoading: false }));
         }
-        setConfirmDialog({ ...confirmDialog, isOpen: false });
     };
 
     return (
@@ -204,6 +217,8 @@ export default function PropertiesList() {
                         <option value="Rent">For Rent</option>
                         <option value="Lease">For Lease</option>
                         <option value="Sold">Sold Out</option>
+                        <option value="Rented">Rented Out</option>
+                        <option value="Leased">Lease Out</option>
                     </select>
 
                     <select
@@ -322,15 +337,19 @@ export default function PropertiesList() {
                                                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all mx-auto border shadow-sm hover:shadow-md ${prop.status === 'Sold'
                                                         ? 'bg-rose-50 text-rose-600 border-rose-100'
                                                         : prop.status === 'Rent' ? 'bg-amber-50 text-amber-600 border-amber-100'
-                                                            : prop.status === 'Lease' ? 'bg-indigo-50 text-indigo-600 border-indigo-100'
+                                                    : prop.status === 'Lease' ? 'bg-indigo-50 text-indigo-600 border-indigo-100'
+                                                        : prop.status === 'Rented' ? 'bg-orange-50 text-orange-600 border-orange-100'
+                                                            : prop.status === 'Leased' ? 'bg-purple-50 text-purple-600 border-purple-100'
                                                                 : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}
                                                     suppressHydrationWarning
                                                 >
-                                                    {prop.status === 'Sold' ? <ShoppingCart size={12} /> : <Tag size={12} />}
+                                                    {prop.status === 'Sold' || prop.status === 'Rented' || prop.status === 'Leased' ? <ShoppingCart size={12} /> : <Tag size={12} />}
                                                     {prop.status === 'Sold' ? 'Sold Out' :
-                                                        prop.status === 'Rent' ? 'For Rent' :
-                                                            prop.status === 'Lease' ? 'For Lease' :
-                                                                'For Sale'}
+                                                        prop.status === 'Rented' ? 'Rented Out' :
+                                                            prop.status === 'Leased' ? 'Lease Out' :
+                                                                prop.status === 'Rent' ? 'For Rent' :
+                                                                    prop.status === 'Lease' ? 'For Lease' :
+                                                                        'For Sale'}
                                                 </button>
 
                                                 {/* Status Selector Dropdown */}
@@ -343,7 +362,9 @@ export default function PropertiesList() {
                                                             { label: 'For Sale', value: 'For Sale', color: 'text-emerald-600 bg-emerald-50' },
                                                             { label: 'For Rent', value: 'Rent', color: 'text-amber-600 bg-amber-50' },
                                                             { label: 'For Lease', value: 'Lease', color: 'text-indigo-600 bg-indigo-50' },
-                                                            { label: 'Sold Out', value: 'Sold', color: 'text-rose-600 bg-rose-50' }
+                                                            { label: 'Sold Out', value: 'Sold', color: 'text-rose-600 bg-rose-50' },
+                                                            { label: 'Rented Out', value: 'Rented', color: 'text-orange-600 bg-orange-50' },
+                                                            { label: 'Lease Out', value: 'Leased', color: 'text-purple-600 bg-purple-50' }
                                                         ].map(s => (
                                                             <button
                                                                 key={s.value}
@@ -445,10 +466,12 @@ export default function PropertiesList() {
                                                 ? 'bg-rose-50 text-rose-600 border-rose-100'
                                                 : prop.status === 'Rent' ? 'bg-amber-50 text-amber-600 border-amber-100'
                                                     : prop.status === 'Lease' ? 'bg-indigo-50 text-indigo-600 border-indigo-100'
-                                                        : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}
+                                                        : prop.status === 'Rented' ? 'bg-orange-50 text-orange-600 border-orange-100'
+                                                            : prop.status === 'Leased' ? 'bg-purple-50 text-purple-600 border-purple-100'
+                                                                : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}
                                             suppressHydrationWarning
                                         >
-                                            {prop.status === 'Sold' ? 'Sold Out' : prop.status === 'Rent' ? 'Rent' : prop.status === 'Lease' ? 'Lease' : 'Sale'}
+                                            {prop.status === 'Sold' ? 'Sold Out' : prop.status === 'Rented' ? 'Rented Out' : prop.status === 'Leased' ? 'Lease Out' : prop.status === 'Rent' ? 'Rent' : prop.status === 'Lease' ? 'Lease' : 'Sale'}
                                             <MoreHorizontal size={10} className="ml-1 opacity-50" />
                                         </button>
 
@@ -461,7 +484,9 @@ export default function PropertiesList() {
                                                             { label: 'For Sale', value: 'For Sale' },
                                                             { label: 'For Rent', value: 'Rent' },
                                                             { label: 'For Lease', value: 'Lease' },
-                                                            { label: 'Sold Out', value: 'Sold' }
+                                                            { label: 'Sold Out', value: 'Sold' },
+                                                            { label: 'Rented Out', value: 'Rented' },
+                                                            { label: 'Lease Out', value: 'Leased' }
                                                         ].map(s => (
                                                             <button
                                                                 key={s.value}

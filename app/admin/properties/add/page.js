@@ -331,6 +331,8 @@ const AddProperty = () => {
                             <option value="For Sale">For Sale</option>
                             <option value="Rent">For Rent</option>
                             <option value="Lease">For Lease</option>
+                            <option value="Rented">Rented Out</option>
+                            <option value="Leased">Lease Out</option>
                         </select>
                     </div>
 

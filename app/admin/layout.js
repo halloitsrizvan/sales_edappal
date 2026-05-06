@@ -137,6 +137,7 @@ export default function AdminLayout({ children }) {
                         <button
                             onClick={() => setIsMobileOpen(true)}
                             className="p-2 -ml-2 rounded-xl text-slate-500 hover:bg-slate-100 md:hidden transition-colors"
+                            suppressHydrationWarning
                         >
                             <Menu size={24} />
                         </button>
@@ -191,7 +192,7 @@ export default function AdminLayout({ children }) {
                                                         </div>
                                                         <div className="flex-1 min-w-0">
                                                             <p className="text-sm font-bold text-slate-800 truncate">{result.title}</p>
-                                                            <p className="text-xs text-slate-500 truncate">{result.subtitle}</p>
+                                                            <p className="text-xs text-slate-500 truncate" suppressHydrationWarning>{result.subtitle}</p>
                                                         </div>
                                                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-slate-100 text-slate-500 group-hover:bg-sky-100 group-hover:text-sky-600 transition-colors">
                                                             {result.type}
@@ -284,6 +285,7 @@ export default function AdminLayout({ children }) {
                                                 <button
                                                     onClick={handleMarkAllRead}
                                                     className="w-full py-2 text-xs font-bold text-sky-600 hover:text-sky-700 transition-colors uppercase tracking-widest"
+                                                    suppressHydrationWarning
                                                 >
                                                     Mark all as Read
                                                 </button>

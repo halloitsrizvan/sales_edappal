@@ -322,6 +322,8 @@ const EditProperty = () => {
                             <option value="Rent">For Rent</option>
                             <option value="Lease">For Lease</option>
                             <option value="Sold">Sold Out</option>
+                            <option value="Rented">Rented Out</option>
+                            <option value="Leased">Lease Out</option>
                         </select>
                     </div>
 

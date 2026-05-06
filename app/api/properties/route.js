@@ -24,7 +24,7 @@ export async function GET(req) {
         // Security: Public users only see approved properties
         if (!isAdmin) {
             query.isApproved = true;
-            query.status = { $ne: 'Sold' }; // Hide sold properties from public
+            query.status = { $nin: ['Sold', 'Rented', 'Leased'] }; // Hide sold, rented, leased from public
         } else if (isApproved !== null && isApproved !== undefined && isApproved !== '') {
             query.isApproved = isApproved === 'true';
         }
@@ -46,7 +46,7 @@ export async function GET(req) {
             if (status === 'Buy') status = 'For Sale';
 
             if (status === 'Available') {
-                query.status = { $ne: 'Sold' };
+                query.status = { $nin: ['Sold', 'Rented', 'Leased'] };
             } else {
                 query.status = status;
             }

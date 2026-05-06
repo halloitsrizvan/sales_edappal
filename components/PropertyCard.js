@@ -28,7 +28,12 @@ const PropertyCard = ({ property }) => {
                 </Link>
                 <div className="absolute top-4 left-4 flex gap-2">
                     <span className="bg-sky-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider shadow-sm">
-                        {property.status}
+                        {property.status === 'Sold' ? 'Sold Out' :
+                            property.status === 'Rented' ? 'Rented Out' :
+                                property.status === 'Leased' ? 'Lease Out' :
+                                    property.status === 'Rent' ? 'For Rent' :
+                                        property.status === 'Lease' ? 'For Lease' :
+                                            property.status}
                     </span>
                     <span className="bg-white/90 backdrop-blur-sm text-sky-800 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider shadow-sm">
                         {property.type}
